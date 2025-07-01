@@ -1,5 +1,4 @@
 
-import products from "@/data/products";
 import { fetchProductsFromFirestore } from "@/lib/fetchProducts";
 import ProductsComp from "@/components/ProductsComp.js";
 
