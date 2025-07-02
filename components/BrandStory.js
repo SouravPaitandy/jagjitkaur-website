@@ -169,21 +169,11 @@ export default function BrandStory() {
                 priority
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
-              
-              {/* Floating Statistics */}
-              <div className="absolute bottom-6 left-1/3 right-1/3">
-                <div className="bg-white/95 dark:bg-stone-800/95 backdrop-blur-sm rounded-md p-4 shadow-xl">
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-stone-900 dark:text-white">5+</div>
-                    <div className="text-xs text-stone-600 dark:text-stone-300">Years Heritage</div>
-                  </div>
-                </div>
-              </div>
             </div>
             
             {/* Decorative Elements */}
-            <div className="absolute -top-6 -left-6 w-32 h-32 border-t-4 border-l-4 border-stone-400 dark:border-stone-600 rounded-tl-md"></div>
-            <div className="absolute -bottom-6 -right-6 w-32 h-32 border-b-4 border-r-4 border-stone-400 dark:border-stone-600 rounded-br-md"></div>
+            {/* <div className="absolute -top-6 -left-6 w-32 h-32 border-t-4 border-l-4 border-stone-400 dark:border-stone-600 rounded-tl-md"></div>
+            <div className="absolute -bottom-6 -right-6 w-32 h-32 border-b-4 border-r-4 border-stone-400 dark:border-stone-600 rounded-br-md"></div> */}
           </div>
         </div>
 

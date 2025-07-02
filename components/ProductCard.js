@@ -100,6 +100,8 @@ export default function ProductCard({ product }) {
           <div className="flex space-x-4">
             <Link
               href={`/product/${createSlug(product.name)}`}
+              target="_blank"
+              rel="noopener noreferrer"
               className="bg-white/95 dark:bg-stone-900/95 backdrop-blur-md text-stone-700 dark:text-stone-300 p-4 rounded-md hover:bg-stone-50 dark:hover:bg-stone-800 transition-all duration-300 transform hover:scale-110 shadow-xl border border-stone-200 dark:border-stone-700"
               title="View Details"
             >

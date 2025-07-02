@@ -105,7 +105,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-stone-700 dark:bg-stone-300 hover:bg-stone-800 dark:hover:bg-stone-200 disabled:bg-stone-400 disabled:dark:bg-stone-500 text-white dark:text-stone-900 font-semibold py-3 px-6 rounded-md transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:transform-none disabled:cursor-not-allowed flex items-center justify-center"
+              className="cursor-pointer w-full bg-stone-700 dark:bg-stone-300 hover:bg-stone-800 dark:hover:bg-stone-200 disabled:bg-stone-400 disabled:dark:bg-stone-500 text-white dark:text-stone-900 font-semibold py-3 px-6 rounded-md transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:transform-none disabled:cursor-not-allowed flex items-center justify-center"
             >
               {isLoading ? (
                 <>

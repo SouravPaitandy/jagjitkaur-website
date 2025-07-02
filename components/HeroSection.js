@@ -93,7 +93,7 @@ export default function HeroSection() {
               </div>
 
               {/* Main Title */}
-              <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl font-light leading-tight tracking-wide">
+              <h1 className="font-fira-sans text-4xl md:text-6xl lg:text-7xl font-light leading-tight tracking-wide">
                 {currentHero.title}
               </h1>
 
