@@ -69,7 +69,7 @@ export default function InstagramFeed() {
               </a>
 
               <a
-                href="https://wa.me/+919999999999"
+                href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_PHONE}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group inline-flex items-center px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-500 text-white font-semibold rounded-md hover:from-green-600 hover:to-emerald-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"

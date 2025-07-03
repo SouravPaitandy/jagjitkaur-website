@@ -171,13 +171,13 @@ export default function Footer() {
         <div className="border-t border-stone-700 dark:border-stone-800 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center mb-6">
             <p className="text-stone-300 text-sm font-medium">
-              © 2025 Jagjit Kaur. All rights reserved.
+              © {new Date().getFullYear()} Jagjit Kaur. All rights reserved.
             </p>
             <div className="flex flex-wrap gap-x-6 gap-y-2 mt-4 md:mt-0">
               {[
                 { href: "/privacy", label: "Privacy Policy" },
                 { href: "/terms", label: "Terms of Service" },
-                { href: "/shipping", label: "Shipping Info" },
+                // { href: "/shipping", label: "Shipping Info" },
               ].map((link) => (
                 <Link
                   key={link.href}
@@ -192,7 +192,7 @@ export default function Footer() {
 
           {/* Version Badge */}
           <p className="text-xs text-stone-400 mt-4 mb-6 text-center">
-            v1.0.0 – Updated on June 27, 2025
+            v1.0.0 – Updated on July 3, 2025
           </p>
 
           {/* Enhanced Developer Credit */}

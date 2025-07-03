@@ -14,6 +14,60 @@ function createSlug(name) {
     .trim();
 }
 
+// Generate dynamic metadata based on the product
+export async function generateMetadata({ params }) {
+  const { name } = await params;
+  const products = await fetchProductsFromFirestore();
+  const product = products.find((p) => createSlug(p.name) === name);
+
+  if (!product) {
+    return {
+      title: "Product Not Found | Jagjit Kaur",
+      description: "The product you're looking for could not be found.",
+    };
+  }
+
+  return {
+    title: `${product.name} | Jagjit Kaur - Handcrafted ${product.category.charAt(0).toUpperCase() + product.category.slice(1)}`,
+    description: `${product.description} - Premium ${product.fabric} ${product.category} with ${product.work} from ${product.origin}. Authentic handcrafted Indian fashion by Jagjit Kaur.`,
+    keywords: [
+      product.name,
+      product.category,
+      product.fabric,
+      product.work,
+      product.origin,
+      "handcrafted",
+      "traditional",
+      "Indian fashion",
+      "Jagjit Kaur"
+    ],
+    openGraph: {
+      title: `${product.name} | Jagjit Kaur`,
+      description: product.description,
+      images: [
+        {
+          url: product.image,
+          width: 800,
+          height: 600,
+          alt: product.name,
+        },
+      ],
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${product.name} | Jagjit Kaur`,
+      description: product.description,
+      images: [product.image],
+    },
+    appleWebApp: {
+      rel: "icon",
+      url: "/favicon.ico",
+      type: "image/x-icon",
+    },
+  };
+}
+
 export default async function ProductDetail({ params }) {
   const { name } = await params;
   const products = await fetchProductsFromFirestore();
@@ -21,12 +75,12 @@ export default async function ProductDetail({ params }) {
   // Find product by comparing slugified names
   const product = products.find((p) => createSlug(p.name) === name);
 
-  console.log("Product: ", product);
-  console.log("Looking for slug: ", name);
-  console.log(
-    "Available products:",
-    products.map((p) => ({ name: p.name, slug: createSlug(p.name) }))
-  );
+  // console.log("Product: ", product);
+  // console.log("Looking for slug: ", name);
+  // console.log(
+  //   "Available products:",
+  //   products.map((p) => ({ name: p.name, slug: createSlug(p.name) }))
+  // );
 
   const formatDate = (date) => {
     if (!date) return "";
