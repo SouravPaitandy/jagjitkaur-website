@@ -199,7 +199,7 @@ For technical support, feature requests, or business inquiries:
 - **Website**: [jkbyjagjitkaur.com](https://jkbyjagjitkaur.com)
 - **WhatsApp**: +91 7363961142
 - **Instagram**: [@jagjitkaur.official](https://instagram.com/Jagjitkaur.official)
-- **Email**: contact@jagjitkaur.com
+- **Email**: work@jkbyjagjitkaur.com
 
 ## 📄 License
 
@@ -209,5 +209,5 @@ This project is proprietary software. All rights reserved to [Jagjit Kaur](https
 
 *Built with ❤️ for preserving and celebrating Indian traditional craftsmanship*
 
-**Version**: 1.0.0  
+**Version**: 1.5.0  
 **Last Updated**: July 2025

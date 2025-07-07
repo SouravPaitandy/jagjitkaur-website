@@ -43,7 +43,7 @@ export default function Footer() {
           d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
         />
       ),
-      text: "hello@jagjitkaur.com",
+      text: "work@jkbyjagjitkaur.com",
     },
     {
       icon: (
@@ -54,7 +54,7 @@ export default function Footer() {
           d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
         />
       ),
-      text: "+91 98765 43210",
+      text: "+91 7363961142",
     },
     {
       icon: (
@@ -145,7 +145,7 @@ export default function Footer() {
             </h4>
             <div className="space-y-4">
               {contactInfo.map((contact, index) => (
-                <div key={index} className="flex items-start space-x-3 group">
+                <div key={index} className="flex items-center space-x-3 group">
                   <div className="w-10 h-10 bg-stone-700 dark:bg-stone-800 rounded-md flex items-center justify-center group-hover:bg-stone-600 dark:group-hover:bg-stone-700 transition-colors duration-300">
                     <svg
                       className="w-5 h-5 text-stone-400 group-hover:text-stone-200"
@@ -171,7 +171,7 @@ export default function Footer() {
         <div className="border-t border-stone-700 dark:border-stone-800 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center mb-6">
             <p className="text-stone-300 text-sm font-medium">
-              © {new Date().getFullYear()} Jagjit Kaur. All rights reserved.
+              © {new Date().getFullYear()} jkbyjagjitkaur.com. All rights reserved.
             </p>
             <div className="flex flex-wrap gap-x-6 gap-y-2 mt-4 md:mt-0">
               {[
@@ -192,7 +192,7 @@ export default function Footer() {
 
           {/* Version Badge */}
           <p className="text-xs text-stone-400 mt-4 mb-6 text-center">
-            v1.0.0 – Updated on July 3, 2025
+            v1.5.0 – Updated on July 7, 2025
           </p>
 
           {/* Enhanced Developer Credit */}
@@ -208,7 +208,7 @@ export default function Footer() {
               <p className="text-stone-300 text-sm font-medium tracking-wide">
                 Crafted with love by{" "}
                 <a
-                  href="https://portfolio-sourav-paitandy.vercel.app/"
+                  href="https://www.souravpaitandy.me/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-stone-200 hover:text-white transition-colors duration-300 font-semibold underline decoration-stone-400/50 underline-offset-2 hover:decoration-stone-300"

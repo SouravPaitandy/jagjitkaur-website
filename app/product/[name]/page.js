@@ -4,6 +4,7 @@ import { fetchProductsFromFirestore } from "@/lib/fetchProducts";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import Footer from "@/components/Footer";
 import { FiArrowDown } from "react-icons/fi";
+import { ProductDetailSkeleton } from "@/components/Loading";
 
 // Helper function to create URL-safe slug from product name
 function createSlug(name) {
@@ -70,30 +71,20 @@ export async function generateMetadata({ params }) {
 
 export default async function ProductDetail({ params }) {
   const { name } = await params;
-  const products = await fetchProductsFromFirestore();
-
-  // Find product by comparing slugified names
-  const product = products.find((p) => createSlug(p.name) === name);
-
-  // console.log("Product: ", product);
-  // console.log("Looking for slug: ", name);
-  // console.log(
-  //   "Available products:",
-  //   products.map((p) => ({ name: p.name, slug: createSlug(p.name) }))
-  // );
-
-  const formatDate = (date) => {
-    if (!date) return "";
-    return new Intl.DateTimeFormat("en-IN", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    }).format(new Date(date));
-  };
-
-  if (!product) {
-    return (
-      <>
+  // Use React's suspense pattern with async/await
+  // We can wrap this in a try/catch with ProductDetailSkeleton as fallback
+  let products = [];
+  let product = null;
+  
+  try {
+    products = await fetchProductsFromFirestore();
+    // Find product by comparing slugified names
+    product = products.find((p) => createSlug(p.name) === name);
+  } catch (error) {
+    console.error("Error fetching product data:", error);
+    // If there's an error fetching data, we'll return the skeleton
+    return(
+       <>
         <main className="min-h-screen bg-stone-50 dark:bg-stone-900 flex items-center justify-center">
           <div className="text-center max-w-md mx-auto px-6">
             <div className="w-24 h-24 mx-auto mb-6 bg-stone-100 dark:bg-stone-800 rounded-full flex items-center justify-center">
@@ -143,6 +134,73 @@ export default async function ProductDetail({ params }) {
       </>
     );
   }
+  
+  // If products are loading, show skeleton
+  if (!products || products.length === 0) {
+    return <ProductDetailSkeleton />;
+  }
+
+  const formatDate = (date) => {
+    if (!date) return "";
+    return new Intl.DateTimeFormat("en-IN", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    }).format(new Date(date));
+  };
+
+  // if (!product) {
+  //   return (
+  //     <>
+  //       <main className="min-h-screen bg-stone-50 dark:bg-stone-900 flex items-center justify-center">
+  //         <div className="text-center max-w-md mx-auto px-6">
+  //           <div className="w-24 h-24 mx-auto mb-6 bg-stone-100 dark:bg-stone-800 rounded-full flex items-center justify-center">
+  //             <svg
+  //               className="w-12 h-12 text-stone-400"
+  //               fill="none"
+  //               stroke="currentColor"
+  //               viewBox="0 0 24 24"
+  //             >
+  //               <path
+  //                 strokeLinecap="round"
+  //                 strokeLinejoin="round"
+  //                 strokeWidth={1.5}
+  //                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+  //               />
+  //             </svg>
+  //           </div>
+  //           <h1 className="font-fira-sans text-4xl font-bold text-stone-900 dark:text-white mb-4">
+  //             Product Not Found
+  //           </h1>
+  //           <p className="text-stone-600 dark:text-stone-300 mb-8 text-lg">
+  //             The beautiful piece you're looking for seems to have found a new
+  //             home.
+  //           </p>
+  //           <Link
+  //             href="/products"
+  //             className="inline-flex items-center px-8 py-4 bg-stone-700 dark:bg-stone-300 text-white dark:text-stone-900 rounded-md hover:bg-stone-800 dark:hover:bg-stone-200 transition-all duration-300 shadow-lg hover:shadow-xl font-medium"
+  //           >
+  //             <svg
+  //               className="w-5 h-5 mr-2"
+  //               fill="none"
+  //               stroke="currentColor"
+  //               viewBox="0 0 24 24"
+  //             >
+  //               <path
+  //                 strokeLinecap="round"
+  //                 strokeLinejoin="round"
+  //                 strokeWidth={2}
+  //                 d="M15 19l-7-7 7-7"
+  //               />
+  //             </svg>
+  //             Explore Our Collection
+  //           </Link>
+  //         </div>
+  //       </main>
+  //       <Footer />
+  //     </>
+  //   );
+  // }
 
   // Get related products (excluding current product)
   const relatedProducts = products

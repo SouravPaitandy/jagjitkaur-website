@@ -44,7 +44,7 @@ export default function PrivacyPolicy() {
               How we protect and use your personal information
             </p>
             <div className="mt-4 text-sm text-stone-500 dark:text-stone-400">
-              Last updated: January 2025
+              Last updated: July 2025
             </div>
           </div>
 
@@ -358,7 +358,7 @@ export default function PrivacyPolicy() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                       </svg>
                       <div>
-                        <strong>Email:</strong> privacy@jagjitkaur.com
+                        <strong>Email:</strong> work@jkbyjagjitkaur.com
                         <div className="text-sm text-stone-600 dark:text-stone-400">For detailed privacy requests</div>
                       </div>
                     </div>

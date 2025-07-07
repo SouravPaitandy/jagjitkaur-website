@@ -136,7 +136,7 @@ export default function InstagramFeed() {
                 <div className="hidden md:block w-px h-8 bg-stone-300 dark:bg-stone-600"></div>
 
                 <a
-                  href="https://wa.me/+919999999999"
+                  href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_PHONE}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group inline-flex items-center text-stone-900 dark:text-white font-semibold hover:text-green-600 dark:hover:text-green-400 transition-colors text-lg"

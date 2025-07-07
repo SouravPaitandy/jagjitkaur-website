@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { fetchProductsFromFirestore } from "@/lib/fetchProducts";
 import ProductsComp from "@/components/ProductsComp.js";
+import { Loading } from "@/components/Loading";
 
 // Generate dynamic metadata based on URL parameters
 export async function generateMetadata({ searchParams }) {
@@ -41,14 +42,7 @@ export async function generateMetadata({ searchParams }) {
 // Loading component for Suspense fallback
 function ProductsLoading() {
   return (
-    <div className="min-h-screen bg-stone-50 dark:bg-stone-900 flex items-center justify-center">
-      <div className="text-center">
-        <div className="w-16 h-16 border-4 border-stone-300 border-t-stone-700 rounded-full animate-spin mx-auto mb-4"></div>
-        <p className="text-stone-600 dark:text-stone-400 text-lg font-medium">
-          Loading our exquisite collection...
-        </p>
-      </div>
-    </div>
+    <Loading/>
   );
 }
 

@@ -19,7 +19,7 @@ export default function FloatingWhatsApp() {
   const link = `https://wa.me/${phone}?text=${createMessage()}`;
 
   return (
-    <div className="fixed bottom-1/4 right-6 z-50 group">
+    <div className="fixed bottom-1/3 right-6 z-50 group">
       <a
         href={link}
         target="_blank"

@@ -43,6 +43,22 @@ export default function ProductsPage({ products }) {
     }
   }, [searchParams, products]);
 
+  // Handle URL parameters for sorting
+  useEffect(() => {
+    const sortParam = searchParams.get('sort');
+    if (sortParam) {
+      const validSortOptions = {
+        'name': 'name',
+        'price': 'price',
+        'newest': 'newest'
+      };
+      
+      if (validSortOptions[sortParam.toLowerCase()]) {
+        setSortBy(validSortOptions[sortParam.toLowerCase()]);
+      }
+    }
+  }, [searchParams]);
+
   // Ensure component is hydrated before rendering client-specific content
   useEffect(() => {
     setIsClient(true);
