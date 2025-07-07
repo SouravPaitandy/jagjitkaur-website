@@ -32,37 +32,43 @@ export default function Sidebar() {
   }, []);
 
   const categories = [
-    {
-      name: "Sarees",
-      href: "/products?category=sarees",
-      icon: "👘",
-      description: "Traditional elegance"
-    },
-    {
-      name: "Lehengas",
-      href: "/products?category=lehengas",
-      icon: "🌸",
-      description: "Bridal collection"
-    },
-    {
-      name: "Kurtas",
-      href: "/products?category=kurtas",
-      icon: "🌿",
-      description: "Contemporary comfort"
-    },
-    {
-      name: "Suits",
-      href: "/products?category=suits",
-      icon: "✨",
-      description: "Festive wear"
-    },
-    {
-      name: "Dupattas",
-      href: "/products?category=dupattas",
-      icon: "🎀",
-      description: "Perfect finishing touch"
-    }
-  ];
+  {
+    name: "Sharara Sets",
+    href: "/products?category=sharara-sets",
+    icon: "👗",
+    description: "3-piece traditional sets"
+  },
+  {
+    name: "Palazzo Sets",
+    href: "/products?category=palazzo-sets",
+    icon: "🥻",
+    description: "Contemporary comfort"
+  },
+  {
+    name: "Anarkali Sets",
+    href: "/products?category=anarkali-sets",
+    icon: "👘",
+    description: "Regal elegance"
+  },
+  {
+    name: "Gharara Sets",
+    href: "/products?category=gharara-sets",
+    icon: "✨",
+    description: "Festive grandeur"
+  },
+  {
+    name: "Kurti Sets",
+    href: "/products?category=kurti-sets",
+    icon: "🌸",
+    description: "Modern simplicity"
+  },
+  {
+    name: "Co-ord Sets",
+    href: "/products?category=co-ord-sets",
+    icon: "🎀",
+    description: "Perfect coordination"
+  }
+];
 
   const quickLinks = [
     {

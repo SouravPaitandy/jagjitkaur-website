@@ -15,33 +15,36 @@ export default function HeroSection() {
   const heroSlides = [
     {
       id: 1,
-      title: "TIMELESS ELEGANCE",
+      title: "SHARARA SETS",
       subtitle: "Heritage Collection 2024",
-      description: "Discover exquisite handcrafted sarees that celebrate traditional artistry.",
-      image: "/images/Products/saree1.jpg",
+      description:
+        "Discover elegant 3-piece sharara sets with kurta, sharara, and dupatta.",
+      image: "/images/Products/kurta1.jpeg",
       ctaText: "SHOP NOW",
-      ctaLink: "/products?category=sarees",
+      ctaLink: "/products?category=sharara-sets",
     },
     {
       id: 2,
-      title: "ROYAL GRANDEUR", 
-      subtitle: "Lehenga Collection",
-      description: "Step into a world of regal beauty with our stunning bridal lehengas.",
-      image: "/images/Products/lehenga1.jpg",
+      title: "PALAZZO SETS",
+      subtitle: "Contemporary Collection",
+      description:
+        "Modern palazzo sets combining comfort with traditional aesthetics.",
+      image: "/images/Products/saree1.jpg",
       ctaText: "SHOP NOW",
-      ctaLink: "/products?category=lehengas",
+      ctaLink: "/products?category=palazzo-sets",
     },
     {
       id: 3,
-      title: "GRACEFUL COMFORT",
-      subtitle: "Kurta Collection", 
-      description: "Embrace effortless elegance with our contemporary kurta designs.",
-      image: "/images/Products/kurta1.jpeg",
+      title: "ANARKALI SETS",
+      subtitle: "Bridal Collection",
+      description:
+        "Majestic anarkali sets with churidar and embroidered dupatta.",
+      image: "/images/Products/lehenga1.jpg",
       ctaText: "SHOP NOW",
-      ctaLink: "/products?category=kurtas",
-    }
+      ctaLink: "/products?category=anarkali-sets",
+    },
   ];
-
+  
   // Auto-slide functionality
   useEffect(() => {
     const interval = setInterval(() => {
@@ -59,7 +62,10 @@ export default function HeroSection() {
   const currentHero = heroSlides[currentSlide];
 
   return (
-    <section className="relative overflow-hidden mt-16" style={{ height: "calc(100vh - 64px)" }}>
+    <section
+      className="relative overflow-hidden mt-16"
+      style={{ height: "calc(100vh - 64px)" }}
+    >
       {/* Full Screen Background Image */}
       <div className="absolute inset-0">
         <Image
@@ -81,7 +87,9 @@ export default function HeroSection() {
             {/* Content with fade animation */}
             <div
               className={`space-y-6 text-white transition-all duration-700 ${
-                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                isVisible
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-8"
               }`}
             >
               {/* Brand/Collection Label */}

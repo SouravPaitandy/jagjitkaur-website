@@ -29,7 +29,9 @@ export async function generateMetadata({ params }) {
   }
 
   return {
-    title: `${product.name} | Jagjit Kaur - Handcrafted ${product.category.charAt(0).toUpperCase() + product.category.slice(1)}`,
+    title: `${product.name} | Jagjit Kaur - Handcrafted ${
+      product.category.charAt(0).toUpperCase() + product.category.slice(1)
+    }`,
     description: `${product.description} - Premium ${product.fabric} ${product.category} with ${product.work} from ${product.origin}. Authentic handcrafted Indian fashion by Jagjit Kaur.`,
     keywords: [
       product.name,
@@ -40,7 +42,7 @@ export async function generateMetadata({ params }) {
       "handcrafted",
       "traditional",
       "Indian fashion",
-      "Jagjit Kaur"
+      "Jagjit Kaur",
     ],
     openGraph: {
       title: `${product.name} | Jagjit Kaur`,
@@ -69,22 +71,48 @@ export async function generateMetadata({ params }) {
   };
 }
 
+// Add this function before the ProductDetail component
+function formatDate(dateString) {
+  if (!dateString) return "";
+
+  try {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+  } catch (error) {
+    return "";
+  }
+}
+
 export default async function ProductDetail({ params }) {
   const { name } = await params;
-  // Use React's suspense pattern with async/await
-  // We can wrap this in a try/catch with ProductDetailSkeleton as fallback
+
   let products = [];
   let product = null;
-  
+
   try {
     products = await fetchProductsFromFirestore();
+    console.log("📦 Total products fetched:", products.length);
+
     // Find product by comparing slugified names
     product = products.find((p) => createSlug(p.name) === name);
+    // console.log("✅ Found product:", product ? product.name : "❌ NOT FOUND");
   } catch (error) {
-    console.error("Error fetching product data:", error);
-    // If there's an error fetching data, we'll return the skeleton
-    return(
-       <>
+    console.error("❌ Error fetching product data:", error);
+  }
+
+  // If products are loading, show skeleton
+  if (!products || products.length === 0) {
+    return <ProductDetailSkeleton />;
+  }
+
+  // 🚨 MISSING CHECK
+  if (!product) {
+    return (
+      <>
         <main className="min-h-screen bg-stone-50 dark:bg-stone-900 flex items-center justify-center">
           <div className="text-center max-w-md mx-auto px-6">
             <div className="w-24 h-24 mx-auto mb-6 bg-stone-100 dark:bg-stone-800 rounded-full flex items-center justify-center">
@@ -109,106 +137,51 @@ export default async function ProductDetail({ params }) {
               The beautiful piece you're looking for seems to have found a new
               home.
             </p>
-            <Link
-              href="/products"
-              className="inline-flex items-center px-8 py-4 bg-stone-700 dark:bg-stone-300 text-white dark:text-stone-900 rounded-md hover:bg-stone-800 dark:hover:bg-stone-200 transition-all duration-300 shadow-lg hover:shadow-xl font-medium"
-            >
-              <svg
-                className="w-5 h-5 mr-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+            <div className="space-y-4">
+              <p className="text-sm text-stone-500">
+                Debug info: Looking for "{name}" in {products.length} products
+              </p>
+              <Link
+                href="/products"
+                className="inline-flex items-center px-8 py-4 bg-stone-700 dark:bg-stone-300 text-white dark:text-stone-900 rounded-md hover:bg-stone-800 dark:hover:bg-stone-200 transition-all duration-300 shadow-lg hover:shadow-xl font-medium"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 19l-7-7 7-7"
-                />
-              </svg>
-              Explore Our Collection
-            </Link>
+                <svg
+                  className="w-5 h-5 mr-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+                Explore Our Collection
+              </Link>
+            </div>
           </div>
         </main>
         <Footer />
       </>
     );
   }
-  
-  // If products are loading, show skeleton
-  if (!products || products.length === 0) {
-    return <ProductDetailSkeleton />;
-  }
-
-  const formatDate = (date) => {
-    if (!date) return "";
-    return new Intl.DateTimeFormat("en-IN", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    }).format(new Date(date));
-  };
-
-  // if (!product) {
-  //   return (
-  //     <>
-  //       <main className="min-h-screen bg-stone-50 dark:bg-stone-900 flex items-center justify-center">
-  //         <div className="text-center max-w-md mx-auto px-6">
-  //           <div className="w-24 h-24 mx-auto mb-6 bg-stone-100 dark:bg-stone-800 rounded-full flex items-center justify-center">
-  //             <svg
-  //               className="w-12 h-12 text-stone-400"
-  //               fill="none"
-  //               stroke="currentColor"
-  //               viewBox="0 0 24 24"
-  //             >
-  //               <path
-  //                 strokeLinecap="round"
-  //                 strokeLinejoin="round"
-  //                 strokeWidth={1.5}
-  //                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-  //               />
-  //             </svg>
-  //           </div>
-  //           <h1 className="font-fira-sans text-4xl font-bold text-stone-900 dark:text-white mb-4">
-  //             Product Not Found
-  //           </h1>
-  //           <p className="text-stone-600 dark:text-stone-300 mb-8 text-lg">
-  //             The beautiful piece you're looking for seems to have found a new
-  //             home.
-  //           </p>
-  //           <Link
-  //             href="/products"
-  //             className="inline-flex items-center px-8 py-4 bg-stone-700 dark:bg-stone-300 text-white dark:text-stone-900 rounded-md hover:bg-stone-800 dark:hover:bg-stone-200 transition-all duration-300 shadow-lg hover:shadow-xl font-medium"
-  //           >
-  //             <svg
-  //               className="w-5 h-5 mr-2"
-  //               fill="none"
-  //               stroke="currentColor"
-  //               viewBox="0 0 24 24"
-  //             >
-  //               <path
-  //                 strokeLinecap="round"
-  //                 strokeLinejoin="round"
-  //                 strokeWidth={2}
-  //                 d="M15 19l-7-7 7-7"
-  //               />
-  //             </svg>
-  //             Explore Our Collection
-  //           </Link>
-  //         </div>
-  //       </main>
-  //       <Footer />
-  //     </>
-  //   );
-  // }
 
   // Get related products (excluding current product)
   const relatedProducts = products
-    .filter((p) => p.id !== product.id && p.category === product.category)
+    .filter(
+      (p) =>
+        p.firestoreId !== product.firestoreId && p.category === product.category
+    ) // Changed from p.id to p.firestoreId
     .slice(0, 3);
   if (relatedProducts.length < 3) {
     const additionalProducts = products
-      .filter((p) => p.id !== product.id && p.category !== product.category)
+      .filter(
+        (p) =>
+          p.firestoreId !== product.firestoreId &&
+          p.category !== product.category
+      ) // Changed from p.id to p.firestoreId
       .slice(0, 3 - relatedProducts.length);
     relatedProducts.push(...additionalProducts);
   }

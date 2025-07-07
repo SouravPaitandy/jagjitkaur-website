@@ -18,26 +18,27 @@ export default function ProductsPage({ products }) {
 
   // Handle URL parameters for category filtering
   useEffect(() => {
-    const categoryParam = searchParams.get('category');
+    const categoryParam = searchParams.get("category");
     if (categoryParam) {
-      // Convert URL parameter to match your product categories
       const categoryMap = {
-        'sarees': 'sarees',
-        'lehengas': 'lehengas', 
-        'kurtas': 'kurtas',
-        'suits': 'suits',
-        'dupattas': 'dupattas'
+        "sharara-sets": "sharara-sets",
+        "palazzo-sets": "palazzo-sets",
+        "anarkali-sets": "anarkali-sets",
+        "gharara-sets": "gharara-sets",
+        "kurti-sets": "kurti-sets",
+        "co-ord-sets": "co-ord-sets",
       };
-      
-      const mappedCategory = categoryMap[categoryParam.toLowerCase()] || categoryParam.toLowerCase();
-      
-      // Check if the category exists in your products
-      const availableCategories = [...new Set(products.map(product => product.category.toLowerCase()))];
-      
+
+      const mappedCategory =
+        categoryMap[categoryParam.toLowerCase()] || categoryParam.toLowerCase();
+
+      const availableCategories = [
+        ...new Set(products.map((product) => product.category.toLowerCase())),
+      ];
+
       if (availableCategories.includes(mappedCategory)) {
         setFilterBy(mappedCategory);
       } else {
-        // If category doesn't exist, show all products
         setFilterBy("all");
       }
     }
@@ -45,14 +46,14 @@ export default function ProductsPage({ products }) {
 
   // Handle URL parameters for sorting
   useEffect(() => {
-    const sortParam = searchParams.get('sort');
+    const sortParam = searchParams.get("sort");
     if (sortParam) {
       const validSortOptions = {
-        'name': 'name',
-        'price': 'price',
-        'newest': 'newest'
+        name: "name",
+        price: "price",
+        newest: "newest",
       };
-      
+
       if (validSortOptions[sortParam.toLowerCase()]) {
         setSortBy(validSortOptions[sortParam.toLowerCase()]);
       }
@@ -86,7 +87,9 @@ export default function ProductsPage({ products }) {
 
   // Enhanced filter and sort products
   const filteredProducts = products.filter((product) => {
-    const matchesCategory = filterBy === "all" || product.category.toLowerCase() === filterBy.toLowerCase();
+    const matchesCategory =
+      filterBy === "all" ||
+      product.category.toLowerCase() === filterBy.toLowerCase();
     const matchesSearch =
       searchQuery === "" ||
       product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -123,13 +126,17 @@ export default function ProductsPage({ products }) {
   // Function to get display name for category
   const getCategoryDisplayName = (category) => {
     const displayNames = {
-      'saree': 'Sarees',
-      'lehenga': 'Lehengas',
-      'kurta': 'Kurtas',
-      'suit': 'Suits',
-      'dupatta': 'Dupattas'
+      "sharara-sets": "Sharara Sets",
+      "palazzo-sets": "Palazzo Sets",
+      "anarkali-sets": "Anarkali Sets",
+      "gharara-sets": "Gharara Sets",
+      "kurti-sets": "Kurti Sets",
+      "co-ord-sets": "Co-ord Sets",
     };
-    return displayNames[category.toLowerCase()] || category.charAt(0).toUpperCase() + category.slice(1);
+    return (
+      displayNames[category.toLowerCase()] ||
+      category.charAt(0).toUpperCase() + category.slice(1)
+    );
   };
 
   // Don't render scroll button until client-side hydration is complete
@@ -191,8 +198,18 @@ export default function ProductsPage({ products }) {
           {filterBy !== "all" && (
             <div className="text-center mb-8">
               <div className="inline-flex items-center bg-stone-700 dark:bg-stone-300 text-white dark:text-stone-900 px-6 py-2 rounded-full text-sm font-medium shadow-lg">
-                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                <svg
+                  className="w-4 h-4 mr-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
+                  />
                 </svg>
                 Showing {getCategoryDisplayName(filterBy)} Collection
               </div>
@@ -226,7 +243,9 @@ export default function ProductsPage({ products }) {
 
               <div className="relative">
                 <h1 className="font-fira-sans text-4xl sm:text-5xl lg:text-6xl xl:text-8xl font-black text-stone-900 dark:text-stone-200 mb-8 animate-fade-in-up tracking-wider drop-shadow-lg">
-                  {filterBy !== "all" ? getCategoryDisplayName(filterBy).toUpperCase() : "OUR HERITAGE"}
+                  {filterBy !== "all"
+                    ? getCategoryDisplayName(filterBy).toUpperCase()
+                    : "OUR HERITAGE"}
                 </h1>
                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 w-32 h-1 bg-gradient-to-r from-transparent via-stone-400 to-transparent"></div>
                 <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-transparent via-stone-300 to-transparent"></div>
@@ -234,10 +253,11 @@ export default function ProductsPage({ products }) {
 
               <div className="relative mb-6">
                 <h2 className="text-xl sm:text-2xl lg:text-3xl font-serif italic text-stone-700 dark:text-stone-300 animate-fade-in-up animation-delay-200 tracking-wide">
-                  {filterBy !== "all" 
-                    ? `~ Exquisite ${getCategoryDisplayName(filterBy)} Collection ~`
-                    : "~ Majestic Collection of Timeless Elegance ~"
-                  }
+                  {filterBy !== "all"
+                    ? `~ Exquisite ${getCategoryDisplayName(
+                        filterBy
+                      )} Collection ~`
+                    : "~ Majestic Collection of Timeless Elegance ~"}
                 </h2>
               </div>
 
@@ -284,7 +304,9 @@ export default function ProductsPage({ products }) {
                   {sortedProducts.length}+
                 </div>
                 <div className="text-sm lg:text-base text-stone-600 dark:text-stone-300 font-medium">
-                  {filterBy !== "all" ? `${getCategoryDisplayName(filterBy)}` : "Unique Pieces"}
+                  {filterBy !== "all"
+                    ? `${getCategoryDisplayName(filterBy)}`
+                    : "Unique Pieces"}
                 </div>
                 <div className="text-xs text-stone-500 dark:text-stone-400 mt-1">
                   Handpicked Collection

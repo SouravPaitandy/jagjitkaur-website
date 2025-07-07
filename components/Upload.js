@@ -3,16 +3,37 @@ import { useState, useEffect } from "react";
 import { db } from "@/lib/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/lib/firebase";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  updateDoc,
+  serverTimestamp,
+} from "firebase/firestore";
 import LogoutButton from "@/components/LogoutButton";
 import Link from "next/link";
-import { FiArrowUp, FiUsers, FiUpload, FiHome, FiLock, FiUser } from "react-icons/fi";
+import {
+  FiArrowUp,
+  FiUsers,
+  FiUpload,
+  FiHome,
+  FiLock,
+  FiUser,
+  FiEye,
+  FiPlus,
+  FiMinus,
+} from "react-icons/fi";
 import { ensureAdminDocument } from "@/lib/adminSetup";
 
-export default function AdminUpload({ getInputProps, getRootProps, form, setForm }) {
+export default function AdminUpload({
+  getInputProps,
+  getRootProps,
+  form,
+  setForm,
+}) {
   const [isLoading, setIsLoading] = useState(false);
   const [user, loading] = useAuthState(auth);
   const [showScrollToTop, setShowScrollToTop] = useState(false);
+  const [componentFields, setComponentFields] = useState([{ name: "", description: "" }]);
 
   // Ensure admin document exists
   useEffect(() => {
@@ -37,6 +58,24 @@ export default function AdminUpload({ getInputProps, getRootProps, form, setForm
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  // Component field handlers
+  const addComponentField = () => {
+    setComponentFields([...componentFields, { name: "", description: "" }]);
+  };
+
+  const removeComponentField = (index) => {
+    if (componentFields.length > 1) {
+      setComponentFields(componentFields.filter((_, i) => i !== index));
+    }
+  };
+
+  const handleComponentChange = (index, field, value) => {
+    const updatedFields = componentFields.map((item, i) => 
+      i === index ? { ...item, [field]: value } : item
+    );
+    setComponentFields(updatedFields);
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-stone-50 dark:bg-stone-900 flex items-center justify-center p-4">
@@ -50,7 +89,7 @@ export default function AdminUpload({ getInputProps, getRootProps, form, setForm
     );
   }
 
-  if (!user ) {
+  if (!user) {
     return (
       <div className="min-h-screen bg-stone-50 dark:bg-stone-900 flex items-center justify-center p-4">
         <div className="bg-white dark:bg-stone-800 p-6 sm:p-10 rounded-md shadow-2xl text-center border border-stone-200 dark:border-stone-700 max-w-md w-full">
@@ -85,6 +124,15 @@ export default function AdminUpload({ getInputProps, getRootProps, form, setForm
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
+  // 🔧 Updated slug generation to match the one in page.js
+  const createSlug = (name) => {
+    return name
+      .toLowerCase()
+      .replace(/[^a-z0-9\s]/g, "") // Remove special characters
+      .replace(/\s+/g, "-") // Replace spaces with hyphens
+      .trim();
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -98,34 +146,67 @@ export default function AdminUpload({ getInputProps, getRootProps, form, setForm
       return;
     }
 
-    const generateId = (name) => {
-      return name
-        .toLowerCase()
-        .replace(/[^a-z0-9\s]/g, "") // Remove special characters
-        .replace(/\s+/g, "-") // Replace spaces with hyphens
-        .trim();
-    };
-
     const currentTimestamp = serverTimestamp();
 
+    // 🔧 Convert component fields to object format
+    const componentsObject = {};
+    componentFields.forEach(field => {
+      if (field.name.trim() && field.description.trim()) {
+        componentsObject[field.name.trim().toLowerCase()] = field.description.trim();
+      }
+    });
+
+    // 🔧 Updated data structure to match the expected format
     const data = {
-      ...form,
-      id: generateId(form.name),
+      name: form.name,
+      price: form.price,
+      originalPrice: form.originalPrice || "",
+      image: form.image,
+      category: form.category,
+      fabric: form.fabric || "",
+      work: form.work || "",
+      origin: form.origin || "",
+      occasion: form.occasion || "",
+      description: form.description || "",
+      care: form.care || "",
+      fit: form.fit || "",
+      blouse: form.blouse || "",
+      length: form.length || "",
+      // 🔧 Updated features handling
       features: form.features
-        ? form.features.split(",").map((f) => f.trim())
+        ? form.features
+            .split(",")
+            .map((f) => f.trim())
+            .filter((f) => f.length > 0)
         : [],
+      // 🔧 Add components from component fields
+      components: Object.keys(componentsObject).length > 0 ? componentsObject : null,
+      setIncludes: form.setIncludes
+        ? form.setIncludes
+            .split(",")
+            .map((item) => item.trim())
+            .filter((item) => item.length > 0)
+        : [],
+      // 🔧 Timestamps and metadata
       createdAt: currentTimestamp,
       updatedAt: currentTimestamp,
-    //   createdBy: user?.email || 'admin',
-    //   lastModifiedBy: user?.email || 'admin',
+      createdBy: user?.email || "admin",
+      lastModifiedBy: user?.email || "admin",
     };
 
     try {
-      await addDoc(collection(db, "products"), data);
+      // 🔧 Add document to Firestore and get the document reference
+      const docRef = await addDoc(collection(db, "products"), data);
+
+      // 🔧 Update the document with the firestoreId
+      await updateDoc(docRef, {
+        firestoreId: docRef.id,
+      });
+
       alert("Product added successfully!");
+
       // Reset form
       setForm({
-        id: "",
         name: "",
         price: "",
         originalPrice: "",
@@ -141,16 +222,20 @@ export default function AdminUpload({ getInputProps, getRootProps, form, setForm
         blouse: "",
         length: "",
         features: "",
+        setIncludes: "",
       });
+
+      // Reset component fields
+      setComponentFields([{ name: "", description: "" }]);
     } catch (err) {
       alert("Error uploading product. Please try again.");
-      console.error(err);
+      console.error("Upload error:", err);
     }
     setIsLoading(false);
   };
 
+  // 🔧 Updated field labels to match new structure
   const fieldLabels = {
-    id: "Product ID *",
     name: "Product Name *",
     price: "Price *",
     originalPrice: "Original Price",
@@ -166,9 +251,18 @@ export default function AdminUpload({ getInputProps, getRootProps, form, setForm
     blouse: "Blouse Details",
     length: "Length",
     features: "Features (comma-separated)",
+    setIncludes: "Set Includes (comma-separated)",
   };
 
-  const categories = ["sarees", "kurtas", "lehengas", "suits", "dupattas"];
+  const categories = [
+    "sarees",
+    "kurtas",
+    "lehengas",
+    "suits",
+    "dupattas",
+    "shararas",
+    "palazzos",
+  ];
 
   return (
     <div className="min-h-screen bg-stone-50 dark:bg-stone-900">
@@ -196,19 +290,7 @@ export default function AdminUpload({ getInputProps, getRootProps, form, setForm
               href="/"
               className="text-stone-600 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 transition-colors font-medium flex items-center whitespace-nowrap"
             >
-              <svg
-                className="w-3 h-3 sm:w-4 sm:h-4 mr-1"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-                />
-              </svg>
+              <FiHome className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
               Home
             </Link>
             <svg
@@ -226,7 +308,7 @@ export default function AdminUpload({ getInputProps, getRootProps, form, setForm
             </svg>
             <Link
               href="/products"
-              className="text-stone-600 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 transition-colors font-medium flex items-center whitespace-nowrap"
+              className="text-stone-600 dark:text-stone-400 hover:text-stone-stone-800 dark:hover:text-stone-200 transition-colors font-medium flex items-center whitespace-nowrap"
             >
               <svg
                 className="w-3 h-3 sm:w-4 sm:h-4 mr-1"
@@ -268,19 +350,7 @@ export default function AdminUpload({ getInputProps, getRootProps, form, setForm
             <div className="flex-1">
               <div className="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0 sm:space-x-4 lg:space-x-6 mb-6">
                 <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-stone-800 dark:bg-stone-400 rounded-md flex items-center justify-center shadow-lg">
-                  <svg
-                    className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-white dark:text-stone-900"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4"
-                    />
-                  </svg>
+                  <FiUpload className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-white dark:text-stone-900" />
                 </div>
                 <div>
                   <h1 className="font-fira-sans text-2xl sm:text-3xl lg:text-4xl font-bold text-stone-900 dark:text-stone-100 mb-1 sm:mb-2">
@@ -296,17 +366,7 @@ export default function AdminUpload({ getInputProps, getRootProps, form, setForm
               <div className="bg-stone-100 dark:bg-stone-700 rounded-md p-4 sm:p-6 border border-stone-200 dark:border-stone-600">
                 <div className="flex flex-col sm:flex-row sm:items-center space-y-3 sm:space-y-0 sm:space-x-4">
                   <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-600 dark:bg-green-500 rounded-md flex items-center justify-center shadow-md">
-                    <svg
-                      className="w-5 h-5 sm:w-6 sm:h-6 text-white"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
+                    <FiUser className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-xs sm:text-sm font-semibold text-stone-700 dark:text-stone-200 mb-1">
@@ -333,38 +393,14 @@ export default function AdminUpload({ getInputProps, getRootProps, form, setForm
                   href="/"
                   className="inline-flex items-center justify-center px-3 py-2 sm:px-4 text-xs sm:text-sm font-medium text-stone-700 dark:text-stone-200 bg-white dark:bg-stone-700 border border-stone-300 dark:border-stone-600 rounded-md hover:bg-stone-50 dark:hover:bg-stone-600 hover:border-stone-400 dark:hover:border-stone-500 transition-all duration-200 shadow-sm"
                 >
-                  <svg
-                    className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-                    />
-                  </svg>
+                  <FiHome className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2" />
                   Home
                 </Link>
                 <Link
                   href="/products"
                   className="inline-flex items-center justify-center px-3 py-2 sm:px-4 text-xs sm:text-sm font-medium text-stone-700 dark:text-stone-200 bg-white dark:bg-stone-700 border border-stone-300 dark:border-stone-600 rounded-md hover:bg-stone-50 dark:hover:bg-stone-600 hover:border-stone-400 dark:hover:border-stone-500 transition-all duration-200 shadow-sm"
                 >
-                  <svg
-                    className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-                    />
-                  </svg>
+                  <FiEye className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2" />
                   Collections
                 </Link>
               </div>
@@ -373,25 +409,17 @@ export default function AdminUpload({ getInputProps, getRootProps, form, setForm
           </div>
         </div>
 
-        {/* Navigation Links - New Section */}
+        {/* Navigation Links */}
         <div className="bg-white dark:bg-stone-800 border-b border-stone-200 dark:border-stone-700 mb-6 sm:mb-8 rounded-md shadow-md">
           <div className="flex justify-between items-center py-3 px-4 sm:px-6 lg:px-8">
             <div className="flex items-center space-x-4">
-              {/* <Link
-                href="/admin/upload"
-                className="flex items-center px-3 py-2 text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-700 rounded-md transition-colors"
-              >
-                <FiUpload className="w-4 h-4 mr-2" />
-                Upload Products
-              </Link> */}
-
               <Link
-              href="/admin/change-password"
-              className="flex items-center px-4 py-2 text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-700 rounded-md transition-colors"
-            >
-              <FiLock className="w-4 h-4 mr-2" />
-              Change Password
-            </Link>
+                href="/admin/change-password"
+                className="flex items-center px-4 py-2 text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-700 rounded-md transition-colors"
+              >
+                <FiLock className="w-4 h-4 mr-2" />
+                Change Password
+              </Link>
 
               {user?.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL && (
                 <Link
@@ -415,26 +443,34 @@ export default function AdminUpload({ getInputProps, getRootProps, form, setForm
             <p className="text-stone-600 dark:text-stone-300 text-sm sm:text-base">
               Fill in the details to add a new piece to our exquisite collection
             </p>
+
+            {/* URL preview section */}
+            {form.name && (
+              <div className="mt-4 p-3 bg-stone-100 dark:bg-stone-700 rounded-md border border-stone-200 dark:border-stone-600">
+                <p className="text-stone-700 dark:text-stone-300 text-sm mb-1">
+                  <strong>Product URL will be:</strong>
+                </p>
+                <p className="text-stone-600 dark:text-stone-400 text-xs font-mono">
+                  /product/{createSlug(form.name)}
+                </p>
+              </div>
+            )}
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
               {Object.keys(form)
-                .filter((field) => field !== "id" && field !== "image")
+                .filter((field) => field !== "image" && field !== "components") // 🔧 Filter out image and components (handled separately)
                 .map((field) => (
                   <div
                     key={field}
-                    className={
-                      field === "description" || field === "features"
-                        ? "md:col-span-2"
-                        : ""
-                    }
+                    className={field === "description" || field === "features" ? "md:col-span-2" : ""}
                   >
                     <label className="block text-sm font-semibold text-stone-800 dark:text-stone-200 mb-2 sm:mb-3">
-                      {fieldLabels[field].includes("*") && (
-                        <span className="text-stone-600 mr-1">*</span>
+                      {fieldLabels[field] && fieldLabels[field].includes("*") && (
+                        <span className="text-red-500 mr-1">*</span>
                       )}
-                      {fieldLabels[field].replace(" *", "")}
+                      {fieldLabels[field] ? fieldLabels[field].replace(" *", "") : field}
                     </label>
                     {field === "category" ? (
                       <select
@@ -469,25 +505,82 @@ export default function AdminUpload({ getInputProps, getRootProps, form, setForm
                         className="w-full border-2 border-stone-200 dark:border-stone-600 rounded-md px-3 py-3 sm:px-4 sm:py-4 bg-white dark:bg-stone-700 text-stone-900 dark:text-white focus:ring-4 focus:ring-stone-200 dark:focus:ring-stone-500/30 focus:border-stone-500 transition-all duration-200 text-sm sm:text-base font-medium"
                         placeholder={
                           field === "features"
-                            ? "Handwoven, Pure silk, Traditional motifs..."
+                            ? "Handwoven, Pure silk, Traditional motifs"
+                            : field === "setIncludes"
+                            ? "Kurti, Dupatta, Palazzo"
                             : field === "price" || field === "originalPrice"
                             ? "₹0,000"
                             : field === "fit"
                             ? "E.g. Regular"
-                            : `Enter ${fieldLabels[field]
-                                .replace(" *", "")
-                                .toLowerCase()}...`
+                            : fieldLabels[field]
+                            ? `Enter ${fieldLabels[field].replace(" *", "").toLowerCase()}...`
+                            : `Enter ${field}...`
                         }
-                        required={fieldLabels[field].includes("*")}
+                        required={fieldLabels[field] && fieldLabels[field].includes("*")}
                       />
                     )}
                   </div>
                 ))}
 
-              {/* Image Upload Section - Enhanced UI */}
+              {/* 🔧 Components Section - User-friendly interface */}
+              <div className="md:col-span-2">
+                <div className="mb-4">
+                  <label className="block text-sm font-semibold text-stone-800 dark:text-stone-200 mb-2 sm:mb-3">
+                    Product Components
+                  </label>
+                  <p className="text-stone-600 dark:text-stone-400 text-sm mb-4">
+                    Add components that are part of this outfit (e.g., Kurti, Dupatta, Palazzo)
+                  </p>
+                </div>
+                
+                {componentFields.map((component, index) => (
+                  <div key={index} className="flex flex-col sm:flex-row gap-3 mb-4 p-4 bg-stone-50 dark:bg-stone-700 rounded-md border border-stone-200 dark:border-stone-600">
+                    <div className="flex-1">
+                      <input
+                        type="text"
+                        placeholder="Component name (e.g., Kurti)"
+                        value={component.name}
+                        onChange={(e) => handleComponentChange(index, 'name', e.target.value)}
+                        className="w-full border-2 border-stone-200 dark:border-stone-600 rounded-md px-3 py-2 bg-white dark:bg-stone-800 text-stone-900 dark:text-white focus:ring-4 focus:ring-stone-200 dark:focus:ring-stone-500/30 focus:border-stone-500 transition-all duration-200 text-sm font-medium"
+                      />
+                    </div>
+                    <div className="flex-2">
+                      <input
+                        type="text"
+                        placeholder="Component description (e.g., Cotton kurti with embroidery)"
+                        value={component.description}
+                        onChange={(e) => handleComponentChange(index, 'description', e.target.value)}
+                        className="w-full border-2 border-stone-200 dark:border-stone-600 rounded-md px-3 py-2 bg-white dark:bg-stone-800 text-stone-900 dark:text-white focus:ring-4 focus:ring-stone-200 dark:focus:ring-stone-500/30 focus:border-stone-500 transition-all duration-200 text-sm font-medium"
+                      />
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <button
+                        type="button"
+                        onClick={addComponentField}
+                        className="p-2 bg-green-600 hover:bg-green-700 text-white rounded-md transition-colors"
+                        title="Add component"
+                      >
+                        <FiPlus className="w-4 h-4" />
+                      </button>
+                      {componentFields.length > 1 && (
+                        <button
+                          type="button"
+                          onClick={() => removeComponentField(index)}
+                          className="p-2 bg-red-600 hover:bg-red-700 text-white rounded-md transition-colors"
+                          title="Remove component"
+                        >
+                          <FiMinus className="w-4 h-4" />
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Image Upload Section */}
               <div className="md:col-span-2">
                 <label className="block text-sm font-semibold text-stone-800 dark:text-stone-200 mb-2 sm:mb-3">
-                  <span className="text-stone-600 mr-1">*</span>
+                  <span className="text-red-500 mr-1">*</span>
                   Product Image
                 </label>
 
@@ -576,26 +669,12 @@ export default function AdminUpload({ getInputProps, getRootProps, form, setForm
                 {isLoading ? (
                   <>
                     <div className="animate-spin rounded-full h-4 w-4 sm:h-5 sm:w-5 border-2 border-white dark:border-stone-900 border-t-transparent mr-2 sm:mr-3"></div>
-                    <span className="hidden sm:inline">
-                      Uploading Product...
-                    </span>
+                    <span className="hidden sm:inline">Uploading Product...</span>
                     <span className="sm:hidden">Uploading...</span>
                   </>
                 ) : (
                   <>
-                    <svg
-                      className="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 4v16m8-8H4"
-                      />
-                    </svg>
+                    <FiUpload className="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3" />
                     <span className="hidden sm:inline">Add to Collection</span>
                     <span className="sm:hidden">Add Product</span>
                   </>
@@ -605,6 +684,8 @@ export default function AdminUpload({ getInputProps, getRootProps, form, setForm
           </form>
         </div>
       </div>
+      
+      {/* Footer */}
       <div className="mt-12 sm:mt-16 pb-4 sm:pb-6 text-center opacity-30 px-4">
         <p className="font-fira-sans text-2xl sm:text-3xl lg:text-5xl font-extrabold tracking-wider text-stone-800 dark:text-stone-200">
           JAGJIT KAUR - Crafted with love

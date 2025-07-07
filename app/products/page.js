@@ -10,32 +10,34 @@ export async function generateMetadata({ searchParams }) {
   
   if (category) {
     const categoryTitles = {
-      'sarees': 'Sarees Collection | Jagjit Kaur - Handcrafted Traditional Sarees',
-      'lehengas': 'Lehengas Collection | Jagjit Kaur - Designer Bridal Lehengas',
-      'kurtas': 'Kurtas Collection | Jagjit Kaur - Contemporary Traditional Kurtas',
-      'suits': 'Suits Collection | Jagjit Kaur - Elegant Traditional Suits',
-      'dupattas': 'Dupattas Collection | Jagjit Kaur - Exquisite Handwoven Dupattas'
+      'sharara-sets': 'Sharara Sets | Jagjit Kaur - 3 Piece Sharara Collections',
+      'palazzo-sets': 'Palazzo Sets | Jagjit Kaur - Contemporary Palazzo Collections',
+      'anarkali-sets': 'Anarkali Sets | Jagjit Kaur - Designer Anarkali Collections',
+      'gharara-sets': 'Gharara Sets | Jagjit Kaur - Traditional Gharara Collections',
+      'kurti-sets': 'Kurti Sets | Jagjit Kaur - Modern Kurti Collections',
+      'co-ord-sets': 'Co-ord Sets | Jagjit Kaur - Matching Co-ordinate Sets'
     };
     
     const categoryDescriptions = {
-      'sarees': 'Explore our exquisite collection of handcrafted sarees featuring traditional weaving techniques and premium fabrics.',
-      'lehengas': 'Discover stunning bridal and party lehengas with intricate embroidery and luxurious fabrics.',
-      'kurtas': 'Browse our contemporary kurta collection blending traditional craftsmanship with modern elegance.',
-      'suits': 'Find elegant traditional suits perfect for special occasions and festive celebrations.',
-      'dupattas': 'Complete your outfit with our beautiful handwoven dupattas featuring traditional motifs.'
+      'sharara-sets': 'Explore our exquisite 3-piece sharara sets featuring kurta, sharara, and dupatta combinations.',
+      'palazzo-sets': 'Discover comfortable palazzo sets with kurta and dupatta for contemporary style.',
+      'anarkali-sets': 'Browse our elegant anarkali sets with churidar and embroidered dupatta for special occasions.',
+      'gharara-sets': 'Find traditional gharara sets perfect for weddings and festive celebrations.',
+      'kurti-sets': 'Shop modern kurti sets with palazzo/pant and dupatta combinations.',
+      'co-ord-sets': 'Complete your wardrobe with our matching co-ordinate sets.'
     };
 
     return {
-      title: categoryTitles[category] || "Collections | Jagjit Kaur - Traditional Indian Fashion",
-      description: categoryDescriptions[category] || "Browse our complete collection of handcrafted traditional Indian wear.",
-      keywords: [category, "handcrafted", "traditional", "Indian fashion", "Jagjit Kaur"],
+      title: categoryTitles[category] || "Collections | Jagjit Kaur - Traditional Indian Fashion Sets",
+      description: categoryDescriptions[category] || "Browse our complete collection of handcrafted traditional Indian wear sets.",
+      keywords: [category, "3 piece sets", "traditional wear", "Indian fashion", "Jagjit Kaur"],
     };
   }
 
   return {
-    title: "Collections | Jagjit Kaur - Traditional Indian Fashion Collection",
-    description: "Browse our complete collection of handcrafted sarees, lehengas, kurtas and traditional Indian wear.",
-    keywords: ["traditional fashion", "handcrafted wear", "Indian clothing", "Jagjit Kaur"],
+    title: "Collections | Jagjit Kaur - Traditional Indian Fashion Sets",
+    description: "Browse our complete collection of handcrafted traditional Indian wear sets including sharara, palazzo, and anarkali sets.",
+    keywords: ["traditional fashion sets", "3 piece sets", "Indian clothing", "Jagjit Kaur"],
   };
 }
 

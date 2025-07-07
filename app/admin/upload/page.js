@@ -5,7 +5,6 @@ import AdminUpload from "@/components/Upload";
 
 export default function AdminUploadPage() {
   const [form, setForm] = useState({
-    id: "",
     name: "",
     price: "",
     originalPrice: "",
@@ -21,6 +20,7 @@ export default function AdminUploadPage() {
     blouse: "",
     length: "",
     features: "",
+    setIncludes: "",
   });
 
   const onDrop = useCallback(async (acceptedFiles) => {

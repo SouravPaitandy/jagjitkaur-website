@@ -13,53 +13,67 @@ import {
 
 const featuredProducts = [
   {
-    id: "saree-001",
-    name: "Ivory Handloom Saree",
-    price: "₹12,999",
-    originalPrice: "₹15,999",
-    image:
-      "https://res.cloudinary.com/dwqf6wp14/image/upload/v1751039060/saree1_ftmgbt.jpg",
-    description: "Elegant handwoven saree with golden zari borders",
-    category: "sarees",
-    fabric: "Pure Silk",
-    work: "Handloom",
-    origin: "Varanasi",
+    id: "noor-sharara-set-001",
+    name: "Noor Sharara 3 Piece Set",
+    price: "₹8,999",
+    originalPrice: "₹12,999",
+    image: "https://res.cloudinary.com/dwqf6wp14/image/upload/v1751039112/kurta1_q3ak8i.jpg",
+    description: "Elegant 3-piece ensemble perfect for festive occasions",
+    category: "sharara-sets",
+    fabric: "Pure Cotton",
+    work: "Hand Block Print",
+    origin: "Jaipur",
     occasion: "Festive",
     rating: 4.8,
     reviews: 24,
-    features: ["Hand-embroidered", "Pure Silk", "Traditional Motifs"],
+    features: ["3-Piece Set", "Hand Block Print", "Pure Cotton"],
     badge: "Best Seller",
     isNew: false,
+    // New detailed description for components
+    components: {
+      kurta: "Knee-length kurta with intricate block print patterns and comfortable A-line silhouette",
+      sharara: "Flared palazzo-style sharara with elastic waistband for comfort and style",
+      dupatta: "Matching dupatta with delicate border detailing and soft drape"
+    },
+    setIncludes: ["Kurta", "Sharara", "Dupatta"],
+    care: "Dry clean recommended, gentle hand wash with mild detergent",
+    sizing: "Regular fit, size chart available"
   },
   {
-    id: "kurti-001",
-    name: "Cotton Pink Kurti",
-    price: "₹3,999",
-    originalPrice: "₹4,999",
-    image:
-      "https://res.cloudinary.com/dwqf6wp14/image/upload/v1751039112/kurta1_q3ak8i.jpg",
-    description: "Breathable summer cotton with block prints",
-    category: "kurtas",
-    fabric: "Cotton",
-    work: "Block Print",
-    origin: "Jaipur",
+    id: "mehendi-palazzo-set-002",
+    name: "Mehendi Palazzo 3 Piece Set",
+    price: "₹6,999",
+    originalPrice: "₹9,999",
+    image: "https://res.cloudinary.com/dwqf6wp14/image/upload/v1751039060/saree1_ftmgbt.jpg",
+    description: "Vibrant palazzo set with traditional mehendi motifs",
+    category: "palazzo-sets",
+    fabric: "Rayon",
+    work: "Digital Print",
+    origin: "Mumbai",
     occasion: "Casual",
     rating: 4.6,
     reviews: 18,
-    features: ["Comfortable Fit", "Block Printed", "Summer Wear"],
+    features: ["3-Piece Set", "Digital Print", "Comfortable Fit"],
     badge: "Editor's Choice",
     isNew: true,
+    components: {
+      kurta: "Short kurta with modern cut and vibrant mehendi-inspired prints",
+      palazzo: "Wide-leg palazzo pants with elastic waistband and flowing silhouette",
+      dupatta: "Lightweight dupatta with complementary print and tasseled edges"
+    },
+    setIncludes: ["Kurta", "Palazzo", "Dupatta"],
+    care: "Machine wash cold, iron on low heat",
+    sizing: "Relaxed fit, true to size"
   },
   {
-    id: "lehenga-001",
-    name: "Royal Blue Lehenga",
-    price: "₹25,999",
-    originalPrice: "₹32,999",
-    image:
-      "https://res.cloudinary.com/dwqf6wp14/image/upload/v1751039060/lehenga1_nyjmt9.jpg",
-    description: "Stunning traditional lehenga for special occasions",
-    category: "lehengas",
-    fabric: "Silk",
+    id: "anarkali-churidar-set-003",
+    name: "Royal Anarkali Churidar Set",
+    price: "₹15,999",
+    originalPrice: "₹22,999",
+    image: "https://res.cloudinary.com/dwqf6wp14/image/upload/v1751039060/lehenga1_nyjmt9.jpg",
+    description: "Majestic anarkali set with heavy embroidery work",
+    category: "anarkali-sets",
+    fabric: "Georgette",
     work: "Heavy Embroidery",
     origin: "Lucknow",
     occasion: "Wedding",
@@ -68,7 +82,15 @@ const featuredProducts = [
     features: ["Heavy Embroidery", "Designer Cut", "Bridal Collection"],
     badge: "Premium",
     isNew: false,
-  },
+    components: {
+      anarkali: "Floor-length anarkali with intricate zari and thread embroidery, fitted bodice with flared hem",
+      churidar: "Matching churidar with traditional fit and comfortable stretch fabric",
+      dupatta: "Heavy embroidered dupatta with gold zari border and delicate beadwork"
+    },
+    setIncludes: ["Anarkali", "Churidar", "Dupatta"],
+    care: "Dry clean only, store in cotton bags",
+    sizing: "Semi-fitted, customization available"
+  }
 ];
 
 export default function FeaturedProducts() {
