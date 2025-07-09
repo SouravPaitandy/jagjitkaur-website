@@ -163,26 +163,25 @@ export default async function ProductDetail({ params }) {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
             {/* Image Section - Left with slide-in animation */}
             <div className="space-y-6 animate-slide-in">
-              <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-                {/* Main Product Image */}
-                <div className="lg:col-span-3">
-                  <div className="aspect-[3/4] relative overflow-hidden bg-stone-50 dark:bg-stone-800 group">
-                    <Image
-                      src={product.image}
-                      alt={product.name}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-all duration-700 ease-out"
-                      priority
-                    />
-                  </div>
+              {/* Mobile Layout */}
+              <div className="lg:hidden">
+                {/* Main Product Image - Mobile */}
+                <div className="aspect-[3/4] relative overflow-hidden bg-stone-50 dark:bg-stone-800 group mb-4">
+                  <Image
+                    src={product.image}
+                    alt={product.name}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-all duration-700 ease-out"
+                    priority
+                  />
                 </div>
 
-                {/* Additional Images - Right Side */}
-                <div className="space-y-3">
+                {/* Additional Images - Mobile Horizontal Scroll */}
+                <div className="flex space-x-3 overflow-x-auto pb-2">
                   {[1, 2, 3, 4].map((i) => (
                     <div
                       key={i}
-                      className="aspect-square relative overflow-hidden bg-stone-50 dark:bg-stone-800 cursor-pointer border-2 border-transparent hover:border-stone-300 dark:hover:border-stone-600 transition-all duration-300 group animate-fade-in"
+                      className="flex-shrink-0 w-16 h-16 relative overflow-hidden bg-stone-50 dark:bg-stone-800 cursor-pointer border-2 border-transparent hover:border-stone-300 dark:hover:border-stone-600 transition-all duration-300 group animate-fade-in"
                       style={{
                         animationDelay: `${i * 100}ms`,
                         animationFillMode: "both",
@@ -200,13 +199,54 @@ export default async function ProductDetail({ params }) {
                   ))}
                 </div>
               </div>
+
+              {/* Desktop Layout */}
+              <div className="hidden lg:block">
+                <div className="grid grid-cols-4 gap-6">
+                  {/* Main Product Image - Desktop */}
+                  <div className="col-span-3">
+                    <div className="aspect-[3/4] relative overflow-hidden bg-stone-50 dark:bg-stone-800 group">
+                      <Image
+                        src={product.image}
+                        alt={product.name}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-all duration-700 ease-out"
+                        priority
+                      />
+                    </div>
+                  </div>
+
+                  {/* Additional Images - Desktop Right Side */}
+                  <div className="space-y-3">
+                    {[1, 2, 3, 4].map((i) => (
+                      <div
+                        key={i}
+                        className="aspect-square relative overflow-hidden bg-stone-50 dark:bg-stone-800 cursor-pointer border-2 border-transparent hover:border-stone-300 dark:hover:border-stone-600 transition-all duration-300 group animate-fade-in"
+                        style={{
+                          animationDelay: `${i * 100}ms`,
+                          animationFillMode: "both",
+                        }}
+                      >
+                        <Image
+                          src={product.image}
+                          alt={`${product.name} view ${i}`}
+                          fill
+                          className="object-cover group-hover:scale-110 transition-all duration-700 ease-out"
+                        />
+                        {/* Hover Overlay */}
+                        <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-all duration-300"></div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* Product Info - Right with slide-up animation */}
             <div className="space-y-8 animate-slide-up">
               {/* Product Title & SKU */}
               <div className="space-y-4 animate-fade-in-up">
-                <h1 className="font-fira-sans font-text-3xl font-semibold md:text-4xl text-stone-900 dark:text-stone-100 tracking-wide leading-tight">
+                <h1 className="font-fira-sans text-2xl sm:text-3xl md:text-4xl font-semibold text-stone-900 dark:text-stone-100 tracking-wide leading-tight">
                   {product.name}
                 </h1>
 
@@ -225,7 +265,7 @@ export default async function ProductDetail({ params }) {
 
               {/* Price with slide-in animation */}
               <div className="space-y-2 animate-fade-in-up delay-200">
-                <div className="flex items-baseline space-x-4">
+                <div className="flex flex-col sm:flex-row sm:items-baseline space-y-2 sm:space-y-0 sm:space-x-4">
                   <span className="text-2xl font-semibold text-stone-900 dark:text-stone-100">
                     ₹{product.price}
                   </span>
@@ -234,6 +274,8 @@ export default async function ProductDetail({ params }) {
                       {product.originalPrice}
                     </span>
                   )}
+                </div>
+                <div className="mt-4 sm:hidden">
                   <WhatsAppButton
                     productName={product.name}
                     product={product}
@@ -251,7 +293,7 @@ export default async function ProductDetail({ params }) {
                     <h3 className="font-fira-sans text-sm font-medium text-stone-900 dark:text-stone-100 tracking-wide">
                       DESCRIPTION
                     </h3>
-                    <p className="text-stone-700 dark:text-stone-300 leading-relaxed">
+                    <p className="text-stone-700 dark:text-stone-300 leading-relaxed text-sm sm:text-base">
                       {product.description}
                     </p>
                   </div>
@@ -269,13 +311,13 @@ export default async function ProductDetail({ params }) {
                           ([name, description], index) => (
                             <div
                               key={index}
-                              className="flex animate-fade-in-up"
+                              className="flex flex-col sm:flex-row animate-fade-in-up"
                               style={{
                                 animationDelay: `${index * 50}ms`,
                                 animationFillMode: "both",
                               }}
                             >
-                              <span className="w-20 text-stone-600 dark:text-stone-400 text-sm capitalize">
+                              <span className="sm:w-20 text-stone-600 dark:text-stone-400 text-sm capitalize font-medium">
                                 {name}:
                               </span>
                               <span className="text-stone-700 dark:text-stone-300 text-sm">
@@ -289,7 +331,7 @@ export default async function ProductDetail({ params }) {
                   )}
 
                 {/* Product Specifications */}
-                <div className="grid grid-cols-2 gap-6 text-sm">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 text-sm">
                   {[
                     { key: "fabric", label: "Fabric" },
                     { key: "work", label: "Work" },
@@ -300,7 +342,7 @@ export default async function ProductDetail({ params }) {
                       product[spec.key] && (
                         <div
                           key={spec.key}
-                          className="animate-fade-in-up"
+                          className="flex justify-between sm:block animate-fade-in-up"
                           style={{
                             animationDelay: `${index * 100}ms`,
                             animationFillMode: "both",
@@ -309,7 +351,7 @@ export default async function ProductDetail({ params }) {
                           <span className="text-stone-600 dark:text-stone-400">
                             {spec.label}:
                           </span>
-                          <span className="ml-2 text-stone-900 dark:text-stone-100">
+                          <span className="sm:ml-2 text-stone-900 dark:text-stone-100 font-medium">
                             {product[spec.key]}
                           </span>
                         </div>
@@ -323,7 +365,7 @@ export default async function ProductDetail({ params }) {
                     <h3 className="font-fira-sans text-sm font-medium text-stone-900 dark:text-stone-100 tracking-wide">
                       CARE INSTRUCTIONS
                     </h3>
-                    <p className="text-stone-700 dark:text-stone-300 text-sm">
+                    <p className="text-stone-700 dark:text-stone-300 text-sm leading-relaxed">
                       {product.care}
                     </p>
                   </div>
@@ -332,18 +374,19 @@ export default async function ProductDetail({ params }) {
 
               {/* Action Buttons with slide-up animation */}
               <div className="space-y-4 animate-fade-in-up delay-500">
-                <div className="flex space-x-3">
+                <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
                   <button className="flex-1 border border-stone-800 dark:border-stone-200 text-stone-800 dark:text-stone-200 hover:bg-stone-800 dark:hover:bg-stone-200 hover:text-white dark:hover:text-stone-900 py-4 px-6 transition-all duration-300 hover:scale-105 active:scale-95">
                     <span className="font-fira-sans text-sm tracking-widest">
                       ADD TO BAG
                     </span>
                   </button>
-                  <button className="p-4 border border-stone-300 dark:border-stone-600 hover:border-stone-800 dark:hover:border-stone-200 text-stone-600 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 transition-all duration-300 hover:scale-110 active:scale-95">
+                  <button className="sm:w-auto w-full p-4 border border-stone-300 dark:border-stone-600 hover:border-stone-800 dark:hover:border-stone-200 text-stone-600 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 transition-all duration-300 hover:scale-110 active:scale-95 flex items-center justify-center">
                     <FiHeart className="w-5 h-5" />
+                    <span className="ml-2 sm:hidden text-sm">ADD TO WISHLIST</span>
                   </button>
                 </div>
 
-                <div className="animate-bounce-in delay-600">
+                <div className="hidden sm:block animate-bounce-in delay-600">
                   <WhatsAppButton
                     productName={product.name}
                     product={product}
@@ -352,7 +395,7 @@ export default async function ProductDetail({ params }) {
               </div>
 
               {/* Service Icons with staggered animation */}
-              <div className="grid grid-cols-3 gap-6 py-8 border-t border-stone-200 dark:border-stone-700">
+              <div className="grid grid-cols-3 gap-4 sm:gap-6 py-6 sm:py-8 border-t border-stone-200 dark:border-stone-700">
                 {[
                   { icon: FiTruck, label: "FREE SHIPPING" },
                   { icon: FiRotateCcw, label: "EASY RETURNS" },
@@ -366,7 +409,7 @@ export default async function ProductDetail({ params }) {
                       animationFillMode: "both",
                     }}
                   >
-                    <service.icon className="w-6 h-6 mx-auto text-stone-600 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 transition-colors duration-300" />
+                    <service.icon className="w-5 h-5 sm:w-6 sm:h-6 mx-auto text-stone-600 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 transition-colors duration-300" />
                     <p className="text-xs text-stone-600 dark:text-stone-400 tracking-wide">
                       {service.label}
                     </p>
@@ -379,11 +422,11 @@ export default async function ProductDetail({ params }) {
           {/* Related Products with staggered animation */}
           {relatedProducts.length > 0 && (
             <div className="mt-24 pt-12 border-t border-stone-200 dark:border-stone-700 animate-slide-up">
-              <h2 className="font-fira-sans text-2xl font-light text-stone-900 dark:text-stone-100 mb-12 tracking-wide animate-fade-in-up">
+              <h2 className="font-fira-sans text-xl sm:text-2xl font-light text-stone-900 dark:text-stone-100 mb-8 sm:mb-12 tracking-wide animate-fade-in-up">
                 YOU MIGHT ALSO LIKE
               </h2>
 
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
                 {relatedProducts.map((relatedProduct, index) => (
                   <Link
                     key={relatedProduct.firestoreId}
@@ -394,7 +437,7 @@ export default async function ProductDetail({ params }) {
                       animationFillMode: "both",
                     }}
                   >
-                    <div className="space-y-4">
+                    <div className="space-y-3 sm:space-y-4">
                       <div className="aspect-[3/4] relative overflow-hidden bg-stone-50 dark:bg-stone-800">
                         <Image
                           src={relatedProduct.image}
@@ -403,11 +446,11 @@ export default async function ProductDetail({ params }) {
                           className={`object-cover transition-all duration-700 ease-out group-hover:scale-110`}
                         />
                       </div>
-                      <div className="space-y-2">
-                        <h3 className="text-sm text-stone-900 dark:text-stone-100 group-hover:text-stone-600 dark:group-hover:text-stone-400 transition-colors duration-300">
+                      <div className="space-y-1 sm:space-y-2">
+                        <h3 className="text-xs sm:text-sm text-stone-900 dark:text-stone-100 group-hover:text-stone-600 dark:group-hover:text-stone-400 transition-colors duration-300 line-clamp-2">
                           {relatedProduct.name}
                         </h3>
-                        <p className="text-sm text-stone-700 dark:text-stone-300">
+                        <p className="text-xs sm:text-sm text-stone-700 dark:text-stone-300 font-medium">
                           ₹{relatedProduct.price}
                         </p>
                       </div>
