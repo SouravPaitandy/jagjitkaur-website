@@ -178,7 +178,7 @@ export default function ComingSoonPage() {
           {/* Reset Countdown Button (hidden, for testing) */}
           <button
             onClick={resetCountdown}
-            className=" text-xs text-stone-500 hover:text-stone-700 dark:text-stone-400 dark:hover:text-stone-200 transition-colors"
+            className="hidden text-xs text-stone-500 hover:text-stone-700 dark:text-stone-400 dark:hover:text-stone-200 transition-colors"
             title="Reset countdown (for testing)"
           >
             Reset
