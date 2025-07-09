@@ -262,11 +262,12 @@ export default function AdminUpload({
     "dupattas",
     "shararas",
     "palazzos",
+    "potli-bags",
   ];
 
   return (
     <div className="min-h-screen bg-stone-50 dark:bg-stone-900">
-      <div className="max-w-6xl mx-auto mt-10 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div
           className={`fixed bottom-16 right-6 z-50 transition-all duration-300 transform ${
             showScrollToTop
@@ -284,7 +285,7 @@ export default function AdminUpload({
         </div>
 
         {/* Breadcrumb Navigation */}
-        <div className="mb-6 sm:mb-8">
+        <div className="mb-6 sm:mb-8 pt-10">
           <nav className="flex items-center space-x-2 sm:space-x-3 text-xs sm:text-sm overflow-x-auto">
             <Link
               href="/"

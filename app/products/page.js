@@ -15,7 +15,8 @@ export async function generateMetadata({ searchParams }) {
       'anarkali-sets': 'Anarkali Sets | Jagjit Kaur - Designer Anarkali Collections',
       'gharara-sets': 'Gharara Sets | Jagjit Kaur - Traditional Gharara Collections',
       'kurti-sets': 'Kurti Sets | Jagjit Kaur - Modern Kurti Collections',
-      'co-ord-sets': 'Co-ord Sets | Jagjit Kaur - Matching Co-ordinate Sets'
+      'co-ord-sets': 'Co-ord Sets | Jagjit Kaur - Matching Co-ordinate Sets',
+      'potli-bags': 'Potli Bags | Jagjit Kaur - Handcrafted Traditional Bags'
     };
     
     const categoryDescriptions = {
@@ -24,7 +25,8 @@ export async function generateMetadata({ searchParams }) {
       'anarkali-sets': 'Browse our elegant anarkali sets with churidar and embroidered dupatta for special occasions.',
       'gharara-sets': 'Find traditional gharara sets perfect for weddings and festive celebrations.',
       'kurti-sets': 'Shop modern kurti sets with palazzo/pant and dupatta combinations.',
-      'co-ord-sets': 'Complete your wardrobe with our matching co-ordinate sets.'
+      'co-ord-sets': 'Complete your wardrobe with our matching co-ordinate sets.',
+      'potli-bags': 'Discover our handcrafted potli bags featuring traditional embroidery and modern designs.'
     };
 
     return {

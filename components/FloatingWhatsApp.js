@@ -24,7 +24,7 @@ export default function FloatingWhatsApp() {
         href={link}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center justify-center w-14 h-14 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110"
+        className="flex items-center justify-center w-14 h-14 bg-stone-700 dark:bg-stone-200 hover:bg-stone-900 dark:hover:bg-stone-100 text-white dark:text-stone-900 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110"
         title="Chat with us on WhatsApp"
         aria-label="Contact us on WhatsApp"
       >
