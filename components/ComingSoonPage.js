@@ -16,7 +16,7 @@ import {
 } from "react-icons/fi";
 
 export default function ComingSoonPage() {
- const [email, setEmail] = useState("");
+  const [email, setEmail] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
@@ -36,14 +36,17 @@ export default function ComingSoonPage() {
 
     // Get or set launch date from localStorage
     const getLaunchDate = () => {
-      const stored = localStorage.getItem('jagjitkaur-launch-date');
+      const stored = localStorage.getItem("jagjitkaur-launch-date");
       if (stored) {
         return new Date(stored);
       } else {
         // Set launch date to 7 days from now (only calculate once)
         const newLaunchDate = new Date();
         newLaunchDate.setDate(newLaunchDate.getDate() + 7);
-        localStorage.setItem('jagjitkaur-launch-date', newLaunchDate.toISOString());
+        localStorage.setItem(
+          "jagjitkaur-launch-date",
+          newLaunchDate.toISOString()
+        );
         return newLaunchDate;
       }
     };
@@ -96,7 +99,7 @@ export default function ComingSoonPage() {
 
   // Function to reset countdown (for testing or admin use)
   const resetCountdown = () => {
-    localStorage.removeItem('jagjitkaur-launch-date');
+    localStorage.removeItem("jagjitkaur-launch-date");
     window.location.reload();
   };
 
@@ -156,23 +159,8 @@ export default function ComingSoonPage() {
         ></div>
       </div>
 
-           {/* Navigation */}
+      {/* Navigation */}
       <nav className="relative z-10 flex justify-between items-center p-6 max-w-7xl mx-auto">
-        <div className="flex items-center group">
-          <div className="relative">
-            <Image
-              src="/images/logo.png"
-              alt="JAGJIT KAUR"
-              width={140}
-              height={56}
-              className="transition-all ease-out duration-700 group-hover:scale-105"
-            />
-          </div>
-          <span className="font-fira-sans text-xl ml-3 font-bold text-stone-800 dark:text-stone-200 transition-colors duration-300 group-hover:text-stone-600 dark:group-hover:text-stone-300">
-            &#x2665;
-          </span>
-        </div>
-
         {/* Admin Access */}
         <div className="flex items-center space-x-3">
           {/* Reset Countdown Button (hidden, for testing) */}
@@ -183,7 +171,7 @@ export default function ComingSoonPage() {
           >
             Reset
           </button>
-          
+
           <Link
             href="/admin/login"
             className="flex items-center space-x-2 px-4 py-2 text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-stone-100 transition-colors duration-300"
@@ -194,29 +182,63 @@ export default function ComingSoonPage() {
         </div>
       </nav>
 
-      {/* Main Content */}
-      <div className="relative z-10 max-w-6xl mx-auto px-6 py-12">
-        {/* Hero Section */}
-        <div className="text-center mb-16">
-          <div className="font-fira-sans inline-flex items-center px-4 py-2 bg-stone-800 dark:bg-stone-200 text-white dark:text-stone-900 rounded-full text-sm font-medium mb-8 animate-bounce-in">
-            <FiClock className="w-4 h-4 mr-2" />
-            Something Beautiful is Coming
+      {/* Hero Banner Section */}
+      <div className="relative z-10 mb-8">
+        {/* Brand Logo and Name */}
+        <div className="flex flex-col items-center justify-center mb-8">
+          <div className="relative">
+            <Image
+              src="/images/newlogo.png"
+              alt="JK"
+              width={70}
+              height={70}
+              className="transition-all ease-out duration-700 group-hover:scale-105"
+            />
           </div>
-
-          <h1 className="font-fira-sans text-5xl md:text-7xl font-light text-stone-900 dark:text-stone-100 mb-6 tracking-wide animate-fade-in-up">
-            Crafting
-            <span className="block pb-1 text-transparent bg-gradient-to-r from-stone-600 to-stone-800 dark:from-stone-300 dark:to-stone-100 bg-clip-text">
-              Elegance
-            </span>
-          </h1>
-
-          <p className="text-xl text-stone-600 dark:text-stone-400 max-w-2xl mx-auto leading-relaxed mb-12 animate-fade-in-up delay-200">
-            We're putting the finishing touches on our exclusive collection of
-            handcrafted Indian traditional wear. Each piece celebrates the
-            timeless artistry of skilled artisans.
-          </p>
+          <div className="relative">
+            <Image
+              src="/images/logo.png"
+              alt="JAGJIT KAUR"
+              width={170}
+              height={56}
+              className="transition-all ease-out duration-700 hover:scale-105"
+            />
+          </div>
         </div>
 
+        {/* Landscape Banner Image - Optimized for 1920x1080 */}
+        <div className="relative mx-auto w-full md:max-w-6xl sm:px-6 lg:px-8">
+          <div className="relative w-full overflow-hidden shadow-2xl">
+            {/* Aspect ratio container for 16:9 (1920x1080) */}
+            <div className="relative aspect-[2/1] w-full">
+              <Image
+                src="/images/hero-img1.jpg"
+                alt="Jagjit Kaur Traditional Wear Collection"
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1920px"
+                className="object-cover transition-all duration-700 hover:scale-105 ease-out"
+                priority
+                quality={90}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="max-w-6xl mx-auto px-6 pt-4 pb-12">
+        <div className="flex flex-col justify-center items-center p-6 sm:p-8 lg:p-12">
+          <div className="max-w-3xl text-center">
+            <h2 className="font-vogue-alt text-xl font-bold sm:text-3xl md:text-4xl lg:text-5xl mb-4 tracking-wide leading-tight">
+              Crafting Elegance : Coming Soon
+            </h2>
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed opacity-90 max-w-2xl">
+              We're putting the finishing touches on our exclusive collection of
+              handcrafted Indian traditional wear. Each piece celebrates the
+              timeless artistry of skilled artisans.
+            </p>
+          </div>
+        </div>
         {/* Countdown Timer */}
         <div className="text-center mb-16 animate-fade-in-up delay-300">
           <h2 className="font-fira-sans text-2xl font-light text-stone-900 dark:text-stone-100 mb-8 tracking-wide">
@@ -247,9 +269,16 @@ export default function ComingSoonPage() {
                 <h3 className="font-fira-sans text-2xl font-semibold text-green-800 dark:text-green-200 mb-2">
                   🎉 We've Launched!
                 </h3>
-                <p className="text-green-700 dark:text-green-300">
+                <p className="text-green-700 dark:text-green-300 mb-4">
                   Our collection is now live! Thank you for your patience.
                 </p>
+                <Link
+                  href="/products"
+                  className="inline-flex items-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition-colors duration-300"
+                >
+                  <FiShoppingBag className="w-5 h-5 mr-2" />
+                  Explore Collection
+                </Link>
               </div>
             )}
         </div>

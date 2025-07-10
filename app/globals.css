@@ -37,6 +37,67 @@
   --versailles-maroon-900: #581c1c;
 }
 
+@font-face {
+  font-family: "FontVogue";
+  src: url('./Vogue.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "FontVogueAlt";
+  src: url('./Vogue.otf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "FontVogueBold";
+  src: url('./Vogue Bold.otf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "FontVogueBoldItalic";
+  src: url('./Vogue Bold Italic.otf') format('truetype');
+  font-weight: bold;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "FontVogueItalic";
+  src: url('./Vogue Italic.otf') format('truetype');
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
+}
+
+
+.font-vogue {
+  font-family: "FontVogue";
+}
+
+.font-vogue-alt {
+  font-family: "FontVogueAlt";
+}
+
+.font-vogue-bold {
+  font-family: "FontVogueBold";
+}
+
+.font-vogue-bold-italic {
+  font-family: "FontVogueBoldItalic";
+}
+
+.font-vogue-italic {
+  font-family: "FontVogueItalic";
+}
+
 body {
   margin: 0;
   padding: 0;

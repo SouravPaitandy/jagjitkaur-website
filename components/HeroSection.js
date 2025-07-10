@@ -19,7 +19,7 @@ export default function HeroSection() {
       subtitle: "Heritage Collection 2024",
       description:
         "Discover elegant 3-piece sharara sets with kurta, sharara, and dupatta.",
-      image: "/images/Products/kurta1.jpeg",
+      image: "/images/hero-img1.jpg",
       ctaText: "SHOP NOW",
       ctaLink: "/products?category=sharara-sets",
     },
@@ -29,7 +29,7 @@ export default function HeroSection() {
       subtitle: "Contemporary Collection",
       description:
         "Modern palazzo sets combining comfort with traditional aesthetics.",
-      image: "/images/Products/saree1.jpg",
+      image: "/images/hero-img2.jpg",
       ctaText: "SHOP NOW",
       ctaLink: "/products?category=palazzo-sets",
     },
@@ -39,7 +39,7 @@ export default function HeroSection() {
       subtitle: "Bridal Collection",
       description:
         "Majestic anarkali sets with churidar and embroidered dupatta.",
-      image: "/images/Products/lehenga1.jpg",
+      image: "/images/hero-img3.jpg",
       ctaText: "SHOP NOW",
       ctaLink: "/products?category=anarkali-sets",
     },
@@ -94,14 +94,14 @@ export default function HeroSection() {
             >
               {/* Brand/Collection Label */}
               <div className="inline-block">
-                <p className="text-sm md:text-base font-light tracking-widest uppercase opacity-90">
+                <p className="font-vogue text-sm md:text-base font-light tracking-widest uppercase opacity-90">
                   {currentHero.subtitle}
                 </p>
                 <div className="h-px w-16 bg-white/60 mt-2"></div>
               </div>
 
               {/* Main Title */}
-              <h1 className="font-fira-sans text-4xl md:text-6xl lg:text-7xl font-light leading-tight tracking-wide">
+              <h1 className="font-vogue-alt text-4xl md:text-6xl lg:text-7xl font-light leading-tight tracking-wide">
                 {currentHero.title}
               </h1>
 
@@ -109,6 +109,8 @@ export default function HeroSection() {
               <p className="text-lg md:text-xl font-light leading-relaxed opacity-90 max-w-lg">
                 {currentHero.description}
               </p>
+
+              {/* <p className="font-vogue text-7xl">Vogue</p> */}
 
               {/* CTA Button */}
               <div className="pt-4">
