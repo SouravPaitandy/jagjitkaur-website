@@ -212,7 +212,7 @@ export default function ComingSoonPage() {
             {/* Aspect ratio container for 16:9 (1920x1080) */}
             <div className="relative aspect-[2/1] w-full">
               <Image
-                src="/images/hero-img1.jpg"
+                src="/images/hero-img1.JPG"
                 alt="Jagjit Kaur Traditional Wear Collection"
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1920px"

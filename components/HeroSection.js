@@ -15,33 +15,33 @@ export default function HeroSection() {
   const heroSlides = [
     {
       id: 1,
-      title: "SHARARA SETS",
-      subtitle: "Heritage Collection 2024",
-      description:
-        "Discover elegant 3-piece sharara sets with kurta, sharara, and dupatta.",
-      image: "/images/hero-img1.jpg",
+      title: "DEBUT COLLECTION: PEHCHAN",
+      subtitle: "First Heritage Collection",
+      // description:
+      //   "Discover elegant 3-piece sharara sets with kurta, sharara, and dupatta.",
+      image: "/images/hero-img1.JPG",
       ctaText: "SHOP NOW",
-      ctaLink: "/products?category=sharara-sets",
+      ctaLink: "/products?category=pehchan",
     },
     {
       id: 2,
-      title: "PALAZZO SETS",
-      subtitle: "Contemporary Collection",
-      description:
-        "Modern palazzo sets combining comfort with traditional aesthetics.",
-      image: "/images/hero-img2.jpg",
+      title: "JK | CUSTOM MADE",
+      subtitle: "Custom Collection",
+      // description:
+      //   "Modern palazzo sets combining comfort with traditional aesthetics.",
+      image: "/images/hero-img2.JPG",
       ctaText: "SHOP NOW",
-      ctaLink: "/products?category=palazzo-sets",
+      ctaLink: "/products?category=custom-made",
     },
     {
       id: 3,
-      title: "ANARKALI SETS",
-      subtitle: "Bridal Collection",
-      description:
-        "Majestic anarkali sets with churidar and embroidered dupatta.",
-      image: "/images/hero-img3.jpg",
+      title: "POTLI BAGS",
+      subtitle: "Exclusive Potli Bags Collection",
+      // description:
+      //   "Majestic anarkali sets with churidar and embroidered dupatta.",
+      image: "/images/hero-img3.JPG",
       ctaText: "SHOP NOW",
-      ctaLink: "/products?category=anarkali-sets",
+      ctaLink: "/products?category=potli-bags",
     },
   ];
   
