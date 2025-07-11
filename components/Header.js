@@ -136,88 +136,10 @@ export default function Header() {
                   <FiMoon className="w-5 h-5 transition-transform duration-300 group-hover:-rotate-12" />
                 )}
               </button>
-
-              {/* Mobile Menu Button */}
-              <button
-                onClick={toggleMobileMenu}
-                className="lg:hidden p-2.5 bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 transition-all duration-300 border border-stone-200 dark:border-stone-700 hover:border-stone-300 dark:hover:border-stone-600"
-                aria-label="Toggle mobile menu"
-              >
-                {mobileMenuOpen ? (
-                  <FiX className="w-5 h-5" />
-                ) : (
-                  <FiMenu className="w-5 h-5" />
-                )}
-              </button>
             </div>
           </div>
         </nav>
       </header>
-
-      {/* Mobile Menu Overlay */}
-      {mobileMenuOpen && (
-        <div className="fixed inset-0 z-40 lg:hidden">
-          {/* Backdrop */}
-          <div 
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm"
-            onClick={toggleMobileMenu}
-          ></div>
-          
-          {/* Mobile Menu Panel */}
-          <div className="fixed top-16 left-0 right-0 bg-white/95 dark:bg-stone-900/95 backdrop-blur-md border-b border-stone-200 dark:border-stone-700 shadow-2xl">
-            <div className="px-4 py-6 space-y-4">
-              {/* Mobile Navigation Links */}
-              <div className="space-y-3">
-                {navigationLinks.map((link) => (
-                  <Link 
-                    key={link.href}
-                    href={link.href}
-                    onClick={toggleMobileMenu}
-                    className="block font-fira-sans font-medium text-lg text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-stone-100 transition-colors duration-300 py-2 px-3 hover:bg-stone-100 dark:hover:bg-stone-800 border-l-4 border-transparent hover:border-stone-800 dark:hover:border-stone-200"
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-              </div>
-
-              {/* Mobile Action Buttons */}
-              <div className="border-t border-stone-200 dark:border-stone-700 pt-4 space-y-3">
-                <Link 
-                  href={user ? "/admin/upload" : "/admin/login"}
-                  onClick={toggleMobileMenu}
-                  className="flex items-center space-x-3 font-fira-sans font-medium text-lg text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-stone-100 transition-colors duration-300 py-2 px-3 hover:bg-stone-100 dark:hover:bg-stone-800"
-                >
-                  <FiUser className="w-5 h-5" />
-                  <span>Admin Panel</span>
-                </Link>
-                
-                <button className="flex items-center space-x-3 font-fira-sans font-medium text-lg text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-stone-100 transition-colors duration-300 py-2 px-3 hover:bg-stone-100 dark:hover:bg-stone-800 w-full text-left">
-                  <FiHeart className="w-5 h-5" />
-                  <span>Wishlist</span>
-                </button>
-                
-                <button 
-                  onClick={() => {
-                    toggleMobileMenu();
-                    toggleCart();
-                  }}
-                  className="flex items-center space-x-3 font-fira-sans font-medium text-lg text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-stone-100 transition-colors duration-300 py-2 px-3 hover:bg-stone-100 dark:hover:bg-stone-800 w-full text-left"
-                >
-                  <div className="relative">
-                    <FiShoppingBag className="w-5 h-5" />
-                    {itemCount > 0 && (
-                      <span className="absolute -top-2 -right-2 bg-stone-800 dark:bg-stone-200 text-white dark:text-stone-900 text-xs font-bold w-4 h-4 flex items-center justify-center text-center">
-                        {itemCount > 9 ? '9+' : itemCount}
-                      </span>
-                    )}
-                  </div>
-                  <span>Shopping Bag ({itemCount})</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 }
