@@ -124,14 +124,22 @@ export default function FeaturedProducts() {
   return (
     <section
       id="featured-products"
-      className="relative py-20 lg:py-32 bg-stone-50 dark:bg-stone-900 overflow-hidden"
+      className="relative py-20 lg:py-32 bg-gradient-to-br from-stone-50 via-white to-stone-100 dark:from-stone-900 dark:via-stone-800 dark:to-stone-900 overflow-hidden"
     >
-      {/* Background Decorative Elements */}
-      <div className="absolute top-20 left-20 w-32 h-32 bg-stone-200/30 dark:bg-stone-700/30 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-20 right-20 w-48 h-48 bg-stone-300/20 dark:bg-stone-600/20 rounded-full blur-3xl"></div>
-      <div className="absolute top-1/2 left-1/4 w-24 h-24 bg-stone-100/40 dark:bg-stone-800/40 rounded-full blur-2xl"></div>
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-r from-pink-100 to-purple-100 dark:from-pink-900/20 dark:to-purple-900/20 rounded-full blur-3xl opacity-30 animate-pulse"></div>
+        <div
+          className="absolute top-40 right-20 w-40 h-40 bg-gradient-to-r from-amber-100 to-orange-100 dark:from-amber-900/20 dark:to-orange-900/20 rounded-full blur-3xl opacity-25 animate-pulse"
+          style={{ animationDelay: "2s" }}
+        ></div>
+        <div
+          className="absolute bottom-32 left-1/4 w-24 h-24 bg-gradient-to-r from-stone-200 to-stone-300 dark:from-stone-700 dark:to-stone-600 rounded-full blur-2xl opacity-20 animate-bounce"
+          style={{ animationDuration: "3s" }}
+        ></div>
+      </div>
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative max-w-6xl mx-auto px-6 sm:px-6 lg:px-8">
         {/* Enhanced Section Header */}
         <div
           className={`text-center mb-16 lg:mb-20 ${
@@ -140,19 +148,19 @@ export default function FeaturedProducts() {
         >
           <div className="flex items-center justify-center mb-6">
             <div className="h-px bg-stone-300 dark:bg-stone-600 flex-1 max-w-xs"></div>
-            <div className="mx-6 w-12 h-12 bg-black dark:bg-stone-300 rounded-full flex items-center justify-center shadow-lg">
-              <svg
-                className="w-6 h-6 text-white dark:text-stone-900"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-              </svg>
+            <div className="mx-6 flex flex-col items-center justify-center">
+              <Image
+                src="/images/newlogo.png"
+                alt="JK"
+                width={70}
+                height={70}
+                className="transition-all ease-out duration-700 hover:scale-105"
+              />
             </div>
             <div className="h-px bg-stone-300 dark:bg-stone-600 flex-1 max-w-xs"></div>
           </div>
 
-          <h2 className="font-fira-sans text-4xl sm:text-5xl lg:text-6xl text-stone-900 dark:text-stone-100 mb-6">
+          <h2 className="font-vogue-bold text-4xl sm:text-5xl lg:text-6xl text-stone-900 dark:text-stone-100 mb-6 tracking-wide">
             CURATED MASTERPIECES
           </h2>
 
@@ -171,7 +179,7 @@ export default function FeaturedProducts() {
             {["Sarees", "Lehengas", "Kurtas"].map((category, index) => (
               <span
                 key={category}
-                className="bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 px-4 py-2 rounded-sm text-sm font-semibold border border-stone-200 dark:border-stone-700"
+                className="bg-white/80 dark:bg-stone-800/80 text-stone-700 dark:text-stone-300 px-4 py-2 rounded-lg text-sm font-medium border border-stone-200 dark:border-stone-700 backdrop-blur-sm transition-all duration-300 hover:shadow-md"
               >
                 {category}
               </span>
@@ -184,7 +192,7 @@ export default function FeaturedProducts() {
           {featuredProducts.map((product, index) => (
             <div
               key={product.id}
-              className={`group relative bg-white dark:bg-stone-800 rounded-md overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform border border-stone-200 dark:border-stone-700 hover:border-stone-300 dark:hover:border-stone-600 ${
+              className={`group relative bg-white/80 dark:bg-stone-800/80 backdrop-blur-sm overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 transform border border-stone-200 dark:border-stone-700 hover:border-stone-300 dark:hover:border-stone-600 ${
                 isVisible ? "animate-fade-in-up" : "opacity-0"
               }`}
               style={{ animationDelay: `${index * 200}ms` }}
@@ -198,20 +206,21 @@ export default function FeaturedProducts() {
                   alt={product.name}
                   loading="lazy"
                   fill
-                  className="object-cover group-hover:scale-110 transition-transform duration-700"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className="object-cover group-hover:scale-110 transition-all ease-out duration-700"
                 />
 
                 {/* Gradient Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
                 {/* Product Badges */}
-                <div className="absolute top-4 left-4 z-10">
+                <div className="absolute top-4 left-4 z-10 flex flex-col gap-2">
                   {product.isNew && (
-                    <span className="bg-stone-600 text-white px-3 py-1 rounded-sm text-xs font-bold shadow-lg mb-2 block">
+                    <span className="bg-stone-600 text-white px-3 py-1 rounded-md text-xs font-bold shadow-lg">
                       ✨ NEW
                     </span>
                   )}
-                  <span className="bg-stone-800 dark:bg-stone-200 text-white dark:text-stone-900 px-3 py-1 rounded-sm text-xs font-bold shadow-lg">
+                  <span className="bg-stone-800 dark:bg-stone-200 text-white dark:text-stone-900 px-3 py-1 rounded-md text-xs font-bold shadow-lg">
                     {product.badge}
                   </span>
                 </div>
@@ -231,12 +240,12 @@ export default function FeaturedProducts() {
                 >
                   <Link
                     href={`/product/${createSlug(product.name)}`}
-                    className="flex-1 bg-white/95 dark:bg-stone-800/95 backdrop-blur-sm text-stone-900 dark:text-white px-4 py-2 rounded-sm text-sm font-semibold flex items-center justify-center gap-2 hover:bg-white dark:hover:bg-stone-700 transition-colors shadow-lg"
+                    className="flex-1 bg-white/95 dark:bg-stone-800/95 backdrop-blur-sm text-stone-900 dark:text-white px-4 py-2 text-sm font-medium flex items-center justify-center gap-2 hover:bg-white dark:hover:bg-stone-700 transition-colors shadow-lg"
                   >
                     <FiEye className="w-4 h-4" />
                     Quick View
                   </Link>
-                  <button className="bg-stone-800 dark:bg-stone-300 text-white dark:text-stone-900 px-4 py-2 rounded-full text-sm font-semibold flex items-center justify-center gap-2 hover:bg-stone-900 dark:hover:bg-stone-200 transition-colors shadow-lg">
+                  <button className="bg-stone-800 dark:bg-stone-200 text-white dark:text-stone-900 px-4 py-2 rounded-full text-sm font-medium flex items-center justify-center gap-2 hover:bg-stone-900 dark:hover:bg-stone-100 transition-colors shadow-lg">
                     <FiShoppingBag className="w-4 h-4" />
                   </button>
                 </div>
@@ -259,35 +268,23 @@ export default function FeaturedProducts() {
               <div className="p-6 space-y-4">
                 {/* Category & Origin */}
                 <div className="flex items-center justify-between text-xs">
-                  <span className="bg-stone-100 dark:bg-stone-700 text-stone-600 dark:text-stone-300 px-2 py-1 rounded-sm font-medium">
-                    {product.category.toUpperCase()}
+                  <span className="bg-stone-100 dark:bg-stone-700 text-stone-600 dark:text-stone-300 px-2 py-1 rounded-md font-medium">
+                    {product.category.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
                   </span>
-                  <span className="text-stone-500 dark:text-stone-400 flex items-center">
+                  {product.origin && <span className="text-stone-500 dark:text-stone-400 flex items-center">
                     🏛️ {product.origin}
-                  </span>
+                  </span>}
                 </div>
 
                 {/* Product Name */}
-                <h3 className="font-fira-sans text-xl lg:text-2xl font-bold text-stone-900 dark:text-white leading-tight group-hover:text-stone-700 dark:group-hover:text-stone-200 transition-colors">
+                <h3 className="font-fira-sans text-xl font-light text-stone-900 dark:text-white leading-tight group-hover:text-stone-700 dark:group-hover:text-stone-200 transition-colors">
                   {product.name}
                 </h3>
 
                 {/* Description */}
-                <p className="text-stone-600 dark:text-stone-300 text-sm leading-relaxed">
+                <p className="text-stone-600 dark:text-stone-300 text-sm leading-relaxed line-clamp-1">
                   {product.description}
                 </p>
-
-                {/* Features */}
-                <div className="flex flex-wrap gap-1">
-                  {product.features.slice(0, 2).map((feature, idx) => (
-                    <span
-                      key={idx}
-                      className="bg-stone-50 dark:bg-stone-700 text-stone-600 dark:text-stone-300 px-2 py-1 rounded-full text-xs font-medium"
-                    >
-                      {feature}
-                    </span>
-                  ))}
-                </div>
 
                 {/* Rating */}
                 <div className="flex items-center space-x-2">
@@ -303,9 +300,6 @@ export default function FeaturedProducts() {
                       />
                     ))}
                   </div>
-                  <span className="text-sm text-stone-600 dark:text-stone-400">
-                    {product.rating} ({product.reviews} reviews)
-                  </span>
                 </div>
 
                 {/* Price & CTA */}
@@ -328,10 +322,10 @@ export default function FeaturedProducts() {
 
                   <Link
                     href={`/product/${createSlug(product.name)}`}
-                    className="bg-stone-800 dark:bg-stone-200 hover:bg-stone-900 dark:hover:bg-stone-100 text-white dark:text-stone-900 px-6 py-3 rounded-md font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform flex items-center gap-2"
+                    className="bg-stone-800 dark:bg-stone-200 hover:bg-stone-900 dark:hover:bg-stone-100 text-white dark:text-stone-900 px-6 py-3 font-medium shadow-lg hover:shadow-xl flex items-center gap-2"
                   >
                     <span>View</span>
-                    <FiArrowRight className="w-4 h-4" />
+                    <FiArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-all duration-500 ease-out" />
                   </Link>
                 </div>
               </div>
@@ -345,9 +339,9 @@ export default function FeaturedProducts() {
             isVisible ? "animate-fade-in-up" : "opacity-0"
           } animation-delay-600`}
         >
-          <div className="bg-stone-100 dark:bg-stone-800 rounded-md p-8 lg:p-12 border border-stone-200 dark:border-stone-700">
-            <h3 className="font-fira-sans text-2xl lg:text-3xl font-bold text-stone-900 dark:text-white mb-4">
-              DISCOVER OUR HERITAGE COLLECTION
+          <div className="bg-white/80 dark:bg-stone-800/80 backdrop-blur-sm p-8 lg:p-12 border border-stone-200 dark:border-stone-700 shadow-lg">
+            <h3 className="font-fira-sans text-2xl lg:text-3xl font-light text-stone-900 dark:text-white mb-4 tracking-wide">
+              Discover Our Heritage Collection
             </h3>
             <p className="text-stone-600 dark:text-stone-300 mb-8 max-w-2xl mx-auto text-lg">
               Explore hundreds of handcrafted treasures, each piece carefully
@@ -358,13 +352,13 @@ export default function FeaturedProducts() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Link
                 href="/products"
-                className="group inline-flex items-center px-8 py-4 bg-stone-800 dark:bg-stone-200 hover:bg-stone-900 dark:hover:bg-stone-100 text-white dark:text-stone-900 font-semibold rounded-sm transition-all duration-300 shadow-lg hover:shadow-xl transform"
+                className="group inline-flex items-center px-8 py-4 bg-stone-800 dark:bg-stone-200 hover:bg-stone-900 dark:hover:bg-stone-100 text-white dark:text-stone-900 font-medium shadow-lg hover:shadow-xl"
               >
                 <span>Explore All Products</span>
-                <FiArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                <FiArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-all ease-out duration-500" />
               </Link>
 
-              <div className="flex items-center space-x-6 text-sm text-stone-600 dark:text-stone-300">
+              <div className="flex flex-wrap justify-center items-center gap-6 text-sm text-stone-600 dark:text-stone-300">
                 <div className="flex items-center space-x-2">
                   <div className="w-8 h-8 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
                     <svg
@@ -401,6 +395,24 @@ export default function FeaturedProducts() {
                   </div>
                   <span>Authentic</span>
                 </div>
+                <div className="flex items-center space-x-2">
+                  <div className="w-8 h-8 bg-amber-100 dark:bg-amber-900/30 rounded-full flex items-center justify-center">
+                    <svg
+                      className="w-4 h-4 text-amber-600 dark:text-amber-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+                      />
+                    </svg>
+                  </div>
+                  <span>Handcrafted</span>
+                </div>
               </div>
             </div>
           </div>
@@ -409,15 +421,7 @@ export default function FeaturedProducts() {
 
       {/* CSS for animations */}
       <style jsx>{`
-        .animate-fade-in-up {
-          animation: fadeInUp 0.8s ease-out forwards;
-        }
-
-        .animation-delay-600 {
-          animation-delay: 0.6s;
-        }
-
-        @keyframes fadeInUp {
+        @keyframes fade-in-up {
           from {
             opacity: 0;
             transform: translateY(30px);
@@ -426,6 +430,44 @@ export default function FeaturedProducts() {
             opacity: 1;
             transform: translateY(0);
           }
+        }
+
+        @keyframes bounce-in {
+          0% {
+            opacity: 0;
+            transform: scale(0.3);
+          }
+          50% {
+            transform: scale(1.05);
+          }
+          70% {
+            transform: scale(0.9);
+          }
+          100% {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+
+        .animate-fade-in-up {
+          animation: fade-in-up 0.8s ease-out forwards;
+        }
+
+        .animation-delay-600 {
+          animation-delay: 0.6s;
+        }
+
+        @keyframes pulse {
+          0%, 100% {
+            opacity: 0.8;
+          }
+          50% {
+            opacity: 0.5;
+          }
+        }
+
+        .animate-pulse {
+          animation: pulse 3s ease-in-out infinite;
         }
       `}</style>
     </section>

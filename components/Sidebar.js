@@ -14,10 +14,13 @@ import {
   FiStar,
   FiGift,
 } from "react-icons/fi";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "@/lib/firebase";
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [user] = useAuthState(auth);
 
   // Check if mobile device
   useEffect(() => {
@@ -111,7 +114,7 @@ export default function Sidebar() {
       {/* Toggle Button for Mobile */}
       <button
         onClick={toggleSidebar}
-        className={`fixed top-20 left-4 z-50 cursor-pointer p-3 bg-stone-800 dark:bg-stone-200 text-white dark:text-stone-900 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 active:scale-95 ${
+        className={`fixed top-22 left-4 z-50 cursor-pointer p-3 bg-stone-800 dark:bg-stone-200 text-white dark:text-stone-900 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 active:scale-95 ${
           isOpen ? "opacity-0 pointer-events-none" : "opacity-100"
         }`}
         aria-label="Open navigation menu"
@@ -200,6 +203,26 @@ export default function Sidebar() {
                     </span>
                   </Link>
                 ))}
+                {isMobile && <div className="border-t border-stone-200 dark:border-stone-700 pt-4 space-y-3">
+                <Link 
+                  href={user ? "/admin/upload" : "/admin/login"}
+                  onClick={toggleSidebar}
+                  className="flex items-center space-x-3 font-fira-sans font-medium text-sm text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-stone-100 transition-colors duration-300 py-2 px-3 hover:bg-stone-100 dark:hover:bg-stone-800"
+                >
+                  <FiUser className="w-5 h-5" />
+                  <span>Admin Panel</span>
+                </Link>
+                
+                <button className="flex items-center space-x-3 font-fira-sans font-medium text-sm text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-stone-100 transition-colors duration-300 py-2 px-3 hover:bg-stone-100 dark:hover:bg-stone-800 w-full text-left">
+                  <FiHeart className="w-5 h-5" />
+                  <span>Wishlist</span>
+                </button>
+                
+                <button className="flex items-center space-x-3 font-fira-sans font-medium text-sm text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-stone-100 transition-colors duration-300 py-2 px-3 hover:bg-stone-100 dark:hover:bg-stone-800 w-full text-left">
+                  <FiShoppingBag className="w-5 h-5" />
+                  <span>Shopping Bag</span>
+                </button>
+                </div>}
               </div>
             </div>
           </div>

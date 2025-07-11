@@ -229,7 +229,7 @@ export default function ComingSoonPage() {
       <div className="max-w-6xl mx-auto px-6 pt-4 pb-12">
         <div className="flex flex-col justify-center items-center p-6 sm:p-8 lg:p-12">
           <div className="max-w-3xl text-center">
-            <h2 className="font-vogue-alt text-xl font-bold sm:text-3xl md:text-4xl lg:text-5xl mb-4 tracking-wide leading-tight">
+            <h2 className="font-vogue-alt text-xl font-bold sm:text-2xl md:text-4xl lg:text-5xl mb-4 tracking-wide leading-tight">
               Crafting Elegance : Coming Soon
             </h2>
             <p className="text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed opacity-90 max-w-2xl">
@@ -411,7 +411,17 @@ export default function ComingSoonPage() {
               © 2025 JAGJIT KAUR. All rights reserved.
             </p>
             <p className="text-xs text-stone-500 dark:text-stone-500">
-              Handcrafted with ❤️ for lovers of traditional elegance
+              Handcrafted with ❤️ for lovers of traditional elegance 
+            </p>
+            <p className="text-stone-700 text-sm font-medium tracking-wide">
+              Built & designed by {' '}
+              <Link href="https://www.souravpaitandy.me" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-stone-700 hover:text-stone-900 transition-colors duration-300 font-semibold underline decoration-stone-900/50 underline-offset-2 hover:decoration-stone-900"
+              >
+                  Sourav Paitandy
+              </Link>
             </p>
           </div>
         </div>

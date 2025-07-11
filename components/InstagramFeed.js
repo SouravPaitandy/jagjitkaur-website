@@ -37,7 +37,7 @@ export default function InstagramFeed() {
               <div className="h-px bg-stone-300 dark:bg-stone-600 flex-1 max-w-xs"></div>
             </div>
 
-            <h2 className="font-fira-sans text-4xl sm:text-5xl lg:text-6xl text-stone-900 dark:text-stone-100 mb-6">
+            <h2 className="font-vogue-bold text-4xl sm:text-5xl lg:text-6xl text-stone-900 dark:text-stone-100 mb-6">
               FOLLOW OUR JOURNEY
             </h2>
 
@@ -56,10 +56,10 @@ export default function InstagramFeed() {
                 href="https://instagram.com/Jagjitkaur.official"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-md hover:from-purple-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-stone-800 to-stone-900 text-white dark:border dark:border-stone-500 font-semibold hover:from-stone-900 hover:to-black transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
               >
                 <svg
-                  className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform"
+                  className="w-5 h-5 mr-3"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                 >
@@ -72,10 +72,10 @@ export default function InstagramFeed() {
                 href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_PHONE}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-500 text-white font-semibold rounded-md hover:from-green-600 hover:to-emerald-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                className="inline-flex items-center px-8 py-4 bg-stone-100 text-stone-900 border border-stone-300 font-semibold hover:bg-stone-200 hover:border-stone-400 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
               >
                 <svg
-                  className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform"
+                  className="w-5 h-5 mr-3"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                 >
@@ -87,15 +87,15 @@ export default function InstagramFeed() {
           </div>
 
           {/* Instagram Feed Widget - Simple version */}
-          <div className="bg-white dark:bg-stone-800 rounded-md p-6 lg:p-8 shadow-lg border border-stone-200 dark:border-stone-700">
+          <div className="bg-white dark:bg-stone-800 p-6 lg:p-8 shadow-lg border border-stone-200 dark:border-stone-700">
             <div className="elfsight-app-3d0736ee-9338-411f-9df5-559656f35e70"></div>
           </div>
 
           {/* Bottom CTA Section */}
           <div className="text-center mt-16 lg:mt-20">
-            <div className="bg-stone-100 dark:bg-stone-800 rounded-md p-8 lg:p-12 border border-stone-200 dark:border-stone-700">
-              <h3 className="font-fira-sans text-2xl lg:text-3xl font-bold text-stone-900 dark:text-white mb-4">
-                JOIN OUR FASHION COMMUNITY
+            <div className="bg-stone-100 dark:bg-stone-800 p-8 lg:p-12 border border-stone-200 dark:border-stone-700">
+              <h3 className="font-fira-sans text-2xl lg:text-3xl font-light text-stone-900 dark:text-white mb-4">
+                Join Our Fashion Community
               </h3>
               <p className="text-stone-600 dark:text-stone-300 mb-8 max-w-2xl mx-auto text-lg">
                 Join thousands of fashion lovers following our journey. Get
@@ -111,7 +111,7 @@ export default function InstagramFeed() {
                   className="group inline-flex items-center text-stone-900 dark:text-white font-semibold hover:text-purple-600 dark:hover:text-purple-400 transition-colors text-lg"
                 >
                   <svg
-                    className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform"
+                    className="w-5 h-5 mr-3 group-hover:scale-110 transition-all ease-out duration-500"
                     fill="currentColor"
                     viewBox="0 0 24 24"
                   >
@@ -119,7 +119,7 @@ export default function InstagramFeed() {
                   </svg>
                   Follow for daily inspiration
                   <svg
-                    className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform"
+                    className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-all duration-500 ease-out"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -142,7 +142,7 @@ export default function InstagramFeed() {
                   className="group inline-flex items-center text-stone-900 dark:text-white font-semibold hover:text-green-600 dark:hover:text-green-400 transition-colors text-lg"
                 >
                   <svg
-                    className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform"
+                    className="w-5 h-5 mr-3 group-hover:scale-110 transition-all ease-out duration-500"
                     fill="currentColor"
                     viewBox="0 0 24 24"
                   >
@@ -174,7 +174,7 @@ export default function InstagramFeed() {
                 </div>
                 <div className="flex items-center space-x-2">
                   <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center">
-                    <FiUser className="w-4 h-4 text-blue-600 dark:text-blue-400"/>
+                    <FiUser className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                   </div>
                   <span>100+ Happy Customers</span>
                 </div>
