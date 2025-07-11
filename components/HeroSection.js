@@ -196,7 +196,7 @@ export default function HeroSection() {
   return (
     <section
       ref={containerRef}
-      className="relative overflow-hidden mt-16 lg:mt-20 select-none"
+      className="group relative overflow-hidden mt-16 lg:mt-20 select-none"
       style={{ 
         height: "calc(100vh - 64px)",
         cursor: isDragging ? 'grabbing' : 'grab'
@@ -256,14 +256,14 @@ export default function HeroSection() {
             >
               {/* Brand/Collection Label */}
               <div className="inline-block">
-                <p className="font-fira-sans text-sm md:text-base font-light tracking-widest uppercase opacity-90">
+                <p className="font-vogue text-sm md:text-base font-light tracking-widest uppercase opacity-90">
                   {currentHero.subtitle}
                 </p>
                 <div className="h-px w-16 bg-white/60 mt-2"></div>
               </div>
 
               {/* Main Title */}
-              <h1 className="font-fira-sans text-4xl md:text-6xl lg:text-7xl font-light leading-tight tracking-wide">
+              <h1 className="font-vogue-bold text-4xl md:text-6xl lg:text-7xl font-light leading-tight tracking-wide">
                 {currentHero.title}
               </h1>
 
@@ -315,11 +315,11 @@ export default function HeroSection() {
           const prevSlide = (currentSlide - 1 + heroSlides.length) % heroSlides.length;
           changeSlide(prevSlide);
         }}
-        className="absolute left-6 top-1/2 transform -translate-y-1/2 z-20 text-white/80 hover:text-white transition-colors duration-300 group hidden md:block pointer-events-auto"
+        className="absolute md:group-hover:block hidden cursor-pointer left-6 top-1/2 p-2 transform group-hover:-translate-y-1/2 z-20 bg-transparent backdrop-blur-md border border-white/40 hover:border-white/90 text-white/80 hover:text-white transition-all ease-in-out duration-500 pointer-events-auto"
         aria-label="Previous slide"
       >
         <svg
-          className="w-8 h-8 group-hover:scale-110 transition-transform duration-300"
+          className="w-8 h-8"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -338,11 +338,11 @@ export default function HeroSection() {
           const nextSlide = (currentSlide + 1) % heroSlides.length;
           changeSlide(nextSlide);
         }}
-        className="absolute right-6 top-1/2 transform -translate-y-1/2 z-20 text-white/80 hover:text-white transition-colors duration-300 group hidden md:block pointer-events-auto"
+        className="absolute md:group-hover:block hidden cursor-pointer right-6 top-1/2 transform group-hover:-translate-y-1/2 z-20 p-2 border border-white/40 hover:border-white/90 text-white/80 hover:text-white bg-transparent backdrop-blur-md transition-all ease-in-out duration-500 pointer-events-auto"
         aria-label="Next slide"
       >
         <svg
-          className="w-8 h-8 group-hover:scale-110 transition-transform duration-300"
+          className="w-8 h-8"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"

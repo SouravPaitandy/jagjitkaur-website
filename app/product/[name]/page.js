@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { fetchProductsFromFirestore } from "@/lib/fetchProducts";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import AddToBagButton from "@/components/AddToBagButton";
 import Footer from "@/components/Footer";
 import {
   FiHeart,
@@ -221,7 +222,7 @@ export default async function ProductDetail({ params }) {
                     {[1, 2, 3, 4].map((i) => (
                       <div
                         key={i}
-                        className="aspect-square relative overflow-hidden bg-stone-50 dark:bg-stone-800 cursor-pointer border-2 border-transparent hover:border-stone-300 dark:hover:border-stone-600 transition-all duration-300 group animate-fade-in"
+                        className="aspect-[3/4] max-h-[113.5px] relative overflow-hidden bg-stone-50 dark:bg-stone-800 cursor-pointer border-2 border-transparent hover:border-stone-300 dark:hover:border-stone-600 transition-all duration-300 group animate-fade-in"
                         style={{
                           animationDelay: `${i * 100}ms`,
                           animationFillMode: "both",
@@ -372,14 +373,20 @@ export default async function ProductDetail({ params }) {
                 )}
               </div>
 
-              {/* Action Buttons with slide-up animation */}
+              {/* Enhanced Action Buttons with slide-up animation */}
               <div className="space-y-4 animate-fade-in-up delay-500">
                 <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
-                  <button className="flex-1 border border-stone-800 dark:border-stone-200 text-stone-800 dark:text-stone-200 hover:bg-stone-800 dark:hover:bg-stone-200 hover:text-white dark:hover:text-stone-900 py-4 px-6 transition-all duration-300 hover:scale-105 active:scale-95">
-                    <span className="font-fira-sans text-sm tracking-widest">
-                      ADD TO BAG
-                    </span>
-                  </button>
+                  {/* Add to Bag Button */}
+                  <div className="flex-1">
+                    <AddToBagButton
+                      product={product}
+                      variant="primary"
+                      size="large"
+                      className="w-full"
+                    />
+                  </div>
+
+                  {/* Wishlist Button */}
                   <button className="sm:w-auto w-full p-4 border border-stone-300 dark:border-stone-600 hover:border-stone-800 dark:hover:border-stone-200 text-stone-600 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 transition-all duration-300 hover:scale-110 active:scale-95 flex items-center justify-center">
                     <FiHeart className="w-5 h-5" />
                     <span className="ml-2 sm:hidden text-sm">ADD TO WISHLIST</span>

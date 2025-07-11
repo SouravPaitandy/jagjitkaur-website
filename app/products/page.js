@@ -52,10 +52,10 @@ function ProductsLoading() {
 
 export default async function ProductsPage() {
   const products = await fetchProductsFromFirestore();
-  console.log("Fetched products from Firestore:", products);
+  // console.log("Fetched products from Firestore:", products);
   
   if (!products || products.length === 0) {
-    console.log("No products found in Firestore.");
+    // console.log("No products found in Firestore.");
     return (
       <div className="text-center p-8">
         No products available at the moment.

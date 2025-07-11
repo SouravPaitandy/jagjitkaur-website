@@ -16,11 +16,13 @@ import {
 } from "react-icons/fi";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/lib/firebase";
+import { useCart } from '@/context/CartContext';
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [user] = useAuthState(auth);
+  const { toggleCart, itemCount } = useCart();
 
   // Check if mobile device
   useEffect(() => {
@@ -213,14 +215,22 @@ export default function Sidebar() {
                   <span>Admin Panel</span>
                 </Link>
                 
-                <button className="flex items-center space-x-3 font-fira-sans font-medium text-sm text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-stone-100 transition-colors duration-300 py-2 px-3 hover:bg-stone-100 dark:hover:bg-stone-800 w-full text-left">
+                {/* <button className="flex items-center space-x-3 font-fira-sans font-medium text-sm text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-stone-100 transition-colors duration-300 py-2 px-3 hover:bg-stone-100 dark:hover:bg-stone-800 w-full text-left">
                   <FiHeart className="w-5 h-5" />
                   <span>Wishlist</span>
-                </button>
-                
-                <button className="flex items-center space-x-3 font-fira-sans font-medium text-sm text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-stone-100 transition-colors duration-300 py-2 px-3 hover:bg-stone-100 dark:hover:bg-stone-800 w-full text-left">
-                  <FiShoppingBag className="w-5 h-5" />
-                  <span>Shopping Bag</span>
+                </button> */}
+                <button 
+                  onClick={toggleCart}
+                  className="font-fira-sans relative flex gap-4 p-2.5 bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 transition-all duration-300 border border-stone-200 dark:border-stone-700 hover:border-stone-300 dark:hover:border-stone-600 group hover:scale-105"
+                  aria-label={`Shopping bag with ${itemCount} items`}
+                >
+                  <FiShoppingBag className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />
+                  {itemCount > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-stone-800 dark:bg-stone-200 text-white dark:text-stone-900 text-xs font-bold w-5 h-5 flex items-center justify-center text-center min-w-[20px] animate-bounce">
+                      {itemCount > 10 ? '10+' : itemCount}
+                    </span>
+                  )}
+                  <span>Bag</span>
                 </button>
                 </div>}
               </div>

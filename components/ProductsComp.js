@@ -165,18 +165,18 @@ export default function ProductsPage({ products }) {
 
     return (
       <div
-        className={`fixed bottom-20 right-6 z-50 transition-all duration-500 transform ${
+        className={`fixed bottom-16 right-6 z-50 transition-all duration-500 ease-out transform ${
           showScrollToTop
-            ? "opacity-100 translate-y-0 scale-100"
-            : "opacity-0 translate-y-10 scale-75 pointer-events-none"
+            ? "opacity-100 translate-y-0"
+            : "opacity-0 translate-y-10 pointer-events-none"
         }`}
       >
         <button
           onClick={scrollToTop}
-          className="p-3 bg-stone-800 dark:bg-stone-200 hover:bg-stone-900 dark:hover:bg-stone-100 text-white dark:text-stone-900 transition-all duration-300 hover:scale-110 active:scale-95 shadow-lg hover:shadow-xl"
+          className="group p-3 bg-stone-700 dark:bg-stone-300 hover:bg-stone-800 dark:hover:bg-stone-200 text-white dark:text-stone-900 shadow-lg hover:shadow-xl transition-all duration-300 border border-stone-600 dark:border-stone-400 hover:border-stone-500 dark:hover:border-stone-300 backdrop-blur-sm hover:scale-110"
           aria-label="Scroll to top"
         >
-          <FiArrowUp className="w-5 h-5" />
+          <FiArrowUp className="w-5 h-5 transition-transform duration-300 group-hover:-translate-y-0.5" />
         </button>
       </div>
     );
@@ -186,16 +186,21 @@ export default function ProductsPage({ products }) {
     <>
       <main className="relative min-h-screen bg-white dark:bg-stone-900">
         <ScrollToTopButton />
-        
+
         {/* Simple Breadcrumb with fade-in animation */}
         <div className="border-b border-stone-200 dark:border-stone-700 animate-fade-in">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <nav className="flex items-center space-x-2 text-xs tracking-wide text-stone-500 dark:text-stone-400">
-              <Link href="/" className="hover:text-stone-800 dark:hover:text-stone-200 transition-colors duration-300">
+              <Link
+                href="/"
+                className="hover:text-stone-800 dark:hover:text-stone-200 transition-colors duration-300"
+              >
                 HOME
               </Link>
               <span className="animate-pulse">/</span>
-              <span className="text-stone-800 dark:text-stone-200">COLLECTIONS</span>
+              <span className="text-stone-800 dark:text-stone-200">
+                COLLECTIONS
+              </span>
             </nav>
           </div>
         </div>
@@ -203,14 +208,16 @@ export default function ProductsPage({ products }) {
         {/* Minimalist Hero Section with slide-up animation */}
         <div className="bg-white dark:bg-stone-900 py-16 animate-slide-up">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h1 className="font-fira-sans text-4xl md:text-5xl font-light text-stone-900 dark:text-stone-100 mb-4 tracking-wide animate-fade-in-up delay-200">
+            <h1 className="font-vogue-bold text-4xl md:text-5xl font-light text-stone-900 dark:text-stone-100 mb-4 tracking-wide animate-fade-in-up delay-200">
               {filterBy !== "all"
                 ? getCategoryDisplayName(filterBy)
                 : "Collections"}
             </h1>
             <p className="text-lg text-stone-600 dark:text-stone-400 max-w-2xl mx-auto animate-fade-in-up delay-400">
               {filterBy !== "all"
-                ? `Discover our handcrafted ${getCategoryDisplayName(filterBy).toLowerCase()}`
+                ? `Discover our handcrafted ${getCategoryDisplayName(
+                    filterBy
+                  ).toLowerCase()}`
                 : "Discover our complete range of handcrafted traditional wear"}
             </p>
           </div>
@@ -220,7 +227,6 @@ export default function ProductsPage({ products }) {
         <div className="bg-white dark:bg-stone-900 border-b border-stone-200 dark:border-stone-700 sticky top-0 z-40 animate-slide-down backdrop-blur-sm">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <div className="flex flex-col lg:flex-row justify-between items-center space-y-4 lg:space-y-0 lg:space-x-8">
-              
               {/* Search Bar with expand animation */}
               <div className="relative flex-1 max-w-md w-full animate-expand">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -237,19 +243,25 @@ export default function ProductsPage({ products }) {
 
               {/* Filter and Sort Controls */}
               <div className="flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 sm:space-x-4 w-full lg:w-auto">
-                
                 {/* Filter Toggle for Mobile */}
                 <button
                   onClick={() => setShowFilters(!showFilters)}
                   className="font-fira-sans lg:hidden w-full sm:w-auto bg-stone-800 dark:bg-stone-200 text-white dark:text-stone-900 px-4 py-3 font-medium hover:bg-stone-900 dark:hover:bg-stone-100 transition-all duration-300 flex items-center justify-center gap-2 hover:scale-105 active:scale-95"
                 >
-                  <FiFilter className={`w-4 h-4 transition-transform duration-300 ${showFilters ? 'rotate-180' : ''}`} />
+                  <FiFilter
+                    className={`w-4 h-4 transition-transform duration-300 ${
+                      showFilters ? "rotate-180" : ""
+                    }`}
+                  />
                   Filters & Sort
                 </button>
 
                 {/* Desktop Filters with slide animation */}
-                <div className={`${showFilters ? "flex animate-slide-down" : "hidden"} lg:flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 sm:space-x-4 w-full lg:w-auto`}>
-                  
+                <div
+                  className={`${
+                    showFilters ? "flex animate-slide-down" : "hidden"
+                  } lg:flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 sm:space-x-4 w-full lg:w-auto`}
+                >
                   {/* Category Filter */}
                   <div className="flex items-center space-x-3 w-full sm:w-auto animate-fade-in">
                     <label className="font-fira-sans text-sm font-medium text-stone-700 dark:text-stone-300 whitespace-nowrap">
@@ -324,7 +336,6 @@ export default function ProductsPage({ products }) {
 
         {/* Products Grid/List with staggered animation */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          
           {/* Active Filters Display with slide-in animation */}
           {(filterBy !== "all" || searchQuery) && (
             <div className="mb-8 flex flex-wrap items-center gap-3 animate-slide-in">
@@ -339,8 +350,18 @@ export default function ProductsPage({ products }) {
                     onClick={() => handleFilterChange("all")}
                     className="hover:bg-white/20 dark:hover:bg-black/20 transition-all duration-300 hover:scale-110 active:scale-95"
                   >
-                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    <svg
+                      className="w-3 h-3"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M6 18L18 6M6 6l12 12"
+                      />
                     </svg>
                   </button>
                 </span>
@@ -353,8 +374,18 @@ export default function ProductsPage({ products }) {
                     onClick={() => setSearchQuery("")}
                     className="hover:bg-white/20 dark:hover:bg-black/20 transition-all duration-300 hover:scale-110 active:scale-95"
                   >
-                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    <svg
+                      className="w-3 h-3"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M6 18L18 6M6 6l12 12"
+                      />
                     </svg>
                   </button>
                 </span>
@@ -384,14 +415,20 @@ export default function ProductsPage({ products }) {
           )}
 
           {/* Products Grid with staggered animation */}
-          <div className={`${isGridView ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" : "space-y-8"} transition-all duration-500`}>
+          <div
+            className={`${
+              isGridView
+                ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+                : "space-y-8"
+            } transition-all duration-500`}
+          >
             {sortedProducts.map((product, index) => (
               <div
-                key={product.id}
+                key={product.firestoreId || product.id || `product-${index}`}
                 className="animate-fade-in-up"
                 style={{
                   animationDelay: `${index * 100}ms`,
-                  animationFillMode: 'both'
+                  animationFillMode: "both",
                 }}
               >
                 <ProductCard product={product} isListView={!isGridView} />
@@ -409,7 +446,8 @@ export default function ProductsPage({ products }) {
                 No Products Found
               </h3>
               <p className="font-fira-sans text-stone-600 dark:text-stone-400 mb-8 max-w-md mx-auto animate-fade-in-up delay-100">
-                We couldn't find any products matching your search. Try adjusting your filters or search terms.
+                We couldn't find any products matching your search. Try
+                adjusting your filters or search terms.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up delay-200">
                 <button
@@ -443,53 +481,117 @@ export default function ProductsPage({ products }) {
       {/* Custom CSS for animations */}
       <style jsx>{`
         @keyframes fade-in {
-          from { opacity: 0; }
-          to { opacity: 1; }
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
         }
-        
+
         @keyframes slide-up {
-          from { transform: translateY(30px); opacity: 0; }
-          to { transform: translateY(0); opacity: 1; }
+          from {
+            transform: translateY(30px);
+            opacity: 0;
+          }
+          to {
+            transform: translateY(0);
+            opacity: 1;
+          }
         }
-        
+
         @keyframes slide-down {
-          from { transform: translateY(-30px); opacity: 0; }
-          to { transform: translateY(0); opacity: 1; }
+          from {
+            transform: translateY(-30px);
+            opacity: 0;
+          }
+          to {
+            transform: translateY(0);
+            opacity: 1;
+          }
         }
-        
+
         @keyframes slide-in {
-          from { transform: translateX(-30px); opacity: 0; }
-          to { transform: translateX(0); opacity: 1; }
+          from {
+            transform: translateX(-30px);
+            opacity: 0;
+          }
+          to {
+            transform: translateX(0);
+            opacity: 1;
+          }
         }
-        
+
         @keyframes bounce-in {
-          0% { transform: scale(0.3); opacity: 0; }
-          50% { transform: scale(1.05); }
-          70% { transform: scale(0.9); }
-          100% { transform: scale(1); opacity: 1; }
+          0% {
+            transform: scale(0.3);
+            opacity: 0;
+          }
+          50% {
+            transform: scale(1.05);
+          }
+          70% {
+            transform: scale(0.9);
+          }
+          100% {
+            transform: scale(1);
+            opacity: 1;
+          }
         }
-        
+
         @keyframes expand {
-          from { transform: scaleX(0.8); opacity: 0; }
-          to { transform: scaleX(1); opacity: 1; }
+          from {
+            transform: scaleX(0.8);
+            opacity: 0;
+          }
+          to {
+            transform: scaleX(1);
+            opacity: 1;
+          }
         }
-        
+
         @keyframes fade-in-up {
-          from { transform: translateY(20px); opacity: 0; }
-          to { transform: translateY(0); opacity: 1; }
+          from {
+            transform: translateY(20px);
+            opacity: 0;
+          }
+          to {
+            transform: translateY(0);
+            opacity: 1;
+          }
         }
-        
-        .animate-fade-in { animation: fade-in 0.6s ease-out; }
-        .animate-slide-up { animation: slide-up 0.8s ease-out; }
-        .animate-slide-down { animation: slide-down 0.6s ease-out; }
-        .animate-slide-in { animation: slide-in 0.6s ease-out; }
-        .animate-bounce-in { animation: bounce-in 0.8s ease-out; }
-        .animate-expand { animation: expand 0.6s ease-out; }
-        .animate-fade-in-up { animation: fade-in-up 0.8s ease-out; }
-        
-        .delay-100 { animation-delay: 100ms; }
-        .delay-200 { animation-delay: 200ms; }
-        .delay-400 { animation-delay: 400ms; }
+
+        .animate-fade-in {
+          animation: fade-in 0.6s ease-out;
+        }
+        .animate-slide-up {
+          animation: slide-up 0.8s ease-out;
+        }
+        .animate-slide-down {
+          animation: slide-down 0.6s ease-out;
+        }
+        .animate-slide-in {
+          animation: slide-in 0.6s ease-out;
+        }
+        .animate-bounce-in {
+          animation: bounce-in 0.8s ease-out;
+        }
+        .animate-expand {
+          animation: expand 0.6s ease-out;
+        }
+        .animate-fade-in-up {
+          animation: fade-in-up 0.8s ease-out;
+        }
+
+        .delay-100 {
+          animation-delay: 100ms;
+        }
+        .delay-200 {
+          animation-delay: 200ms;
+        }
+        .delay-400 {
+          animation-delay: 400ms;
+        }
       `}</style>
     </>
   );

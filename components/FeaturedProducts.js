@@ -10,6 +10,7 @@ import {
   FiStar,
   FiArrowRight,
 } from "react-icons/fi";
+import { useCart } from "@/context/CartContext";
 
 const featuredProducts = [
   {
@@ -17,7 +18,8 @@ const featuredProducts = [
     name: "Noor Sharara 3 Piece Set",
     price: "₹8,999",
     originalPrice: "₹12,999",
-    image: "https://res.cloudinary.com/dwqf6wp14/image/upload/v1751039112/kurta1_q3ak8i.jpg",
+    image:
+      "https://res.cloudinary.com/dwqf6wp14/image/upload/v1751039112/kurta1_q3ak8i.jpg",
     description: "Elegant 3-piece ensemble perfect for festive occasions",
     category: "sharara-sets",
     fabric: "Pure Cotton",
@@ -31,20 +33,23 @@ const featuredProducts = [
     isNew: false,
     // New detailed description for components
     components: {
-      kurta: "Knee-length kurta with intricate block print patterns and comfortable A-line silhouette",
-      sharara: "Flared palazzo-style sharara with elastic waistband for comfort and style",
-      dupatta: "Matching dupatta with delicate border detailing and soft drape"
+      kurta:
+        "Knee-length kurta with intricate block print patterns and comfortable A-line silhouette",
+      sharara:
+        "Flared palazzo-style sharara with elastic waistband for comfort and style",
+      dupatta: "Matching dupatta with delicate border detailing and soft drape",
     },
     setIncludes: ["Kurta", "Sharara", "Dupatta"],
     care: "Dry clean recommended, gentle hand wash with mild detergent",
-    sizing: "Regular fit, size chart available"
+    sizing: "Regular fit, size chart available",
   },
   {
     id: "mehendi-palazzo-set-002",
     name: "Mehendi Palazzo 3 Piece Set",
     price: "₹6,999",
     originalPrice: "₹9,999",
-    image: "https://res.cloudinary.com/dwqf6wp14/image/upload/v1751039060/saree1_ftmgbt.jpg",
+    image:
+      "https://res.cloudinary.com/dwqf6wp14/image/upload/v1751039060/saree1_ftmgbt.jpg",
     description: "Vibrant palazzo set with traditional mehendi motifs",
     category: "palazzo-sets",
     fabric: "Rayon",
@@ -58,19 +63,22 @@ const featuredProducts = [
     isNew: true,
     components: {
       kurta: "Short kurta with modern cut and vibrant mehendi-inspired prints",
-      palazzo: "Wide-leg palazzo pants with elastic waistband and flowing silhouette",
-      dupatta: "Lightweight dupatta with complementary print and tasseled edges"
+      palazzo:
+        "Wide-leg palazzo pants with elastic waistband and flowing silhouette",
+      dupatta:
+        "Lightweight dupatta with complementary print and tasseled edges",
     },
     setIncludes: ["Kurta", "Palazzo", "Dupatta"],
     care: "Machine wash cold, iron on low heat",
-    sizing: "Relaxed fit, true to size"
+    sizing: "Relaxed fit, true to size",
   },
   {
     id: "anarkali-churidar-set-003",
     name: "Royal Anarkali Churidar Set",
     price: "₹15,999",
     originalPrice: "₹22,999",
-    image: "https://res.cloudinary.com/dwqf6wp14/image/upload/v1751039060/lehenga1_nyjmt9.jpg",
+    image:
+      "https://res.cloudinary.com/dwqf6wp14/image/upload/v1751039060/lehenga1_nyjmt9.jpg",
     description: "Majestic anarkali set with heavy embroidery work",
     category: "anarkali-sets",
     fabric: "Georgette",
@@ -83,19 +91,29 @@ const featuredProducts = [
     badge: "Premium",
     isNew: false,
     components: {
-      anarkali: "Floor-length anarkali with intricate zari and thread embroidery, fitted bodice with flared hem",
-      churidar: "Matching churidar with traditional fit and comfortable stretch fabric",
-      dupatta: "Heavy embroidered dupatta with gold zari border and delicate beadwork"
+      anarkali:
+        "Floor-length anarkali with intricate zari and thread embroidery, fitted bodice with flared hem",
+      churidar:
+        "Matching churidar with traditional fit and comfortable stretch fabric",
+      dupatta:
+        "Heavy embroidered dupatta with gold zari border and delicate beadwork",
     },
     setIncludes: ["Anarkali", "Churidar", "Dupatta"],
     care: "Dry clean only, store in cotton bags",
-    sizing: "Semi-fitted, customization available"
-  }
+    sizing: "Semi-fitted, customization available",
+  },
 ];
 
 export default function FeaturedProducts() {
   const [hoveredProduct, setHoveredProduct] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
+  const { addToCart, items, toggleCart } = useCart();
+  const [isAdding, setIsAdding] = useState(false);
+  const [justAdded, setJustAdded] = useState(false);
+
+  // const isInCart = items.some(item =>
+  //   item.id === (product.firestoreId || product.id)
+  // );
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -120,6 +138,29 @@ export default function FeaturedProducts() {
       .replace(/\s+/g, "-") // Replace spaces with hyphens
       .trim();
   }
+
+  const handleAddToCart = async () => {
+    setIsAdding(true);
+
+    // Add to cart
+    addToCart(product);
+
+    // Show success state
+    setTimeout(() => {
+      setIsAdding(false);
+      setJustAdded(true);
+
+      // Reset after showing success
+      setTimeout(() => {
+        setJustAdded(false);
+      }, 2000);
+    }, 800);
+  };
+
+  const handleGoToCart = () => {
+    // Open the cart sidebar
+    toggleCart();
+  };
 
   return (
     <section
@@ -245,9 +286,20 @@ export default function FeaturedProducts() {
                     <FiEye className="w-4 h-4" />
                     Quick View
                   </Link>
-                  <button className="bg-stone-800 dark:bg-stone-200 text-white dark:text-stone-900 px-4 py-2 rounded-full text-sm font-medium flex items-center justify-center gap-2 hover:bg-stone-900 dark:hover:bg-stone-100 transition-colors shadow-lg">
-                    <FiShoppingBag className="w-4 h-4" />
-                  </button>
+                  {/* <button
+                    onClick={
+                      items.some((item) => item.id === product.id)
+                        ? handleGoToCart
+                        : handleAddToCart
+                    }
+                    className="cursor-pointer bg-stone-800 dark:bg-stone-200 text-white dark:text-stone-900 px-4 py-2 rounded-full text-sm font-medium flex items-center justify-center gap-2 hover:bg-stone-900 dark:hover:bg-stone-100 transition-colors shadow-lg"
+                  >
+                    {items.some((item) => item.id === product.id) ? (
+                      <FiShoppingBag className="w-4 h-4" />
+                    ) : (
+                      <FiArrowRight className="w-4 h-4" />
+                    )}
+                  </button> */}
                 </div>
 
                 {/* Discount Badge */}
@@ -269,11 +321,18 @@ export default function FeaturedProducts() {
                 {/* Category & Origin */}
                 <div className="flex items-center justify-between text-xs">
                   <span className="bg-stone-100 dark:bg-stone-700 text-stone-600 dark:text-stone-300 px-2 py-1 rounded-md font-medium">
-                    {product.category.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                    {product.category
+                      .split("-")
+                      .map(
+                        (word) => word.charAt(0).toUpperCase() + word.slice(1)
+                      )
+                      .join(" ")}
                   </span>
-                  {product.origin && <span className="text-stone-500 dark:text-stone-400 flex items-center">
-                    🏛️ {product.origin}
-                  </span>}
+                  {product.origin && (
+                    <span className="text-stone-500 dark:text-stone-400 flex items-center">
+                      🏛️ {product.origin}
+                    </span>
+                  )}
                 </div>
 
                 {/* Product Name */}
@@ -458,7 +517,8 @@ export default function FeaturedProducts() {
         }
 
         @keyframes pulse {
-          0%, 100% {
+          0%,
+          100% {
             opacity: 0.8;
           }
           50% {

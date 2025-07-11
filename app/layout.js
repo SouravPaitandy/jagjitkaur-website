@@ -1,6 +1,8 @@
 import { Inter, Fira_Sans, DM_Serif_Display } from "next/font/google";
 import "./globals.css";
 import FloatingWhatsApp from '../components/FloatingWhatsApp';
+import { CartProvider } from "@/context/CartContext";
+import CartSidebar from "@/components/CartSidebar";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -68,9 +70,12 @@ export default function RootLayout({ children }) {
       <body
         className={`${inter.variable} ${firaSans.variable} ${dmSerif.variable} font-sans antialiased bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300`}
         suppressContentEditableWarning
-      >
-        {children}
-        <FloatingWhatsApp />
+      > 
+        <CartProvider>
+          <CartSidebar/>
+          {children}
+          <FloatingWhatsApp />
+        </CartProvider>
       </body>
     </html>
   );
