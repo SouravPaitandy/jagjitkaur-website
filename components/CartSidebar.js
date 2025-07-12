@@ -1,24 +1,24 @@
 "use client";
 
-import { useCart } from '@/context/CartContext';
-import Image from 'next/image';
-import Link from 'next/link';
-import { FiX, FiMinus, FiPlus, FiShoppingBag, FiTrash2 } from 'react-icons/fi';
+import { useCart } from "@/context/CartContext";
+import Image from "next/image";
+import Link from "next/link";
+import { FiX, FiMinus, FiPlus, FiShoppingBag, FiTrash2 } from "react-icons/fi";
 
 export default function CartSidebar() {
-  const { 
-    isOpen, 
-    toggleCart, 
-    items, 
-    removeFromCart, 
-    updateQuantity, 
-    itemCount, 
+  const {
+    isOpen,
+    toggleCart,
+    items,
+    removeFromCart,
+    updateQuantity,
+    itemCount,
     subtotal,
-    clearCart
+    clearCart,
   } = useCart();
 
   const formatPrice = (price) => {
-    const numPrice = parseFloat(price.toString().replace(/[^\d]/g, ''));
+    const numPrice = parseFloat(price.toString().replace(/[^\d]/g, ""));
     return `₹${numPrice.toLocaleString()}`;
   };
 
@@ -28,24 +28,80 @@ export default function CartSidebar() {
       .replace(/[^a-z0-9\s]/g, "") // Remove special characters
       .replace(/\s+/g, "-") // Replace spaces with hyphens
       .trim();
-   }
+  }
+
+  const createMessage = () => {
+    let message = `🌟 *Inquiry from Jagjit Kaur Website* 🌟\n\n`;
+    message += `Hello! I'm interested in the following ${
+      itemCount > 1 ? "items" : "item"
+    } from my cart:\n\n`;
+
+    // Add cart items
+    items.forEach((item, index) => {
+      message += `📱 *Product ${index + 1}:* ${item.name}\n`;
+      if (item.price) message += `💰 *Price:* ₹${item.price}\n`;
+      if (item.fabric) message += `🧵 *Fabric:* ${item.fabric}\n`;
+      if (item.work) message += `✨ *Work:* ${item.work}\n`;
+      if (item.origin) message += `📍 *Origin:* ${item.origin}\n`;
+      if (item.occasion) message += `🎉 *Occasion:* ${item.occasion}\n`;
+      message += `📦 *Quantity:* ${item.quantity}\n`;
+      message += `\n`;
+    });
+
+    // Add cart summary
+    message += `📋 *Cart Summary:*\n`;
+    message += `• Total Items: ${itemCount}\n`;
+    message += `• Subtotal: ₹${subtotal.toLocaleString()}\n\n`;
+
+    message += `💬 *I would like to know:*\n`;
+    message += `• Current availability and stock status\n`;
+    message += `• Final pricing and any ongoing offers\n`;
+    message += `• Size options and measurements\n`;
+    message += `• Delivery time and shipping charges\n`;
+    message += `• Return/exchange policy\n`;
+    message += `• Care instructions\n`;
+    message += `• Payment methods accepted\n\n`;
+
+    message += `📞 *My preferred contact method:*\n`;
+    message += `[ ] WhatsApp call\n`;
+    message += `[ ] WhatsApp message\n`;
+    message += `[ ] Regular phone call\n\n`;
+
+    message += `⏰ *Best time to contact me:*\n`;
+    message += `[ ] Morning (9 AM - 12 PM)\n`;
+    message += `[ ] Afternoon (12 PM - 5 PM)\n`;
+    message += `[ ] Evening (5 PM - 8 PM)\n\n`;
+
+    message += `💬 *Additional questions/requirements:*\n`;
+    message += `(Please mention any specific requirements, custom sizing, color preferences, or special requests)\n\n`;
+
+    message += `Thank you for your time! Looking forward to hearing from you. 🙏\n\n`;
+    message += `*Website:* jkbyjagjitkaur.com`;
+
+    return encodeURIComponent(message);
+  };
+
+  const phone = process.env.NEXT_PUBLIC_WHATSAPP_PHONE; // Replace with actual business number if needed
+  const link = `https://wa.me/${phone}?text=${createMessage()}`;
 
   return (
     <>
       {/* Backdrop */}
       {isOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 lg:z-40"
           onClick={toggleCart}
         />
       )}
 
       {/* Cart Sidebar */}
-      <div className={`
+      <div
+        className={`
         fixed top-0 right-0 h-full w-full sm:w-96 bg-white dark:bg-stone-900 
-        shadow-2xl z-50 lg:z-50 transform transition-transform duration-300 ease-in-out
-        ${isOpen ? 'translate-x-0' : 'translate-x-full'}
-      `}>
+        shadow-2xl z-50 lg:z-50 transform transition-all duration-700 ease-in-out
+        ${isOpen ? "translate-x-0" : "translate-x-full"}
+      `}
+      >
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-stone-200 dark:border-stone-700">
@@ -96,12 +152,16 @@ export default function CartSidebar() {
                   <div key={item.id} className="flex gap-4">
                     {/* Product Image */}
                     <div className="group w-20 h-24 relative overflow-hidden bg-stone-100 dark:bg-stone-800">
-                      <Link href={`/product/${createSlug(item.name)}`} onClick={toggleCart} className="block w-full h-full">
+                      <Link
+                        href={`/product/${createSlug(item.name)}`}
+                        onClick={toggleCart}
+                        className="block w-full h-full"
+                      >
                         <Image
-                        src={item.image}
-                        alt={item.name}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-all ease-out duration-300"
+                          src={item.image}
+                          alt={item.name}
+                          fill
+                          className="object-cover group-hover:scale-105 transition-all ease-out duration-300"
                         />
                       </Link>
                     </div>
@@ -111,7 +171,7 @@ export default function CartSidebar() {
                       <h3 className="font-fira-sans font-medium text-stone-900 dark:text-stone-100 text-sm leading-tight">
                         {item.name}
                       </h3>
-                      
+
                       <div className="flex items-center gap-2 text-xs text-stone-600 dark:text-stone-400">
                         {item.fabric && <span>{item.fabric}</span>}
                         {item.fabric && item.origin && <span>•</span>}
@@ -127,7 +187,9 @@ export default function CartSidebar() {
                         <div className="flex items-center gap-2">
                           <div className="flex items-center border border-stone-300 dark:border-stone-600">
                             <button
-                              onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                              onClick={() =>
+                                updateQuantity(item.id, item.quantity - 1)
+                              }
                               className="p-1 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors"
                               aria-label="Decrease quantity"
                             >
@@ -137,7 +199,9 @@ export default function CartSidebar() {
                               {item.quantity}
                             </span>
                             <button
-                              onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                              onClick={() =>
+                                updateQuantity(item.id, item.quantity + 1)
+                              }
                               className="p-1 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors"
                               aria-label="Increase quantity"
                             >
@@ -177,7 +241,7 @@ export default function CartSidebar() {
               {/* Subtotal */}
               <div className="flex justify-between items-center">
                 <span className="font-fira-sans font-medium text-stone-900 dark:text-stone-100">
-                  Subtotal ({itemCount} {itemCount === 1 ? 'item' : 'items'})
+                  Subtotal ({itemCount} {itemCount === 1 ? "item" : "items"})
                 </span>
                 <span className="text-xl font-bold text-stone-900 dark:text-stone-100">
                   ₹{subtotal.toLocaleString()}
@@ -185,19 +249,22 @@ export default function CartSidebar() {
               </div>
 
               <p className="text-xs text-stone-600 dark:text-stone-400">
-                Shipping and taxes calculated at checkout
+                All taxes calculated at checkout
               </p>
 
               {/* Action Buttons */}
               <div className="space-y-3">
                 <Link
-                  href="/checkout"
+                  href={link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="Proceed to WhatsApp for inquiries"
                   onClick={toggleCart}
                   className="w-full bg-stone-800 dark:bg-stone-200 text-white dark:text-stone-900 py-4 text-center font-fira-sans font-medium tracking-wide hover:bg-stone-900 dark:hover:bg-stone-100 transition-colors duration-300 block"
                 >
                   PROCEED TO CHECKOUT
                 </Link>
-                
+
                 <Link
                   href="/products"
                   onClick={toggleCart}
