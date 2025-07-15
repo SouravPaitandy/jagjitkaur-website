@@ -4,6 +4,7 @@ import { fetchProductsFromFirestore } from "@/lib/fetchProducts";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import AddToBagButton from "@/components/AddToBagButton";
 import Footer from "@/components/Footer";
+import ImageGallery from "@/components/ImageGallery";
 import {
   FiHeart,
   FiShare2,
@@ -35,6 +36,11 @@ export async function generateMetadata({ params }) {
     };
   }
 
+  // Get main image or first image
+  const mainImage = product.images?.find(img => img.isMain)?.url || 
+                   product.images?.[0]?.url || 
+                   product.image;
+
   return {
     title: `${product.name} | Jagjit Kaur`,
     description: `${product.description} - Premium ${product.fabric} ${product.category} with ${product.work} from ${product.origin}. Authentic handcrafted Indian fashion by Jagjit Kaur.`,
@@ -54,7 +60,7 @@ export async function generateMetadata({ params }) {
       description: product.description,
       images: [
         {
-          url: product.image,
+          url: mainImage,
           width: 800,
           height: 600,
           alt: product.name,
@@ -123,6 +129,13 @@ export default async function ProductDetail({ params }) {
     );
   }
 
+  // Get product images - support both old and new format
+  const productImages = product.images && product.images.length > 0 
+    ? product.images 
+    : product.image 
+      ? [{ url: product.image, isMain: true }] 
+      : [];
+
   // Get related products (excluding current product)
   const relatedProducts = products
     .filter(
@@ -162,89 +175,17 @@ export default async function ProductDetail({ params }) {
         {/* Product Content */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-            {/* Image Section - Left with slide-in animation */}
+            {/* Image Gallery Section - Left with slide-in animation */}
             <div className="space-y-6 animate-slide-in">
-              {/* Mobile Layout */}
-              <div className="lg:hidden">
-                {/* Main Product Image - Mobile */}
-                <div className="aspect-[3/4] relative overflow-hidden bg-stone-50 dark:bg-stone-800 group mb-4">
-                  <Image
-                    src={product.image}
-                    alt={product.name}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-all duration-700 ease-out"
-                    priority
-                  />
-                </div>
-
-                {/* Additional Images - Mobile Horizontal Scroll */}
-                <div className="flex space-x-3 overflow-x-auto pb-2">
-                  {[1, 2, 3, 4].map((i) => (
-                    <div
-                      key={i}
-                      className="flex-shrink-0 w-16 h-16 relative overflow-hidden bg-stone-50 dark:bg-stone-800 cursor-pointer border-2 border-transparent hover:border-stone-300 dark:hover:border-stone-600 transition-all duration-300 group animate-fade-in"
-                      style={{
-                        animationDelay: `${i * 100}ms`,
-                        animationFillMode: "both",
-                      }}
-                    >
-                      <Image
-                        src={product.image}
-                        alt={`${product.name} view ${i}`}
-                        fill
-                        className="object-cover group-hover:scale-110 transition-all duration-700 ease-out"
-                      />
-                      {/* Hover Overlay */}
-                      <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-all duration-300"></div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Desktop Layout */}
-              <div className="hidden lg:block">
-                <div className="grid grid-cols-4 gap-6">
-                  {/* Main Product Image - Desktop */}
-                  <div className="col-span-3">
-                    <div className="aspect-[3/4] relative overflow-hidden bg-stone-50 dark:bg-stone-800 group">
-                      <Image
-                        src={product.image}
-                        alt={product.name}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-all duration-700 ease-out"
-                        priority
-                      />
-                    </div>
-                  </div>
-
-                  {/* Additional Images - Desktop Right Side */}
-                  <div className="space-y-3">
-                    {[1, 2, 3, 4].map((i) => (
-                      <div
-                        key={i}
-                        className="aspect-[3/4] max-h-[113.5px] relative overflow-hidden bg-stone-50 dark:bg-stone-800 cursor-pointer border-2 border-transparent hover:border-stone-300 dark:hover:border-stone-600 transition-all duration-300 group animate-fade-in"
-                        style={{
-                          animationDelay: `${i * 100}ms`,
-                          animationFillMode: "both",
-                        }}
-                      >
-                        <Image
-                          src={product.image}
-                          alt={`${product.name} view ${i}`}
-                          fill
-                          className="object-cover group-hover:scale-110 transition-all duration-700 ease-out"
-                        />
-                        {/* Hover Overlay */}
-                        <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-all duration-300"></div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
+              <ImageGallery 
+                images={productImages} 
+                productName={product.name} 
+              />
             </div>
 
             {/* Product Info - Right with slide-up animation */}
             <div className="space-y-8 animate-slide-up">
+              {/* ...existing product info code... */}
               {/* Product Title & SKU */}
               <div className="space-y-4 animate-fade-in-up">
                 <h1 className="font-fira-sans text-2xl sm:text-3xl md:text-4xl font-semibold text-stone-900 dark:text-stone-100 tracking-wide leading-tight">
@@ -270,7 +211,7 @@ export default async function ProductDetail({ params }) {
                   <span className="text-2xl font-semibold text-stone-900 dark:text-stone-100">
                     ₹{product.price}
                   </span>
-                  {product.originalPrice && (
+                  {product.originalPrice && product.originalPrice !== product.price && (
                     <span className="text-lg text-stone-500 dark:text-stone-400 line-through">
                       {product.originalPrice}
                     </span>
@@ -434,36 +375,42 @@ export default async function ProductDetail({ params }) {
               </h2>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
-                {relatedProducts.map((relatedProduct, index) => (
-                  <Link
-                    key={relatedProduct.firestoreId}
-                    href={`/product/${createSlug(relatedProduct.name)}`}
-                    className="group animate-fade-in-up"
-                    style={{
-                      animationDelay: `${index * 150}ms`,
-                      animationFillMode: "both",
-                    }}
-                  >
-                    <div className="space-y-3 sm:space-y-4">
-                      <div className="aspect-[3/4] relative overflow-hidden bg-stone-50 dark:bg-stone-800">
-                        <Image
-                          src={relatedProduct.image}
-                          alt={relatedProduct.name}
-                          fill
-                          className={`object-cover transition-all duration-700 ease-out group-hover:scale-110`}
-                        />
+                {relatedProducts.map((relatedProduct, index) => {
+                  const relatedMainImage = relatedProduct.images?.find(img => img.isMain)?.url || 
+                                         relatedProduct.images?.[0]?.url || 
+                                         relatedProduct.image;
+                  
+                  return (
+                    <Link
+                      key={relatedProduct.firestoreId}
+                      href={`/product/${createSlug(relatedProduct.name)}`}
+                      className="group animate-fade-in-up"
+                      style={{
+                        animationDelay: `${index * 150}ms`,
+                        animationFillMode: "both",
+                      }}
+                    >
+                      <div className="space-y-3 sm:space-y-4">
+                        <div className="aspect-[3/4] relative overflow-hidden bg-stone-50 dark:bg-stone-800">
+                          <Image
+                            src={relatedMainImage}
+                            alt={relatedProduct.name}
+                            fill
+                            className={`object-cover transition-all duration-700 ease-out group-hover:scale-110`}
+                          />
+                        </div>
+                        <div className="space-y-1 sm:space-y-2">
+                          <h3 className="text-xs sm:text-sm text-stone-900 dark:text-stone-100 group-hover:text-stone-600 dark:group-hover:text-stone-400 transition-colors duration-300 line-clamp-2">
+                            {relatedProduct.name}
+                          </h3>
+                          <p className="text-xs sm:text-sm text-stone-700 dark:text-stone-300 font-medium">
+                            ₹{relatedProduct.price}
+                          </p>
+                        </div>
                       </div>
-                      <div className="space-y-1 sm:space-y-2">
-                        <h3 className="text-xs sm:text-sm text-stone-900 dark:text-stone-100 group-hover:text-stone-600 dark:group-hover:text-stone-400 transition-colors duration-300 line-clamp-2">
-                          {relatedProduct.name}
-                        </h3>
-                        <p className="text-xs sm:text-sm text-stone-700 dark:text-stone-300 font-medium">
-                          ₹{relatedProduct.price}
-                        </p>
-                      </div>
-                    </div>
-                  </Link>
-                ))}
+                    </Link>
+                  );
+                })}
               </div>
             </div>
           )}

@@ -207,7 +207,7 @@ export default function Sidebar() {
                 ))}
                 {isMobile && <div className="border-t border-stone-200 dark:border-stone-700 pt-4 space-y-3">
                 <Link 
-                  href={user ? "/admin/upload" : "/admin/login"}
+                  href={user ? "/admin/dashboard" : "/admin/login"}
                   onClick={toggleSidebar}
                   className="flex items-center space-x-3 font-fira-sans font-medium text-sm text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-stone-100 transition-colors duration-300 py-2 px-3 hover:bg-stone-100 dark:hover:bg-stone-800"
                 >

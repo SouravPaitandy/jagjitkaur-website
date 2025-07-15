@@ -17,7 +17,7 @@ export default function LoginPage() {
     setError("");
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      router.push("/admin/upload");
+      router.push("/admin/dashboard");
     } catch (err) {
       setError("Invalid credentials. Please try again.");
     }

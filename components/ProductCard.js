@@ -70,7 +70,7 @@ export default function ProductCard({ product }) {
             <span className="text-base font-light text-stone-900 dark:text-stone-100 transition-colors duration-300">
               ₹{product.price}
             </span>
-            {product.originalPrice && (
+            {product.originalPrice && product.originalPrice !== product.price && (
               <span className="text-sm text-stone-500 dark:text-stone-400 line-through transition-colors duration-300">
                 ₹{product.originalPrice}
               </span>

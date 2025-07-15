@@ -116,7 +116,7 @@ export default function Header() {
 
                 {/* Admin Button */}
                 <Link 
-                  href={user ? "/admin/upload" : "/admin/login"}
+                  href={user ? "/admin/dashboard" : "/admin/login"}
                   className="flex items-center space-x-2 px-4 py-2.5 bg-stone-800 dark:bg-stone-200 text-white dark:text-stone-900 hover:bg-stone-900 dark:hover:bg-stone-100 transition-all duration-300 font-medium border border-stone-800 dark:border-stone-200 hover:scale-105 shadow-lg hover:shadow-xl"
                 >
                   <FiUser className="w-4 h-4" />

@@ -10,7 +10,7 @@ export default function FloatingWhatsApp() {
     message += `• Pricing and availability\n`;
     message += `• Delivery options\n\n`;
     message += `Please let me know how I can explore your exquisite handcrafted pieces! 🙏\n\n`;
-    message += `*Website:* jagjitkaur.com`;
+    message += `*Website:* jkbyjagjitkaur.com`;
     
     return encodeURIComponent(message);
   };
