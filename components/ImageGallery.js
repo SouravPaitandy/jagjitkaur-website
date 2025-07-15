@@ -142,7 +142,7 @@ export default function ImageGallery({ images, productName }) {
 
           {/* Thumbnail Navigation - Desktop */}
           <div className="space-y-3">
-            {images.slice(0, 4).map((image, index) => (
+            {images.slice(0, 3).map((image, index) => (
               <button
                 key={index}
                 onClick={() => setCurrentImage(index)}
@@ -163,10 +163,10 @@ export default function ImageGallery({ images, productName }) {
             ))}
             
             {/* Show more indicator */}
-            {images.length > 4 && (
-              <div className="aspect-[3/4] w-full relative overflow-hidden bg-stone-100 dark:bg-stone-800 border-2 border-dashed border-stone-300 dark:border-stone-600 flex items-center justify-center cursor-pointer hover:bg-stone-200 dark:hover:bg-stone-700 transition-all duration-300">
+            {images.length > 3 && (
+              <div className="aspect-[4/3] w-full relative overflow-hidden bg-stone-100 dark:bg-stone-800 border-2 border-dashed border-stone-300 dark:border-stone-600 flex items-center justify-center cursor-pointer hover:bg-stone-200 dark:hover:bg-stone-700 transition-all duration-300">
                 <span className="text-stone-600 dark:text-stone-400 text-sm">
-                  +{images.length - 4}
+                  +{images.length - 3}
                 </span>
               </div>
             )}

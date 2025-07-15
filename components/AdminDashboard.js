@@ -131,6 +131,13 @@ export default function AdminDashboard() {
       primary: true,
     },
     {
+      title: "Manage Products",
+      description: "Manage your products",
+      icon: FiPackage,
+      href: "/admin/manage-products",
+      primary: false,
+    },
+    {
       title: "Change Password",
       description: "Update your security credentials",
       icon: FiLock,
@@ -305,7 +312,7 @@ export default function AdminDashboard() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-16">
             {quickActions.map((action, index) => (
               <Link
                 key={index}

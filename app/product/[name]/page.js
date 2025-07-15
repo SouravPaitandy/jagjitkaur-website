@@ -31,7 +31,7 @@ export async function generateMetadata({ params }) {
 
   if (!product) {
     return {
-      title: "Product Not Found | Jagjit Kaur",
+      title: "Product Not Found",
       description: "The product you're looking for could not be found.",
     };
   }
@@ -42,7 +42,7 @@ export async function generateMetadata({ params }) {
                    product.image;
 
   return {
-    title: `${product.name} | Jagjit Kaur`,
+    title: `${product.name}`,
     description: `${product.description} - Premium ${product.fabric} ${product.category} with ${product.work} from ${product.origin}. Authentic handcrafted Indian fashion by Jagjit Kaur.`,
     keywords: [
       product.name,
@@ -207,13 +207,13 @@ export default async function ProductDetail({ params }) {
 
               {/* Price with slide-in animation */}
               <div className="space-y-2 animate-fade-in-up delay-200">
-                <div className="flex flex-col sm:flex-row sm:items-baseline space-y-2 sm:space-y-0 sm:space-x-4">
+                <div className="flex flex-row sm:items-baseline gap-2 small:gap-0 space-y-2 sm:space-y-0 sm:space-x-4">
                   <span className="text-2xl font-semibold text-stone-900 dark:text-stone-100">
                     ₹{product.price}
                   </span>
                   {product.originalPrice && product.originalPrice !== product.price && (
                     <span className="text-lg text-stone-500 dark:text-stone-400 line-through">
-                      {product.originalPrice}
+                      ₹{product.originalPrice}
                     </span>
                   )}
                 </div>
