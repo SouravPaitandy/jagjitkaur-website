@@ -13,6 +13,7 @@ import {
   FiArrowRight,
   FiEye,
   FiClock,
+  FiRefreshCw,
 } from "react-icons/fi";
 
 export default function ComingSoonPage() {
@@ -37,16 +38,21 @@ export default function ComingSoonPage() {
     // Get or set launch date from localStorage
     const getLaunchDate = () => {
       const stored = localStorage.getItem("jagjitkaur-launch-date");
-      if (stored) {
+      const version = localStorage.getItem("jagjitkaur-launch-version");
+      
+      // Version 2 indicates the new launch date (4 more days)
+      const currentVersion = "2";
+      
+      if (stored && version === currentVersion) {
         return new Date(stored);
       } else {
-        // Set launch date to 7 days from now (only calculate once)
+        // Set new launch date to 5 days from now (4 + 1 additional days)
         const newLaunchDate = new Date();
-        newLaunchDate.setDate(newLaunchDate.getDate() + 4);
-        localStorage.setItem(
-          "jagjitkaur-launch-date",
-          newLaunchDate.toISOString()
-        );
+        newLaunchDate.setDate(newLaunchDate.getDate() + 5);
+        
+        localStorage.setItem("jagjitkaur-launch-date", newLaunchDate.toISOString());
+        localStorage.setItem("jagjitkaur-launch-version", currentVersion);
+        
         return newLaunchDate;
       }
     };
@@ -100,7 +106,22 @@ export default function ComingSoonPage() {
   // Function to reset countdown (for testing or admin use)
   const resetCountdown = () => {
     localStorage.removeItem("jagjitkaur-launch-date");
+    localStorage.removeItem("jagjitkaur-launch-version");
     window.location.reload();
+  };
+
+  // Function to extend launch date by 4 more days
+  const extendLaunchDate = () => {
+    const currentDate = localStorage.getItem("jagjitkaur-launch-date");
+    if (currentDate) {
+      const extendedDate = new Date(currentDate);
+      extendedDate.setDate(extendedDate.getDate() + 4);
+      
+      localStorage.setItem("jagjitkaur-launch-date", extendedDate.toISOString());
+      localStorage.setItem("jagjitkaur-launch-version", "2");
+      
+      window.location.reload();
+    }
   };
 
   const features = [
@@ -163,14 +184,28 @@ export default function ComingSoonPage() {
       <nav className="relative z-10 flex justify-between items-center p-6 max-w-7xl mx-auto">
         {/* Admin Access */}
         <div className="flex items-center space-x-3">
-          {/* Reset Countdown Button (hidden, for testing) */}
-          <button
-            onClick={resetCountdown}
-            className="hidden text-xs text-stone-500 hover:text-stone-700 dark:text-stone-400 dark:hover:text-stone-200 transition-colors"
-            title="Reset countdown (for testing)"
-          >
-            Reset
-          </button>
+          {/* Admin Controls */}
+          <div className="flex items-center space-x-2">
+            {/* Reset Countdown Button */}
+            <button
+              onClick={resetCountdown}
+              className="flex items-center space-x-1 px-3 py-2 text-xs text-stone-500 hover:text-stone-700 dark:text-stone-400 dark:hover:text-stone-200 transition-colors duration-200 hover:bg-stone-100 dark:hover:bg-stone-800 rounded-lg"
+              title="Reset countdown to original date"
+            >
+              <FiRefreshCw className="w-3 h-3" />
+              <span>Reset</span>
+            </button>
+
+            {/* Extend Launch Date Button */}
+            <button
+              onClick={extendLaunchDate}
+              className="flex items-center space-x-1 px-3 py-2 text-xs text-amber-600 hover:text-amber-700 dark:text-amber-400 dark:hover:text-amber-300 transition-colors duration-200 hover:bg-amber-50 dark:hover:bg-amber-900/20 rounded-lg"
+              title="Extend launch date by 4 more days"
+            >
+              <FiClock className="w-3 h-3" />
+              <span>+4 Days</span>
+            </button>
+          </div>
 
           <Link
             href="/admin/login"
@@ -181,6 +216,26 @@ export default function ComingSoonPage() {
           </Link>
         </div>
       </nav>
+
+      {/* Launch Date Delay Notice */}
+      <div className="relative z-10 max-w-4xl mx-auto px-6 mb-8">
+        <div className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-6 text-center">
+          <div className="flex items-center justify-center space-x-2 mb-3">
+            <FiClock className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+            <h3 className="font-fira-sans text-lg font-semibold text-amber-800 dark:text-amber-200">
+              Launch Date Update
+            </h3>
+          </div>
+          <p className="text-amber-700 dark:text-amber-300 mb-4">
+            We're adding some final touches to make your shopping experience even more special. 
+            Our launch has been extended by a few more days to ensure perfection in every detail.
+          </p>
+          <div className="flex items-center justify-center space-x-2 text-sm text-amber-600 dark:text-amber-400">
+            <FiHeart className="w-4 h-4" />
+            <span>Thank you for your patience!</span>
+          </div>
+        </div>
+      </div>
 
       {/* Hero Banner Section */}
       <div className="relative z-10 mb-8">
@@ -239,6 +294,7 @@ export default function ComingSoonPage() {
             </p>
           </div>
         </div>
+
         {/* Countdown Timer */}
         <div className="text-center mb-16 animate-fade-in-up delay-300">
           <h2 className="font-fira-sans text-2xl font-light text-stone-900 dark:text-stone-100 mb-8 tracking-wide">
@@ -283,6 +339,7 @@ export default function ComingSoonPage() {
             )}
         </div>
 
+        {/* ...rest of the existing code remains the same... */}
         {/* Features Grid */}
         <div className="grid md:grid-cols-3 gap-8 mb-16 animate-fade-in-up delay-400">
           {features.map((feature, index) => (
