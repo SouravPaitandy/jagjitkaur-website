@@ -42,7 +42,7 @@ export default function ComingSoonPage() {
       } else {
         // Set launch date to 7 days from now (only calculate once)
         const newLaunchDate = new Date();
-        newLaunchDate.setDate(newLaunchDate.getDate() + 7);
+        newLaunchDate.setDate(newLaunchDate.getDate() + 4);
         localStorage.setItem(
           "jagjitkaur-launch-date",
           newLaunchDate.toISOString()

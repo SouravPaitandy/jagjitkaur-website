@@ -13,6 +13,7 @@ import {
   FiShield,
 } from "react-icons/fi";
 import { ProductDetailSkeleton } from "@/components/Loading";
+import WishlistButton from "@/components/WishlistButton";
 
 // Helper function to create URL-safe slug from product name
 function createSlug(name) {
@@ -37,9 +38,10 @@ export async function generateMetadata({ params }) {
   }
 
   // Get main image or first image
-  const mainImage = product.images?.find(img => img.isMain)?.url || 
-                   product.images?.[0]?.url || 
-                   product.image;
+  const mainImage =
+    product.images?.find((img) => img.isMain)?.url ||
+    product.images?.[0]?.url ||
+    product.image;
 
   return {
     title: `${product.name}`,
@@ -130,10 +132,11 @@ export default async function ProductDetail({ params }) {
   }
 
   // Get product images - support both old and new format
-  const productImages = product.images && product.images.length > 0 
-    ? product.images 
-    : product.image 
-      ? [{ url: product.image, isMain: true }] 
+  const productImages =
+    product.images && product.images.length > 0
+      ? product.images
+      : product.image
+      ? [{ url: product.image, isMain: true }]
       : [];
 
   // Get related products (excluding current product)
@@ -177,10 +180,7 @@ export default async function ProductDetail({ params }) {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
             {/* Image Gallery Section - Left with slide-in animation */}
             <div className="space-y-6 animate-slide-in">
-              <ImageGallery 
-                images={productImages} 
-                productName={product.name} 
-              />
+              <ImageGallery images={productImages} productName={product.name} />
             </div>
 
             {/* Product Info - Right with slide-up animation */}
@@ -211,11 +211,12 @@ export default async function ProductDetail({ params }) {
                   <span className="text-2xl font-semibold text-stone-900 dark:text-stone-100">
                     ₹{product.price}
                   </span>
-                  {product.originalPrice && product.originalPrice !== product.price && (
-                    <span className="text-lg text-stone-500 dark:text-stone-400 line-through">
-                      ₹{product.originalPrice}
-                    </span>
-                  )}
+                  {product.originalPrice &&
+                    product.originalPrice !== product.price && (
+                      <span className="text-lg text-stone-500 dark:text-stone-400 line-through">
+                        ₹{product.originalPrice}
+                      </span>
+                    )}
                 </div>
                 <div className="mt-4 sm:hidden">
                   <WhatsAppButton
@@ -328,10 +329,17 @@ export default async function ProductDetail({ params }) {
                   </div>
 
                   {/* Wishlist Button */}
-                  <button className="sm:w-auto w-full p-4 border border-stone-300 dark:border-stone-600 hover:border-stone-800 dark:hover:border-stone-200 text-stone-600 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 transition-all duration-300 hover:scale-110 active:scale-95 flex items-center justify-center">
+                  {/* <button className="sm:w-auto w-full p-4 border border-stone-300 dark:border-stone-600 hover:border-stone-800 dark:hover:border-stone-200 text-stone-600 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 transition-all duration-300 hover:scale-110 active:scale-95 flex items-center justify-center">
                     <FiHeart className="w-5 h-5" />
                     <span className="ml-2 sm:hidden text-sm">ADD TO WISHLIST</span>
-                  </button>
+                  </button> */}
+                  <div className="sm:w-auto w-full">
+                    <WishlistButton
+                      product={product}
+                      // showText={true}
+                      className="w-full sm:w-auto p-4 border border-stone-300 dark:border-stone-600 hover:border-stone-800 dark:hover:border-stone-200 transition-all duration-300 hover:scale-110 active:scale-95 flex items-center justify-center"
+                    />
+                  </div>
                 </div>
 
                 <div className="hidden sm:block animate-bounce-in delay-600">
@@ -376,10 +384,11 @@ export default async function ProductDetail({ params }) {
 
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
                 {relatedProducts.map((relatedProduct, index) => {
-                  const relatedMainImage = relatedProduct.images?.find(img => img.isMain)?.url || 
-                                         relatedProduct.images?.[0]?.url || 
-                                         relatedProduct.image;
-                  
+                  const relatedMainImage =
+                    relatedProduct.images?.find((img) => img.isMain)?.url ||
+                    relatedProduct.images?.[0]?.url ||
+                    relatedProduct.image;
+
                   return (
                     <Link
                       key={relatedProduct.firestoreId}

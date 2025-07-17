@@ -3,6 +3,8 @@ import "./globals.css";
 import FloatingWhatsApp from '../components/FloatingWhatsApp';
 import { CartProvider } from "@/context/CartContext";
 import CartSidebar from "@/components/CartSidebar";
+import WishlistSidebar from "@/components/WishlistSidebar";
+import { WishlistProvider } from "@/context/WishlistContext";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -72,9 +74,12 @@ export default function RootLayout({ children }) {
         suppressContentEditableWarning
       > 
         <CartProvider>
-          <CartSidebar/>
-          {children}
-          <FloatingWhatsApp />
+          <WishlistProvider>
+            <CartSidebar/>
+            <WishlistSidebar/>
+            {children}
+            <FloatingWhatsApp />
+          </WishlistProvider>
         </CartProvider>
       </body>
     </html>

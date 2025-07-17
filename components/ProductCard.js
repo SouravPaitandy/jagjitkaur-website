@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import WishlistButton from "./WishlistButton";
 
 export default function ProductCard({ product }) {
   const [isHovered, setIsHovered] = useState(false);
@@ -42,6 +43,13 @@ export default function ProductCard({ product }) {
               <div className="w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer"></div>
             </div>
           )}
+
+           {/* <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <WishlistButton 
+              product={product}
+              className="p-2 bg-white/90 dark:bg-stone-900/90 backdrop-blur-sm shadow-lg hover:shadow-xl"
+            />
+          </div> */}
 
           {/* Quick Shop Overlay */}
           <div className={`absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent flex items-center justify-center transition-all duration-500 ease-out ${

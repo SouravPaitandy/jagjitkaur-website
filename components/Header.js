@@ -7,6 +7,7 @@ import { auth } from "@/lib/firebase";
 import { useCart } from '@/context/CartContext';
 import Image from 'next/image';
 import { FiMenu, FiX, FiSun, FiMoon, FiUser, FiHeart, FiShoppingBag } from 'react-icons/fi';
+import { useWishlist } from '@/context/WishlistContext';
 
 export default function Header() {
   const [darkMode, setDarkMode] = useState(false);
@@ -14,6 +15,7 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [user, loading] = useAuthState(auth);
   const { toggleCart, itemCount } = useCart();
+  const { toggleWishlist, wishlistCount } = useWishlist();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -96,9 +98,18 @@ export default function Header() {
               {/* Desktop Action Buttons */}
               <div className="hidden lg:flex items-center space-x-3">
                 {/* Wishlist Button */}
-                {/* <button className="p-2.5 bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 transition-all duration-300 border border-stone-200 dark:border-stone-700 hover:border-stone-300 dark:hover:border-stone-600 group hover:scale-105">
+                <button 
+                  onClick={toggleWishlist}
+                  className="relative p-2.5 bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 transition-all duration-300 border border-stone-200 dark:border-stone-700 hover:border-stone-300 dark:hover:border-stone-600 group hover:scale-105"
+                  aria-label={`Wishlist with ${wishlistCount} items`}
+                >
                   <FiHeart className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />
-                </button> */}
+                  {wishlistCount > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center text-center min-w-[20px] animate-bounce">
+                      {wishlistCount > 10 ? '10+' : wishlistCount}
+                    </span>
+                  )}
+                </button>
 
                 {/* Enhanced Cart Button with Item Count */}
                 <button 
