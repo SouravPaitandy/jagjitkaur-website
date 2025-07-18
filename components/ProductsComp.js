@@ -22,21 +22,13 @@ export default function ProductsPage({ products }) {
     const categoryParam = searchParams.get("category");
     if (categoryParam) {
       const categoryMap = {
-        "sharara-sets": "sharara-sets",
-        "palazzo-sets": "palazzo-sets",
-        "anarkali-sets": "anarkali-sets",
-        "gharara-sets": "gharara-sets",
-        "kurti-sets": "kurti-sets",
-        "co-ord-sets": "co-ord-sets",
+        "pehchaan": "pehchaan",
         "potli-bags": "potli-bags",
+        "custom-made": "custom-made",
       };
 
-      const mappedCategory =
-        categoryMap[categoryParam.toLowerCase()] || categoryParam.toLowerCase();
-
-      const availableCategories = [
-        ...new Set(products.map((product) => product.category.toLowerCase())),
-      ];
+      const mappedCategory = categoryMap[categoryParam.toLowerCase()] || categoryParam.toLowerCase();
+      const availableCategories = [...new Set(products.map((product) => product.category.toLowerCase()))];
 
       if (availableCategories.includes(mappedCategory)) {
         setFilterBy(mappedCategory);
@@ -145,13 +137,9 @@ export default function ProductsPage({ products }) {
   // Function to get display name for category
   const getCategoryDisplayName = (category) => {
     const displayNames = {
-      "sharara-sets": "Sharara Sets",
-      "palazzo-sets": "Palazzo Sets",
-      "anarkali-sets": "Anarkali Sets",
-      "gharara-sets": "Gharara Sets",
-      "kurti-sets": "Kurti Sets",
-      "co-ord-sets": "Co-ord Sets",
+      "pehchaan": "Pehchaan Collection",
       "potli-bags": "Potli Bags",
+      "custom-made": "Custom Made",
     };
     return (
       displayNames[category.toLowerCase()] ||
@@ -211,14 +199,12 @@ export default function ProductsPage({ products }) {
             <h1 className="font-vogue-bold text-4xl md:text-5xl font-light text-stone-900 dark:text-stone-100 mb-4 tracking-wide animate-fade-in-up delay-200">
               {filterBy !== "all"
                 ? getCategoryDisplayName(filterBy)
-                : "Collections"}
+                : "All Collections"}
             </h1>
             <p className="text-lg text-stone-600 dark:text-stone-400 max-w-2xl mx-auto animate-fade-in-up delay-400">
               {filterBy !== "all"
-                ? `Discover our handcrafted ${getCategoryDisplayName(
-                    filterBy
-                  ).toLowerCase()}`
-                : "Discover our complete range of handcrafted traditional wear"}
+                ? `Discover our handcrafted ${getCategoryDisplayName(filterBy).toLowerCase()}`
+                : "Explore our complete range of handcrafted traditional wear and accessories"}
             </p>
           </div>
         </div>

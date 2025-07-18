@@ -265,15 +265,22 @@ export default function AdminUpload({
     setIncludes: "Set Includes (comma-separated)",
   };
 
+  // Updated categories with new structure
   const categories = [
-    "sharara-sets",
-    "palazzo-sets",
-    "anarkali-sets",
-    "gharara-sets",
-    "kurti-sets",
-    "co-ord-sets",
-    "potli-bags",
+    "pehchaan", // Collection - Pehchaan
+    "potli-bags", // Potli Bags
+    "custom-made", // Custom Made
   ];
+
+  // Category display names
+  const getCategoryDisplayName = (category) => {
+    const displayNames = {
+      "pehchaan": "Collection - Pehchaan",
+      "potli-bags": "Potli Bags",
+      "custom-made": "Custom Made",
+    };
+    return displayNames[category] || category;
+  };
 
   return (
     <div className="min-h-screen bg-white dark:bg-stone-900">
@@ -360,9 +367,23 @@ export default function AdminUpload({
                 Fill in the details to add a new piece to our collection
               </p>
 
+              {/* Category Info */}
+              <div className="mt-8 p-4 bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 text-center">
+                <p className="font-fira-sans text-xs text-stone-600 dark:text-stone-400 font-medium tracking-widest uppercase mb-2">
+                  Available Categories
+                </p>
+                <div className="flex flex-wrap justify-center gap-2">
+                  {categories.map((cat) => (
+                    <span key={cat} className="px-3 py-1 bg-stone-800 dark:bg-stone-200 text-white dark:text-stone-900 text-xs font-fira-sans tracking-wide">
+                      {getCategoryDisplayName(cat)}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
               {/* URL Preview */}
               {form.name && (
-                <div className="mt-8 p-4 bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 text-center">
+                <div className="mt-4 p-4 bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 text-center">
                   <p className="font-fira-sans text-xs text-stone-600 dark:text-stone-400 font-medium tracking-widest uppercase mb-2">
                     Product URL Preview
                   </p>
@@ -400,7 +421,7 @@ export default function AdminUpload({
                           <option value="">Select Category</option>
                           {categories.map((cat) => (
                             <option key={cat} value={cat}>
-                              {cat.charAt(0).toUpperCase() + cat.slice(1).replace('-', ' ')}
+                              {getCategoryDisplayName(cat)}
                             </option>
                           ))}
                         </select>

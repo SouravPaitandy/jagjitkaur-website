@@ -185,7 +185,7 @@ export default function ComingSoonPage() {
         {/* Admin Access */}
         <div className="flex items-center space-x-3">
           {/* Admin Controls */}
-          <div className="flex items-center space-x-2">
+          <div className="hidden items-center space-x-2">
             {/* Reset Countdown Button */}
             <button
               onClick={resetCountdown}

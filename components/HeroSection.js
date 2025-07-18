@@ -25,7 +25,7 @@ export default function HeroSection() {
       subtitle: "First Heritage Collection",
       image: "/images/hero-img1.JPG",
       ctaText: "SHOP NOW",
-      ctaLink: "/products?category=pehchan",
+      ctaLink: "/products?category=pehchaan",
     },
     {
       id: 2,

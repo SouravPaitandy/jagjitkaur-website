@@ -53,13 +53,9 @@ export default function EditProductPage({ params }) {
   });
 
   const categories = [
-    "sharara-sets",
-    "palazzo-sets",
-    "anarkali-sets",
-    "gharara-sets",
-    "kurti-sets",
-    "co-ord-sets",
-    "potli-bags",
+    "pehchaan", // Collection - Pehchaan
+    "potli-bags", // Potli Bags
+    "custom-made", // Custom Made
   ];
 
   const fieldLabels = {

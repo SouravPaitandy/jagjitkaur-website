@@ -17,12 +17,14 @@ import {
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/lib/firebase";
 import { useCart } from '@/context/CartContext';
+import { useWishlist } from '@/context/WishlistContext';
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [user] = useAuthState(auth);
   const { toggleCart, itemCount } = useCart();
+  const { toggleWishlist, wishlistCount } = useWishlist();
 
   // Check if mobile device
   useEffect(() => {
@@ -36,41 +38,22 @@ export default function Sidebar() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
+  // Updated categories with new structure
   const categories = [
     {
-      name: "Sharara Sets",
-      href: "/products?category=sharara-sets",
-      description: "3-piece traditional sets",
-    },
-    {
-      name: "Palazzo Sets",
-      href: "/products?category=palazzo-sets",
-      description: "Contemporary comfort",
-    },
-    {
-      name: "Anarkali Sets",
-      href: "/products?category=anarkali-sets",
-      description: "Regal elegance",
-    },
-    {
-      name: "Gharara Sets",
-      href: "/products?category=gharara-sets",
-      description: "Festive grandeur",
-    },
-    {
-      name: "Kurti Sets",
-      href: "/products?category=kurti-sets",
-      description: "Modern simplicity",
-    },
-    {
-      name: "Co-ord Sets",
-      href: "/products?category=co-ord-sets",
-      description: "Perfect coordination",
+      name: "Pehchaan Collection",
+      href: "/products?category=pehchaan",
+      description: "Heritage dress collection",
     },
     {
       name: "Potli Bags",
       href: "/products?category=potli-bags",
       description: "Handcrafted accessories",
+    },
+    {
+      name: "Custom Made",
+      href: "/products?category=custom-made",
+      description: "Personalized designs",
     },
   ];
 
@@ -86,13 +69,13 @@ export default function Sidebar() {
       icon: FiShoppingBag,
     },
     {
-      name: "New Arrivals",
-      href: "/products?sort=newest",
+      name: "Pehchaan Collection",
+      href: "/products?category=pehchaan",
       icon: FiStar,
     },
     {
-      name: "Best Sellers",
-      href: "#featured-products",
+      name: "Potli Bags",
+      href: "/products?category=potli-bags",
       icon: FiGift,
     },
     {
@@ -146,7 +129,7 @@ export default function Sidebar() {
             <div className="animate-fade-in-up">
               <div className="flex justify-between items-center">
                 <h3 className="font-fira-sans text-base font-medium text-stone-500 dark:text-stone-400 uppercase tracking-widest mb-6">
-                  Shop by Category
+                  Collections
                 </h3>
                 <button
                   onClick={() => setIsOpen(false)}
@@ -205,34 +188,50 @@ export default function Sidebar() {
                     </span>
                   </Link>
                 ))}
-                {isMobile && <div className="border-t border-stone-200 dark:border-stone-700 pt-4 space-y-3">
-                <Link 
-                  href={user ? "/admin/dashboard" : "/admin/login"}
-                  onClick={toggleSidebar}
-                  className="flex items-center space-x-3 font-fira-sans font-medium text-sm text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-stone-100 transition-colors duration-300 py-2 px-3 hover:bg-stone-100 dark:hover:bg-stone-800"
-                >
-                  <FiUser className="w-5 h-5" />
-                  <span>Admin Panel</span>
-                </Link>
-                
-                {/* <button className="flex items-center space-x-3 font-fira-sans font-medium text-sm text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-stone-100 transition-colors duration-300 py-2 px-3 hover:bg-stone-100 dark:hover:bg-stone-800 w-full text-left">
-                  <FiHeart className="w-5 h-5" />
-                  <span>Wishlist</span>
-                </button> */}
-                <button 
-                  onClick={toggleCart}
-                  className="font-fira-sans relative flex gap-4 p-2.5 bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 transition-all duration-300 border border-stone-200 dark:border-stone-700 hover:border-stone-300 dark:hover:border-stone-600 group hover:scale-105"
-                  aria-label={`Shopping bag with ${itemCount} items`}
-                >
-                  <FiShoppingBag className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />
-                  {itemCount > 0 && (
-                    <span className="absolute -top-2 -right-2 bg-stone-800 dark:bg-stone-200 text-white dark:text-stone-900 text-xs font-bold w-5 h-5 flex items-center justify-center text-center min-w-[20px] animate-bounce">
-                      {itemCount > 10 ? '10+' : itemCount}
-                    </span>
-                  )}
-                  <span>Bag</span>
-                </button>
-                </div>}
+                {isMobile && (
+                  <div className="border-t border-stone-200 dark:border-stone-700 pt-4 space-y-3">
+                    <Link 
+                      href={user ? "/admin/dashboard" : "/admin/login"}
+                      onClick={toggleSidebar}
+                      className="flex items-center space-x-3 font-fira-sans font-medium text-sm text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-stone-100 transition-colors duration-300 py-2 px-3 hover:bg-stone-100 dark:hover:bg-stone-800"
+                    >
+                      <FiUser className="w-5 h-5" />
+                      <span>Admin Panel</span>
+                    </Link>
+                    
+                    <button 
+                      onClick={() => {
+                        toggleWishlist();
+                        toggleSidebar();
+                      }}
+                      className="font-fira-sans relative flex items-center space-x-3 font-medium text-sm text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-stone-100 transition-colors duration-300 py-2 px-3 hover:bg-stone-100 dark:hover:bg-stone-800 w-full text-left"
+                    >
+                      <FiHeart className="w-5 h-5" />
+                      <span>Wishlist</span>
+                      {wishlistCount > 0 && (
+                        <span className="bg-red-500 text-white text-xs font-bold px-2 py-1 min-w-[20px] text-center">
+                          {wishlistCount > 10 ? '10+' : wishlistCount}
+                        </span>
+                      )}
+                    </button>
+                    
+                    <button 
+                      onClick={() => {
+                        toggleCart();
+                        toggleSidebar();
+                      }}
+                      className="font-fira-sans relative flex items-center space-x-3 font-medium text-sm text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-stone-100 transition-colors duration-300 py-2 px-3 hover:bg-stone-100 dark:hover:bg-stone-800 w-full text-left"
+                    >
+                      <FiShoppingBag className="w-5 h-5" />
+                      <span>Shopping Bag</span>
+                      {itemCount > 0 && (
+                        <span className="bg-stone-800 dark:bg-stone-200 text-white dark:text-stone-900 text-xs font-bold px-2 py-1 min-w-[20px] text-center">
+                          {itemCount > 10 ? '10+' : itemCount}
+                        </span>
+                      )}
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -264,45 +263,6 @@ export default function Sidebar() {
           }
         }
 
-        @keyframes slide-down {
-          from {
-            opacity: 0;
-            transform: translateY(-20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes slide-up {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes bounce-in {
-          0% {
-            opacity: 0;
-            transform: scale(0.3);
-          }
-          50% {
-            transform: scale(1.05);
-          }
-          70% {
-            transform: scale(0.9);
-          }
-          100% {
-            opacity: 1;
-            transform: scale(1);
-          }
-        }
-
         .animate-fade-in {
           animation: fade-in 0.3s ease-out;
         }
@@ -311,36 +271,8 @@ export default function Sidebar() {
           animation: fade-in-up 0.6s ease-out;
         }
 
-        .animate-slide-down {
-          animation: slide-down 0.4s ease-out;
-        }
-
-        .animate-slide-up {
-          animation: slide-up 0.6s ease-out;
-        }
-
-        .animate-bounce-in {
-          animation: bounce-in 0.8s ease-out;
-        }
-
         .delay-200 {
           animation-delay: 200ms;
-        }
-        .delay-400 {
-          animation-delay: 400ms;
-        }
-
-        /* Smooth transitions */
-        .transition-all {
-          transition: all 0.3s ease-out;
-        }
-
-        .transition-colors {
-          transition: color 0.2s ease-out;
-        }
-
-        .transition-transform {
-          transition: transform 0.2s ease-out;
         }
       `}</style>
     </>

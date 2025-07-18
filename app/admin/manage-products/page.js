@@ -48,12 +48,8 @@ export default function ManageProductsPage() {
 
   const categories = [
     { value: "all", label: "All Categories" },
-    { value: "sharara-sets", label: "Sharara Sets" },
-    { value: "palazzo-sets", label: "Palazzo Sets" },
-    { value: "anarkali-sets", label: "Anarkali Sets" },
-    { value: "gharara-sets", label: "Gharara Sets" },
-    { value: "kurti-sets", label: "Kurti Sets" },
-    { value: "co-ord-sets", label: "Co-ord Sets" },
+    { value: "pehchaan", label: "Collection - Pehchaan" },
+    { value: "custom-made", label: "Custom Made" },
     { value: "potli-bags", label: "Potli Bags" },
   ];
 
