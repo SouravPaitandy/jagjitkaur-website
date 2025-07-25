@@ -192,7 +192,7 @@ export default function Footer() {
 
           {/* Version Badge */}
           <p className="text-xs text-stone-400 mt-4 mb-6 text-center">
-            v1.5.0 – Updated on July 7, 2025
+            v1.5.0 – Updated on July 25, 2025
           </p>
 
           {/* Enhanced Developer Credit */}

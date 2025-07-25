@@ -3,116 +3,44 @@
 import { useState, useEffect } from "react";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
+import { fetchProductsFromFirestore } from "@/lib/fetchProducts";
 import ProductCard from "./ProductCard";
 import Link from "next/link";
 import { FiArrowRight, FiHeart, FiShoppingBag } from "react-icons/fi";
 
-const featuredProducts = [
-  {
-    id: "pehchaan-noor-sharara-001",
-    name: "Noor Sharara 3 Piece Set",
-    price: "₹8,999",
-    originalPrice: "₹12,999",
-    image: "https://res.cloudinary.com/dwqf6wp14/image/upload/v1751039112/kurta1_q3ak8i.jpg",
-    description: "Elegant 3-piece ensemble perfect for festive occasions",
-    category: "pehchaan",
-    fabric: "Pure Cotton",
-    work: "Hand Block Print",
-    origin: "Jaipur",
-    occasion: "Festive",
-    rating: 4.8,
-    reviews: 24,
-    features: ["3-Piece Set", "Hand Block Print", "Pure Cotton"],
-    badge: "Best Seller",
-    isNew: false,
-    components: {
-      kurta: "Knee-length kurta with intricate block print patterns and comfortable A-line silhouette",
-      sharara: "Flared palazzo-style sharara with elastic waistband for comfort and style",
-      dupatta: "Matching dupatta with delicate border detailing and soft drape",
-    },
-    setIncludes: ["Kurta", "Sharara", "Dupatta"],
-    care: "Dry clean recommended, gentle hand wash with mild detergent",
-    sizing: "Regular fit, size chart available",
-  },
-  {
-    id: "pehchaan-mehendi-palazzo-002",
-    name: "Mehendi Palazzo 3 Piece Set",
-    price: "₹6,999",
-    originalPrice: "₹9,999",
-    image: "https://res.cloudinary.com/dwqf6wp14/image/upload/v1751039060/saree1_ftmgbt.jpg",
-    description: "Vibrant palazzo set with traditional mehendi motifs",
-    category: "pehchaan",
-    fabric: "Rayon",
-    work: "Digital Print",
-    origin: "Mumbai",
-    occasion: "Casual",
-    rating: 4.6,
-    reviews: 18,
-    features: ["3-Piece Set", "Digital Print", "Comfortable Fit"],
-    badge: "Editor's Choice",
-    isNew: true,
-    components: {
-      kurta: "Short kurta with modern cut and vibrant mehendi-inspired prints",
-      palazzo: "Wide-leg palazzo pants with elastic waistband and flowing silhouette",
-      dupatta: "Lightweight dupatta with complementary print and tasseled edges",
-    },
-    setIncludes: ["Kurta", "Palazzo", "Dupatta"],
-    care: "Machine wash cold, iron on low heat",
-    sizing: "Relaxed fit, true to size",
-  },
-  {
-    id: "pehchaan-anarkali-003",
-    name: "Royal Anarkali Churidar Set",
-    price: "₹15,999",
-    originalPrice: "₹22,999",
-    image: "https://res.cloudinary.com/dwqf6wp14/image/upload/v1751039060/lehenga1_nyjmt9.jpg",
-    description: "Majestic anarkali set with heavy embroidery work",
-    category: "pehchaan",
-    fabric: "Georgette",
-    work: "Heavy Embroidery",
-    origin: "Lucknow",
-    occasion: "Wedding",
-    rating: 5.0,
-    reviews: 12,
-    features: ["Heavy Embroidery", "Designer Cut", "Bridal Collection"],
-    badge: "Premium",
-    isNew: false,
-    components: {
-      anarkali: "Floor-length anarkali with intricate zari and thread embroidery, fitted bodice with flared hem",
-      churidar: "Matching churidar with traditional fit and comfortable stretch fabric",
-      dupatta: "Heavy embroidered dupatta with gold zari border and delicate beadwork",
-    },
-    setIncludes: ["Anarkali", "Churidar", "Dupatta"],
-    care: "Dry clean only, store in cotton bags",
-    sizing: "Semi-fitted, customization available",
-  },
-  {
-    id: "potli-gold-embroidered-001",
-    name: "Gold Embroidered Potli Bag",
-    price: "₹1,299",
-    originalPrice: "₹1,899",
-    image: "https://res.cloudinary.com/dwqf6wp14/image/upload/v1751039060/saree1_ftmgbt.jpg",
-    description: "Handcrafted potli bag with gold embroidery",
-    category: "potli-bags",
-    fabric: "Silk",
-    work: "Gold Thread Embroidery",
-    origin: "Lucknow",
-    occasion: "Wedding",
-    rating: 4.7,
-    reviews: 8,
-    features: ["Handcrafted", "Gold Thread Work", "Drawstring Closure"],
-    badge: "Exclusive",
-    isNew: true,
-    care: "Dry clean only",
-    sizing: "One size",
-  },
-];
-
 export default function FeaturedProducts() {
   const [hoveredProduct, setHoveredProduct] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [featuredProducts, setFeaturedProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const { addToCart, items, toggleCart } = useCart();
   const { addToWishlist, toggleWishlist } = useWishlist();
+
+  // Fetch products from Firebase
+  useEffect(() => {
+    const fetchFeaturedProducts = async () => {
+      try {
+        const allProducts = await fetchProductsFromFirestore();
+
+        // Sort products by creation date (newest first)
+        // const sortedProducts = allProducts.sort((a, b) => {
+        //   const dateA = new Date(a.createdAt || 0);
+        //   const dateB = new Date(b.createdAt || 0);
+        //   return dateB - dateA;
+        // });
+
+        // Get the newest 4 products
+        const newestProducts = allProducts.slice(0, 4);
+        setFeaturedProducts(newestProducts);
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error fetching featured products:", error);
+        setIsLoading(false);
+      }
+    };
+
+    fetchFeaturedProducts();
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -144,6 +72,49 @@ export default function FeaturedProducts() {
     }, 300);
   };
 
+  if (isLoading) {
+    return (
+      <section className="py-20 lg:py-32 bg-white dark:bg-stone-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <div className="h-8 w-64 bg-stone-200 dark:bg-stone-700 rounded animate-pulse mx-auto mb-4"></div>
+            <div className="h-4 w-96 bg-stone-100 dark:bg-stone-800 rounded animate-pulse mx-auto"></div>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            {[1, 2, 3, 4].map((n) => (
+              <div
+                key={n}
+                className="aspect-[3/4] bg-stone-100 dark:bg-stone-800 rounded-lg animate-pulse"
+              ></div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (featuredProducts.length === 0) {
+    return (
+      <section className="py-20 lg:py-32 bg-white dark:bg-stone-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="font-vogue-bold text-3xl sm:text-4xl text-stone-900 dark:text-stone-100 mb-4">
+            No Featured Products
+          </h2>
+          <p className="text-stone-600 dark:text-stone-300 mb-8">
+            Please check back later for our latest arrivals.
+          </p>
+          <Link
+            href="/products"
+            className="inline-flex items-center px-6 py-3 bg-stone-800 dark:bg-stone-200 hover:bg-stone-900 dark:hover:bg-stone-100 text-white dark:text-stone-900 font-medium transition-all duration-300 shadow-lg hover:shadow-xl"
+          >
+            View All Products
+            <FiArrowRight className="ml-2 w-5 h-5" />
+          </Link>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section
       id="featured-products"
@@ -157,14 +128,13 @@ export default function FeaturedProducts() {
           }`}
         >
           <h2 className="font-vogue-bold text-4xl sm:text-5xl lg:text-6xl text-stone-900 dark:text-stone-100 mb-6 tracking-wide">
-            FEATURED COLLECTION
+            NEW ARRIVALS
           </h2>
           <p className="text-lg sm:text-xl lg:text-2xl text-stone-600 dark:text-stone-300 max-w-3xl mx-auto leading-relaxed">
-            Discover our handpicked selection from the{" "}
+            Discover our latest additions to the{" "}
             <span className="font-semibold text-stone-800 dark:text-stone-200">
-              Pehchaan Collection
-            </span>{" "}
-            and exclusive accessories
+              Collections
+            </span>
           </p>
         </div>
 
@@ -172,7 +142,7 @@ export default function FeaturedProducts() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {featuredProducts.map((product, index) => (
             <div
-              key={product.id}
+              key={product.id || 'prd-' + index}
               className={`${
                 isVisible ? "animate-fade-in-up" : "opacity-0"
               } animation-delay-${index * 200}`}
