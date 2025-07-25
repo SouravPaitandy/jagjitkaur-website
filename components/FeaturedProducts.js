@@ -10,9 +10,9 @@ import { FiArrowRight, FiHeart, FiShoppingBag } from "react-icons/fi";
 
 export default function FeaturedProducts() {
   const [hoveredProduct, setHoveredProduct] = useState(null);
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
   const [featuredProducts, setFeaturedProducts] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const { addToCart, items, toggleCart } = useCart();
   const { addToWishlist, toggleWishlist } = useWishlist();
 
@@ -21,16 +21,22 @@ export default function FeaturedProducts() {
     const fetchFeaturedProducts = async () => {
       try {
         const allProducts = await fetchProductsFromFirestore();
-
-        // Sort products by creation date (newest first)
-        // const sortedProducts = allProducts.sort((a, b) => {
-        //   const dateA = new Date(a.createdAt || 0);
-        //   const dateB = new Date(b.createdAt || 0);
-        //   return dateB - dateA;
-        // });
-
         // Get the newest 4 products
         const newestProducts = allProducts.slice(0, 4);
+
+        // console.log("Fetching products:", {
+        //   allProducts: allProducts,
+        //   newestProducts: newestProducts,
+        //   hasData: allProducts.length > 0,
+        //   firstProduct: allProducts[0],
+        //   requiredFields: allProducts[0] ? {
+        //     name: allProducts[0].name,
+        //     price: allProducts[0].price,
+        //     image: allProducts[0].image || allProducts[0].images,
+        //     category: allProducts[0].category
+        //   } : null
+        // });
+
         setFeaturedProducts(newestProducts);
         setIsLoading(false);
       } catch (error) {
@@ -42,7 +48,7 @@ export default function FeaturedProducts() {
     fetchFeaturedProducts();
   }, []);
 
-  useEffect(() => {
+ useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -52,7 +58,7 @@ export default function FeaturedProducts() {
       { threshold: 0.1 }
     );
 
-    const element = document.getElementById("featured-products");
+    const element = document.getElementById("brand-story");
     if (element) observer.observe(element);
 
     return () => observer.disconnect();
@@ -71,6 +77,13 @@ export default function FeaturedProducts() {
       toggleWishlist();
     }, 300);
   };
+
+  // console.log("Render state:", {
+  //   isLoading,
+  //   hasProducts: featuredProducts.length > 0,
+  //   productsCount: featuredProducts.length
+  // });
+
 
   if (isLoading) {
     return (
@@ -142,18 +155,18 @@ export default function FeaturedProducts() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {featuredProducts.map((product, index) => (
             <div
-              key={product.id || 'prd-' + index}
+              key={product.firestoreId || 'prd-' + index}
               className={`${
                 isVisible ? "animate-fade-in-up" : "opacity-0"
               } animation-delay-${index * 200}`}
-              onMouseEnter={() => setHoveredProduct(product.id)}
+              onMouseEnter={() => setHoveredProduct(product.firestoreId)}
               onMouseLeave={() => setHoveredProduct(null)}
             >
               <ProductCard
                 product={product}
                 onAddToCart={handleAddToCart}
                 onAddToWishlist={handleAddToWishlist}
-                isHovered={hoveredProduct === product.id}
+                isHovered={hoveredProduct === product.firestoreId}
               />
             </div>
           ))}
