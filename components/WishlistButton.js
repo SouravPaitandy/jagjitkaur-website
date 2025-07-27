@@ -93,11 +93,6 @@ export default function WishlistButton({
       >
         <div className="flex items-center gap-2 text-white">
           <FiHeart className="w-5 h-5 fill-current" />
-          {isAnimating && (
-            <span className="text-sm">
-              {isInWishlistState ? 'Removed!' : 'Added!'}
-            </span>
-          )}
         </div>
       </div>
 
