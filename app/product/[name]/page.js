@@ -192,11 +192,11 @@ export default async function ProductDetail({ params }) {
                   {product.name}
                 </h1>
 
-                {product.firestoreId && (
+                {/* {product.firestoreId && (
                   <p className="text-xs tracking-widest text-stone-500 dark:text-stone-400">
                     SKU: {product.firestoreId.slice(-8).toUpperCase()}
                   </p>
-                )}
+                )} */}
 
                 <div className="flex items-center space-x-2">
                   <span className="px-2 py-1 bg-green-100 dark:bg-green-800 text-green-700 dark:text-green-300 text-xs tracking-wide border border-green-200 dark:border-green-700 animate-bounce-in">
@@ -285,7 +285,7 @@ export default async function ProductDetail({ params }) {
                       product[spec.key] && (
                         <div
                           key={spec.key}
-                          className="flex justify-between sm:block animate-fade-in-up"
+                          className="animate-fade-in-up"
                           style={{
                             animationDelay: `${index * 100}ms`,
                             animationFillMode: "both",
@@ -294,7 +294,7 @@ export default async function ProductDetail({ params }) {
                           <span className="text-stone-600 dark:text-stone-400">
                             {spec.label}:
                           </span>
-                          <span className="sm:ml-2 text-stone-900 dark:text-stone-100 font-medium">
+                          <span className="ml-2 text-stone-900 dark:text-stone-100 font-medium">
                             {product[spec.key]}
                           </span>
                         </div>

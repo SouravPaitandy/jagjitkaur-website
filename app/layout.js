@@ -1,4 +1,4 @@
-import { Inter, Fira_Sans, DM_Serif_Display } from "next/font/google";
+import { Inter, Fira_Sans, DM_Serif_Display, Cormorant } from "next/font/google";
 import "./globals.css";
 import FloatingWhatsApp from '../components/FloatingWhatsApp';
 import { CartProvider } from "@/context/CartContext";
@@ -21,6 +21,12 @@ const dmSerif = DM_Serif_Display({
   variable: "--font-dm-serif",
   subsets: ["latin"],
   weight: ["400"],
+});
+
+const cormorant = Cormorant({
+  variable: "--font-cormorant",
+  subsets: ["latin"],
+  weight: ["400", "500"],
 });
 
 export const metadata = {
@@ -53,9 +59,9 @@ export const metadata = {
   },
   icons: {
     icon: [
-      { url: "/images/favicon.ico" },
-      { url: "/images/favicon.ico", sizes: "16x16", type: "image/png" },
-      { url: "/images/favicon-alt.ico", sizes: "32x32", type: "image/png" } // Windows taskbar icon
+      { url: "/images/favicon.ico", type: "image/x-icon" }, // Favicon for browsers
+      { url: "/images/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/images/favicon-32x32.png", sizes: "32x32", type: "image/png" } // Windows taskbar icon
     ],
     apple: [
       { url: "/images/icon.png", sizes: "180x180", type: "image/png" }
@@ -70,7 +76,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <body
-        className={`${inter.variable} ${firaSans.variable} ${dmSerif.variable} font-sans antialiased bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300`}
+        className={`${inter.variable} ${firaSans.variable} ${dmSerif.variable} ${cormorant.variable} font-sans antialiased bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300`}
         suppressContentEditableWarning
       > 
         <CartProvider>

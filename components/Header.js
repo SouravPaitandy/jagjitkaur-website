@@ -46,8 +46,6 @@ export default function Header() {
   const navigationLinks = [
     { href: "/", label: "Home" },
     { href: "/products", label: "Collection" },
-    { href: "#brand-story", label: "Heritage" },
-    { href: "#featured-products", label: "Featured" },
     { href: "#contact", label: "Contact" }
   ];
 
@@ -64,6 +62,15 @@ export default function Header() {
           <div className="flex justify-between items-center h-16 lg:h-20">
             {/* Logo Section */}
             <Link href="/" className="flex items-center group">
+              <div className='relative'>
+                <Image
+                  src='/images/newlogo.png'
+                  alt='JK'
+                  width={46}
+                  height={46}
+                  priority
+                />
+              </div>
               <div className="relative">
                 <Image 
                   src="/images/logo.png" 
@@ -74,9 +81,9 @@ export default function Header() {
                   priority
                 />
               </div>
-              <span className="font-fira-sans text-xl ml-3 font-bold text-stone-800 dark:text-stone-200 transition-colors duration-300 group-hover:text-stone-600 dark:group-hover:text-stone-300">
+              {/* <span className="font-fira-sans text-xl ml-3 font-bold text-stone-800 dark:text-stone-200 transition-colors duration-300 group-hover:text-stone-600 dark:group-hover:text-stone-300">
                 &#x2665;
-              </span>
+              </span> */}
             </Link> 
 
             {/* Navigation Links - Desktop */}

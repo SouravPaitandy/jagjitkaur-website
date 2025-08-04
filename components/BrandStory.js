@@ -105,73 +105,56 @@ export default function BrandStory() {
           </div>
 
           <h2 className="font-vogue-bold text-4xl sm:text-5xl lg:text-6xl text-stone-900 dark:text-stone-100 mb-6 tracking-wide">
-            HERITAGE & LAGACY
+            HERITAGE & LEGACY
           </h2>
-
-          <p className="text-lg sm:text-xl lg:text-2xl text-stone-600 dark:text-stone-300 max-w-3xl mx-auto leading-relaxed">
-            Where ancient traditions meet contemporary elegance, creating
-            timeless pieces that celebrate
-            <span className="font-semibold text-stone-800 dark:text-stone-200">
-              {" "}
-              India's rich textile heritage
-            </span>
-          </p>
         </div>
 
         {/* Main Story Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 items-center mb-20">
+        <div className="flex justify-center items-center text-center mb-20">
           {/* Enhanced Text Content */}
           <div
-            className={`mb-8 ${
+            className={`mb-8 max-w-[70%] ${
               isVisible ? "animate-fade-in-up" : "opacity-0"
             } animation-delay-200`}
           >
             {/* Brand Name with Traditional Styling */}
-            <div className="space-y-6 text-lg text-stone-600 dark:text-stone-300 leading-relaxed">
-              <h3 className="font-fira-sans text-3xl lg:text-4xl font-light text-stone-900 dark:text-stone-100 mb-4 tracking-wide">
+            <div className="cormorant-normal space-y-6 text-2xl text-stone-800 dark:text-stone-300 leading-relaxed">
+              <h3 className="text-3xl lg:text-4xl font-light text-stone-900 dark:text-stone-100 mb-4 tracking-wide">
                 JAGJIT KAUR
               </h3>
-              <p className="text-stone-600 dark:text-stone-300 text-lg leading-relaxed">
-                A name that resonates with authenticity, tradition, and the
-                timeless beauty of Indian craftsmanship. Founded with a vision
-                to preserve and celebrate our textile heritage.
+              <p>
+                Jagjit Kaur is more than a clothing label — it's a journey of
+                self-expression, cultural nostalgia, and modern elegance.
+                Founded with a deep love for old-world charm and timeless Indian
+                craftsmanship, each piece is an exploration of tradition meeting
+                today's world — softly, soulfully, and intentionally.
               </p>
 
               <p>
-                Rooted in the timeless traditions of Indian textile heritage,
-                our journey began with a simple yet profound mission: to bring
-                you authentic handcrafted garments that honor centuries-old
-                techniques while embracing contemporary elegance and
-                sophistication.
+                Our debut collection, Pehchaan, is a reflection of this very
+                spirit — a tribute to discovering oneself through fabric,
+                thread, and form. Crafted through trial and emotion, Pehchaan
+                blends classic silhouettes with intricate handwork techniques
+                like zardozi and aari embroidery — each piece made with love,
+                intention, and care. Wrapped in bright, festive tones and rooted
+                in tradition, every garment carries a piece of my journey.
               </p>
 
               <p>
-                From the ancient looms of{" "}
-                <span className="font-semibold text-stone-800 dark:text-stone-200">
-                  Varanasi
-                </span>{" "}
-                to the vibrant workshops of{" "}
-                <span className="font-semibold text-stone-800 dark:text-stone-200">
-                  Rajasthan
-                </span>
-                , each piece in our collection is meticulously crafted by master
-                artisans who have inherited their skills through generations. We
-                celebrate the rich diversity of Indian crafts - be it the
-                intricate Banarasi brocades, delicate Chikankari embroidery, or
-                vibrant Phulkari work.
+                From me, for you — made with love, made for you. It marks not
+                just the beginning of a label, but the unfolding of identity —
+                one that celebrates stories, emotions, and timeless beauty.
               </p>
 
               <p>
-                Our commitment extends beyond fashion to preserving India's rich
-                textile legacy. Every purchase supports traditional artisan
-                communities and keeps alive the sacred art of handloom weaving
-                that defines our cultural identity.
+                So go ahead — explore our debut collection Pehchaan, and make it
+                yours.
               </p>
             </div>
           </div>
 
           {/* Enhanced Image Section */}
-          <div
+          {/* <div
             className={`relative ${
               isVisible ? "animate-fade-in-right" : "opacity-0"
             } animation-delay-400`}
@@ -187,139 +170,7 @@ export default function BrandStory() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
             </div>
-          </div>
-        </div>
-
-        {/* Enhanced Craft Traditions Section */}
-        <div
-          className={`${
-            isVisible ? "animate-fade-in-up" : "opacity-0"
-          } animation-delay-800`}
-        >
-          <div className="text-center mb-12">
-            <h3 className="font-fira-sans text-3xl lg:text-4xl font-light text-stone-900 dark:text-white mb-4 tracking-wide">
-              Our Craft Traditions
-            </h3>
-            <p className="text-lg text-stone-600 dark:text-stone-300 max-w-2xl mx-auto leading-relaxed">
-              Celebrating the diverse artistry and regional specialties that
-              make Indian textiles truly extraordinary
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {crafts.map((craft, index) => (
-              <div
-                key={index}
-                className="bg-white/80 dark:bg-stone-800/80 backdrop-blur-sm overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-stone-200 dark:border-stone-700"
-              >
-                <div className="relative aspect-[4/3] overflow-hidden">
-                  <div className="w-full h-full bg-stone-100 dark:bg-stone-700 flex items-center justify-center">
-                    <div className="text-center p-6">
-                      <div className="w-16 h-16 bg-stone-900 dark:bg-stone-300 flex items-center justify-center mx-auto mb-4">
-                        <svg
-                          className="w-8 h-8 text-white dark:text-stone-900"
-                          fill="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                        </svg>
-                      </div>
-                      <h4 className="font-semibold text-stone-900 dark:text-white text-lg mb-1">
-                        {craft.name}
-                      </h4>
-                      <p className="text-sm text-stone-600 dark:text-stone-400 font-medium">
-                        {craft.origin}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="p-4">
-                  <p className="text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
-                    {craft.description}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Enhanced Call to Action Section */}
-        <div
-          className={`text-center mt-16 lg:mt-20 ${
-            isVisible ? "animate-fade-in-up" : "opacity-0"
-          } animation-delay-1000`}
-        >
-          <div className="bg-white/80 dark:bg-stone-800/80 backdrop-blur-sm p-8 lg:p-12 border border-stone-200 dark:border-stone-700 shadow-lg">
-            <h3 className="font-fira-sans text-2xl lg:text-3xl font-light text-stone-900 dark:text-white mb-4 tracking-wide">
-              Join Our Heritage Journey
-            </h3>
-            <p className="text-stone-600 dark:text-stone-300 mb-8 max-w-2xl mx-auto text-lg leading-relaxed">
-              Experience the beauty of traditional Indian craftsmanship and be
-              part of preserving our rich textile heritage for future
-              generations.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <a
-                href="/products"
-                className="group inline-flex items-center px-8 py-4 bg-stone-800 dark:bg-stone-200 hover:bg-stone-900 dark:hover:bg-stone-100 text-white dark:text-stone-900 font-medium duration-300 shadow-lg hover:shadow-xl"
-              >
-                <span>Explore Collection</span>
-                <svg
-                  className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-all ease-out duration-500"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M17 8l4 4m0 0l-4 4m4-4H3"
-                  />
-                </svg>
-              </a>
-
-              <div className="flex flex-wrap justify-center items-center gap-6 text-sm text-stone-600 dark:text-stone-300">
-                <div className="flex items-center space-x-2">
-                  <div className="w-8 h-8 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
-                    <svg
-                      className="w-4 h-4 text-green-600 dark:text-green-400"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                  </div>
-                  <span>Authentic Handcrafted</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center">
-                    <svg
-                      className="w-4 h-4 text-blue-600 dark:text-blue-400"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
-                  </div>
-                  <span>Supporting Artisans</span>
-                </div>
-              </div>
-            </div>
-          </div>
+          </div> */}
         </div>
       </div>
 

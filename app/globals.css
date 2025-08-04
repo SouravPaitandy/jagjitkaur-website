@@ -7,6 +7,7 @@
   --font-inter: "Inter", sans-serif;
   --font-fira-sans: "Fira Sans", sans-serif;
   --font-dm-serif: "DM Serif Display", serif;
+  --font-cormorant: "Cormorant", serif;
 
   /* Versailles Beige Tones */
   --versailles-beige-50: #faf8f5;
@@ -35,6 +36,13 @@
   --versailles-maroon-700: #7f1d1d;
   --versailles-maroon-800: #6b1a1a;
   --versailles-maroon-900: #581c1c;
+}
+
+.cormorant-normal {
+  font-family: "Cormorant", serif;
+  font-optical-sizing: auto;
+  font-weight: normal;
+  font-style: normal;
 }
 
 @font-face {

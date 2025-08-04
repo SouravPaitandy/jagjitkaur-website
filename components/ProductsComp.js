@@ -9,7 +9,7 @@ import { FiArrowUp, FiGrid, FiList, FiFilter, FiSearch } from "react-icons/fi";
 export default function ProductsPage({ products }) {
   const searchParams = useSearchParams();
   const [sortBy, setSortBy] = useState("name");
-  const [filterBy, setFilterBy] = useState("all");
+  const [filterBy, setFilterBy] = useState("pehchaan"); // Default to first category
   const [isGridView, setIsGridView] = useState(true);
   const [showScrollToTop, setShowScrollToTop] = useState(false);
   const [isClient, setIsClient] = useState(false);
@@ -17,23 +17,27 @@ export default function ProductsPage({ products }) {
   const [showFilters, setShowFilters] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  // Define category order
+  const categoryOrder = ["pehchaan", "rakhi-edit", "custom-made", "potli-bags"];
+
   // Handle URL parameters for category filtering
   useEffect(() => {
     const categoryParam = searchParams.get("category");
     if (categoryParam) {
       const categoryMap = {
         "pehchaan": "pehchaan",
+        "rakhi-edit": "rakhi-edit",
         "potli-bags": "potli-bags",
         "custom-made": "custom-made",
       };
 
       const mappedCategory = categoryMap[categoryParam.toLowerCase()] || categoryParam.toLowerCase();
-      const availableCategories = [...new Set(products.map((product) => product.category.toLowerCase()))];
-
-      if (availableCategories.includes(mappedCategory)) {
+      
+      // Check if the category exists in our ordered list
+      if (categoryOrder.includes(mappedCategory)) {
         setFilterBy(mappedCategory);
       } else {
-        setFilterBy("all");
+        setFilterBy("pehchaan"); // Default to first category if invalid
       }
     }
   }, [searchParams, products]);
@@ -96,11 +100,9 @@ export default function ProductsPage({ products }) {
     }, 300);
   };
 
-  // Enhanced filter and sort products
+  // Enhanced filter and sort products - REMOVED "all" category filtering
   const filteredProducts = products.filter((product) => {
-    const matchesCategory =
-      filterBy === "all" ||
-      product.category.toLowerCase() === filterBy.toLowerCase();
+    const matchesCategory = product.category.toLowerCase() === filterBy.toLowerCase();
     const matchesSearch =
       searchQuery === "" ||
       product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -131,8 +133,10 @@ export default function ProductsPage({ products }) {
     return 0;
   });
 
-  // Get unique categories for filter (with proper formatting)
-  const categories = [...new Set(products.map((product) => product.category))];
+  // Get ordered categories for filter
+  const orderedCategories = categoryOrder.filter(category => 
+    products.some(product => product.category.toLowerCase() === category)
+  );
 
   // Function to get display name for category
   const getCategoryDisplayName = (category) => {
@@ -140,6 +144,7 @@ export default function ProductsPage({ products }) {
       "pehchaan": "Pehchaan Collection",
       "potli-bags": "Potli Bags",
       "custom-made": "Custom Made",
+      "rakhi-edit": "Rakhi Edit",
     };
     return (
       displayNames[category.toLowerCase()] ||
@@ -187,7 +192,7 @@ export default function ProductsPage({ products }) {
               </Link>
               <span className="animate-pulse">/</span>
               <span className="text-stone-800 dark:text-stone-200">
-                COLLECTIONS
+                {getCategoryDisplayName(filterBy).toUpperCase()}
               </span>
             </nav>
           </div>
@@ -196,15 +201,11 @@ export default function ProductsPage({ products }) {
         {/* Minimalist Hero Section with slide-up animation */}
         <div className="bg-white dark:bg-stone-900 py-16 animate-slide-up">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h1 className="font-vogue-bold text-4xl md:text-5xl font-light text-stone-900 dark:text-stone-100 mb-4 tracking-wide animate-fade-in-up delay-200">
-              {filterBy !== "all"
-                ? getCategoryDisplayName(filterBy)
-                : "All Collections"}
+            <h1 className="font-dm-serif text-4xl md:text-5xl font-light text-stone-900 dark:text-stone-100 mb-4 tracking-wide animate-fade-in-up delay-200">
+              {getCategoryDisplayName(filterBy)}
             </h1>
             <p className="text-lg text-stone-600 dark:text-stone-400 max-w-2xl mx-auto animate-fade-in-up delay-400">
-              {filterBy !== "all"
-                ? `Discover our handcrafted ${getCategoryDisplayName(filterBy).toLowerCase()}`
-                : "Explore our complete range of handcrafted traditional wear and accessories"}
+              Discover our handcrafted {getCategoryDisplayName(filterBy).toLowerCase()}
             </p>
           </div>
         </div>
@@ -258,8 +259,7 @@ export default function ProductsPage({ products }) {
                       onChange={(e) => handleFilterChange(e.target.value)}
                       className="w-full sm:w-auto bg-white dark:bg-stone-900 border border-stone-300 dark:border-stone-600 px-4 py-2 text-sm text-stone-900 dark:text-white focus:border-stone-800 dark:focus:border-stone-200 transition-all duration-300 hover:scale-105 focus:scale-105"
                     >
-                      <option value="all">All Collections</option>
-                      {categories.map((category) => (
+                      {orderedCategories.map((category) => (
                         <option key={category} value={category}>
                           {getCategoryDisplayName(category)}
                         </option>
@@ -288,7 +288,7 @@ export default function ProductsPage({ products }) {
               {/* View Toggle and Results */}
               <div className="flex items-center space-x-4 w-full lg:w-auto justify-between lg:justify-end animate-fade-in delay-200">
                 <span className="text-sm text-stone-600 dark:text-stone-400 animate-pulse">
-                  {sortedProducts.length} of {products.length} products
+                  {sortedProducts.length} products
                 </span>
 
                 <div className="flex items-center space-x-1 border border-stone-300 dark:border-stone-600 transition-all duration-300 hover:shadow-md">
@@ -323,68 +323,39 @@ export default function ProductsPage({ products }) {
         {/* Products Grid/List with staggered animation */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           {/* Active Filters Display with slide-in animation */}
-          {(filterBy !== "all" || searchQuery) && (
+          {searchQuery && (
             <div className="mb-8 flex flex-wrap items-center gap-3 animate-slide-in">
               <span className="font-fira-sans text-sm font-medium text-stone-700 dark:text-stone-300">
-                Active filters:
+                Search results for:
               </span>
 
-              {filterBy !== "all" && (
-                <span className="inline-flex items-center gap-2 bg-stone-800 dark:bg-stone-200 text-white dark:text-stone-900 px-3 py-1 text-sm animate-bounce-in">
-                  {getCategoryDisplayName(filterBy)}
-                  <button
-                    onClick={() => handleFilterChange("all")}
-                    className="hover:bg-white/20 dark:hover:bg-black/20 transition-all duration-300 hover:scale-110 active:scale-95"
+              <span className="inline-flex items-center gap-2 bg-stone-600 dark:bg-stone-400 text-white dark:text-stone-900 px-3 py-1 text-sm animate-bounce-in">
+                "{searchQuery}"
+                <button
+                  onClick={() => setSearchQuery("")}
+                  className="hover:bg-white/20 dark:hover:bg-black/20 transition-all duration-300 hover:scale-110 active:scale-95"
+                >
+                  <svg
+                    className="w-3 h-3"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
                   >
-                    <svg
-                      className="w-3 h-3"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M6 18L18 6M6 6l12 12"
-                      />
-                    </svg>
-                  </button>
-                </span>
-              )}
-
-              {searchQuery && (
-                <span className="inline-flex items-center gap-2 bg-stone-600 dark:bg-stone-400 text-white dark:text-stone-900 px-3 py-1 text-sm animate-bounce-in delay-100">
-                  "{searchQuery}"
-                  <button
-                    onClick={() => setSearchQuery("")}
-                    className="hover:bg-white/20 dark:hover:bg-black/20 transition-all duration-300 hover:scale-110 active:scale-95"
-                  >
-                    <svg
-                      className="w-3 h-3"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M6 18L18 6M6 6l12 12"
-                      />
-                    </svg>
-                  </button>
-                </span>
-              )}
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </span>
 
               <button
-                onClick={() => {
-                  handleFilterChange("all");
-                  setSearchQuery("");
-                }}
+                onClick={() => setSearchQuery("")}
                 className="font-fira-sans text-sm text-stone-600 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 transition-all duration-300 underline hover:scale-105 active:scale-95"
               >
-                Clear all
+                Clear search
               </button>
             </div>
           )}
@@ -432,19 +403,9 @@ export default function ProductsPage({ products }) {
                 No Products Found
               </h3>
               <p className="font-fira-sans text-stone-600 dark:text-stone-400 mb-8 max-w-md mx-auto animate-fade-in-up delay-100">
-                We couldn't find any products matching your search. Try
-                adjusting your filters or search terms.
+                We couldn't find any products in {getCategoryDisplayName(filterBy)} matching your search.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up delay-200">
-                <button
-                  onClick={() => {
-                    handleFilterChange("all");
-                    setSearchQuery("");
-                  }}
-                  className="font-fira-sans bg-stone-800 dark:bg-stone-200 text-white dark:text-stone-900 px-8 py-3 font-medium hover:bg-stone-900 dark:hover:bg-stone-100 transition-all duration-300 hover:scale-105 active:scale-95"
-                >
-                  View All Products
-                </button>
                 <button
                   onClick={() => setSearchQuery("")}
                   className="font-fira-sans border border-stone-300 dark:border-stone-600 text-stone-900 dark:text-white px-8 py-3 font-medium hover:bg-stone-50 dark:hover:bg-stone-800 transition-all duration-300 hover:scale-105 active:scale-95"

@@ -180,10 +180,10 @@ export default function FeaturedProducts() {
         >
           <Link
             href="/products"
-            className="group inline-flex items-center px-8 py-4 bg-stone-800 dark:bg-stone-200 hover:bg-stone-900 dark:hover:bg-stone-100 text-white dark:text-stone-900 font-medium transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+            className="group inline-flex items-center px-8 py-4 bg-stone-800 dark:bg-stone-200 hover:bg-stone-900 dark:hover:bg-stone-100 text-white dark:text-stone-900 font-medium transition-all ease-out duration-500 shadow-lg hover:shadow-xl"
           >
             <span className="mr-3">VIEW ALL COLLECTIONS</span>
-            <FiArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
+            <FiArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-all ease-out duration-500" />
           </Link>
         </div>
       </div>

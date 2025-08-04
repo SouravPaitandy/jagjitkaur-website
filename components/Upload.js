@@ -268,6 +268,7 @@ export default function AdminUpload({
   // Updated categories with new structure
   const categories = [
     "pehchaan", // Collection - Pehchaan
+    "rakhi-edit",
     "potli-bags", // Potli Bags
     "custom-made", // Custom Made
   ];
@@ -276,6 +277,7 @@ export default function AdminUpload({
   const getCategoryDisplayName = (category) => {
     const displayNames = {
       "pehchaan": "Collection - Pehchaan",
+      "rakhi-edit": "Rakhi Edit",
       "potli-bags": "Potli Bags",
       "custom-made": "Custom Made",
     };
