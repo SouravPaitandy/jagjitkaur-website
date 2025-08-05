@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import ProductCard from "@/components/ProductCard.js";
 import Link from "next/link";
 import { FiArrowUp, FiGrid, FiList, FiFilter, FiSearch } from "react-icons/fi";
+import { trackSearch, trackCategoryView } from "@/lib/analytics";
 
 export default function ProductsPage({ products }) {
   const searchParams = useSearchParams();
@@ -152,6 +153,22 @@ export default function ProductsPage({ products }) {
     );
   };
 
+  
+  // Track search events
+  const handleSearchChange = (query) => {
+    setSearchQuery(query);
+    if (query.length > 2) {
+      trackSearch(query, filterBy);
+    }
+  };
+
+  // Track category views
+  useEffect(() => {
+    if (filterBy) {
+      trackCategoryView(filterBy);
+    }
+  }, [filterBy]);
+
   // Don't render scroll button until client-side hydration is complete
   const ScrollToTopButton = () => {
     if (!isClient) return null;
@@ -223,7 +240,7 @@ export default function ProductsPage({ products }) {
                   type="text"
                   placeholder="Search products..."
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={(e) => handleSearchChange(e.target.value)}
                   className="font-fira-sans w-full pl-10 pr-4 py-3 bg-white dark:bg-stone-900 border border-stone-300 dark:border-stone-600 text-stone-900 dark:text-white placeholder-stone-500 dark:placeholder-stone-400 focus:border-stone-800 dark:focus:border-stone-200 transition-all duration-300 focus:scale-105 focus:shadow-lg"
                 />
               </div>

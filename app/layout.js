@@ -5,6 +5,7 @@ import { CartProvider } from "@/context/CartContext";
 import CartSidebar from "@/components/CartSidebar";
 import WishlistSidebar from "@/components/WishlistSidebar";
 import { WishlistProvider } from "@/context/WishlistContext";
+import { GoogleAnalytics, MetaPixel, GoogleTagManager, Hotjar } from "@/components/Analytics";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -75,6 +76,18 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className="scroll-smooth" suppressHydrationWarning>
+       <head>
+        {/* Analytics */}
+        {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
+          <GoogleAnalytics GA_MEASUREMENT_ID={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
+        )}
+        {process.env.NEXT_PUBLIC_GTM_ID && (
+          <GoogleTagManager GTM_ID={process.env.NEXT_PUBLIC_GTM_ID} />
+        )}
+        {process.env.NEXT_PUBLIC_HOTJAR_ID && (
+          <Hotjar HOTJAR_ID={process.env.NEXT_PUBLIC_HOTJAR_ID} />
+        )}
+      </head>
       <body
         className={`${inter.variable} ${firaSans.variable} ${dmSerif.variable} ${cormorant.variable} font-sans antialiased bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300`}
         suppressContentEditableWarning

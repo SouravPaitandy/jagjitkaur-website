@@ -1,4 +1,5 @@
 'use client';
+import { trackWhatsAppClick } from "@/lib/analytics";
 
 export default function FloatingWhatsApp() {
   const createMessage = () => {
@@ -15,11 +16,16 @@ export default function FloatingWhatsApp() {
     return encodeURIComponent(message);
   };
 
+  const handleWhatsAppClick = ()=>{
+    trackWhatsAppClick('floating_button')
+  }
+
   const phone = process.env.NEXT_PUBLIC_WHATSAPP_PHONE; // Replace with actual business number if needed
   const link = `https://wa.me/${phone}?text=${createMessage()}`;
 
   return (
     <div className="fixed bottom-1/5 right-6 z-40 group">
+      <button onClick={handleWhatsAppClick}>
       <a
         href={link}
         target="_blank"
@@ -40,6 +46,7 @@ export default function FloatingWhatsApp() {
         {/* Ripple effect */}
         {/* <div className="absolute inset-0 rounded-full bg-green-400 opacity-30 animate-ping"></div> */}
       </a>
+      </button>
       
       {/* Tooltip */}
       <div className="absolute bottom-16 right-0 mb-2 px-3 py-1 bg-stone-800 text-white text-sm rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none">

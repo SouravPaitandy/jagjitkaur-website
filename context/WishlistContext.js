@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useReducer, useEffect } from 'react';
+import { trackAddToWishlist } from "@/lib/analytics";
 
 const WishlistContext = createContext();
 
@@ -100,6 +101,8 @@ export function WishlistProvider({ children }) {
   }, [state.items]);
 
   const addToWishlist = (product) => {
+    // Track analytics
+    trackAddToWishlist(product);
     const wishlistItem = {
       id: product.firestoreId || product.id,
       name: product.name,

@@ -1,13 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { trackViewItem } from "@/lib/analytics";
 import WishlistButton from "./WishlistButton";
 
 export default function ProductCard({ product }) {
   const [isHovered, setIsHovered] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
+
+  // Track product view when component mounts
+  useEffect(() => {
+    if (product) {
+      trackViewItem(product);
+    }
+  }, [product]);
 
   function createSlug(name) {
     return name

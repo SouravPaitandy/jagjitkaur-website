@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useReducer, useEffect } from 'react';
+import { trackAddToCart } from "@/lib/analytics";
 
 const CartContext = createContext();
 
@@ -96,6 +97,8 @@ export function CartProvider({ children }) {
 
   // Cart actions
   const addToCart = (product) => {
+    // Track analytics
+    trackAddToCart(product);
     dispatch({
       type: CART_ACTIONS.ADD_ITEM,
       payload: {
