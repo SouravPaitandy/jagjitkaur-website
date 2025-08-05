@@ -5,7 +5,7 @@ import { CartProvider } from "@/context/CartContext";
 import CartSidebar from "@/components/CartSidebar";
 import WishlistSidebar from "@/components/WishlistSidebar";
 import { WishlistProvider } from "@/context/WishlistContext";
-import { GoogleAnalytics, MetaPixel, GoogleTagManager, Hotjar } from "@/components/Analytics";
+import { GoogleAnalytics, GoogleTagManager, Hotjar } from "@/components/Analytics";
 
 const inter = Inter({
   variable: "--font-inter",
