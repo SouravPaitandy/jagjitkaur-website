@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect } from 'react';
+import { useEffect, Suspense } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 import Script from 'next/script';
 
-// Google Analytics 4
-export function GoogleAnalytics({ GA_MEASUREMENT_ID }) {
+// Google Analytics 4 - Internal component that uses useSearchParams
+function GoogleAnalyticsTracker({ GA_MEASUREMENT_ID }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -18,6 +18,11 @@ export function GoogleAnalytics({ GA_MEASUREMENT_ID }) {
     }
   }, [pathname, searchParams, GA_MEASUREMENT_ID]);
 
+  return null; // This component only handles tracking, no UI
+}
+
+// Google Analytics 4 - Main component with Suspense wrapper
+export function GoogleAnalytics({ GA_MEASUREMENT_ID }) {
   return (
     <>
       <Script
@@ -39,6 +44,9 @@ export function GoogleAnalytics({ GA_MEASUREMENT_ID }) {
           `,
         }}
       />
+      <Suspense fallback={null}>
+        <GoogleAnalyticsTracker GA_MEASUREMENT_ID={GA_MEASUREMENT_ID} />
+      </Suspense>
     </>
   );
 }
@@ -84,7 +92,7 @@ export function Hotjar({ HOTJAR_ID }) {
               h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
               h._hjSettings={hjid:${HOTJAR_ID},hjsv:6};
               a=o.getElementsByTagName('head')[0];
-              r=o.createElement('script');r.async=1;
+              r=o.createElement(s);r.async=1;
               r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
               a.appendChild(r);
           })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
