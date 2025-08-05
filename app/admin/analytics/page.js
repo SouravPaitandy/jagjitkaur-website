@@ -4,7 +4,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { FiBarChart, FiUsers, FiEye, FiShoppingCart, FiHeart, FiRefreshCw, FiExternalLink } from "react-icons/fi";
+import { FiBarChart, FiUsers, FiEye, FiShoppingCart, FiHeart, FiRefreshCw, FiExternalLink, FiAlertCircle } from "react-icons/fi";
 
 export default function AnalyticsPage() {
   const [user, loading] = useAuthState(auth);
@@ -12,6 +12,7 @@ export default function AnalyticsPage() {
   const [analyticsData, setAnalyticsData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [lastUpdated, setLastUpdated] = useState(new Date());
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -27,30 +28,61 @@ export default function AnalyticsPage() {
 
   const fetchAnalyticsData = async () => {
     setIsLoading(true);
+    setError(null);
+    
     try {
-      // Try real API first, fallback to mock if it fails
+      // Try real API first
       const response = await fetch('/api/analytics');
-      const data = await response.json();
       
-      if (data.error) {
-        // Fallback to mock data if real API fails
-        const mockResponse = await fetch('/api/analytics/mock');
-        const mockData = await mockResponse.json();
-        setAnalyticsData({ ...mockData, isLive: false });
-      } else {
-        setAnalyticsData({ ...data, isLive: true });
+      // Check if response is ok and content-type is JSON
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
       
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new Error('Response is not JSON');
+      }
+      
+      const data = await response.json();
+      
+      if (data.error && !data.users) {
+        // If real API failed completely, try mock data
+        throw new Error(data.error);
+      }
+      
+      setAnalyticsData({
+        ...data,
+        isLive: data.isLive !== false && !data.error
+      });
       setLastUpdated(new Date());
+      
     } catch (error) {
       console.error('Failed to fetch analytics:', error);
-      // Use mock data as fallback
+      setError(error.message);
+      
+      // Try mock data as fallback
       try {
         const mockResponse = await fetch('/api/analytics/mock');
+        
+        if (!mockResponse.ok) {
+          throw new Error(`Mock API error! status: ${mockResponse.status}`);
+        }
+        
+        const contentType = mockResponse.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          throw new Error('Mock response is not JSON');
+        }
+        
         const mockData = await mockResponse.json();
         setAnalyticsData({ ...mockData, isLive: false });
+        setLastUpdated(new Date());
+        setError(null); // Clear error since mock data worked
+        
       } catch (mockError) {
         console.error('Failed to fetch mock data:', mockError);
+        setError(`Both real and mock APIs failed: ${mockError.message}`);
+        setAnalyticsData(null);
       }
     } finally {
       setIsLoading(false);
@@ -107,6 +139,23 @@ export default function AnalyticsPage() {
             </button>
           </div>
         </div>
+
+        {/* Error Alert */}
+        {error && (
+          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 p-4 mb-6">
+            <div className="flex items-center">
+              <FiAlertCircle className="w-5 h-5 text-red-600 mr-3" />
+              <div>
+                <h3 className="text-sm font-medium text-red-800 dark:text-red-200">
+                  Analytics Error
+                </h3>
+                <p className="text-sm text-red-700 dark:text-red-300 mt-1">
+                  {error}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
 
         {isLoading ? (
           <div className="flex items-center justify-center py-20">

@@ -3,6 +3,13 @@ import { google } from 'googleapis';
 
 const getAnalyticsData = async () => {
   try {
+    // Check if required environment variables are present
+    if (!process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL || 
+        !process.env.GOOGLE_PRIVATE_KEY || 
+        !process.env.GOOGLE_ANALYTICS_PROPERTY_ID) {
+      throw new Error('Missing required environment variables for Google Analytics');
+    }
+
     // Initialize Google Analytics Data API (GA4)
     const auth = new google.auth.GoogleAuth({
       credentials: {
@@ -121,6 +128,7 @@ const getAnalyticsData = async () => {
         { type: 'add_to_cart', product: 'Product interaction tracked', time: 'Real-time' },
         { type: 'page_view', product: 'Page views tracked', time: 'Real-time' },
       ],
+      isLive: true,
     };
 
   } catch (error) {
@@ -135,7 +143,8 @@ const getAnalyticsData = async () => {
       deviceStats: [],
       trafficSources: [],
       recentEvents: [],
-      error: error.message
+      error: error.message,
+      isLive: false,
     };
   }
 };
@@ -147,7 +156,19 @@ export async function GET() {
   } catch (error) {
     console.error('API Route Error:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch analytics data' },
+      { 
+        error: 'Failed to fetch analytics data',
+        users: '0',
+        sessions: '0',
+        pageviews: '0',
+        bounceRate: 0,
+        dailyStats: [],
+        topPages: [],
+        deviceStats: [],
+        trafficSources: [],
+        recentEvents: [],
+        isLive: false,
+      },
       { status: 500 }
     );
   }
