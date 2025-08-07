@@ -97,19 +97,28 @@ export function CartProvider({ children }) {
 
   // Cart actions
   const addToCart = (product) => {
-    // Track analytics
-    trackAddToCart(product);
+    console.log('Adding to cart:', product); // Debug log
+    
+    // Ensure we have all the product details
+    const cartItem = {
+      id: product.firestoreId || product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image || product.images?.[0] || '/placeholder-image.jpg',
+      category: product.category,
+      fabric: product.fabric || '',
+      work: product.work || '',
+      origin: product.origin || '',
+      occasion: product.occasion || '',
+      originalPrice: product.originalPrice || null,
+    };
+    
+    // Track analytics with complete data
+    trackAddToCart(cartItem);
+    
     dispatch({
       type: CART_ACTIONS.ADD_ITEM,
-      payload: {
-        id: product.firestoreId || product.id,
-        name: product.name,
-        price: product.price,
-        image: product.image,
-        category: product.category,
-        fabric: product.fabric,
-        origin: product.origin
-      }
+      payload: cartItem
     });
   };
 

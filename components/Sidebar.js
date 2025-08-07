@@ -46,6 +46,11 @@ export default function Sidebar() {
       description: "Heritage dress collection",
     },
     {
+      name: "Rakhi Edit",
+      href: "/products?category=rakhi-edit",
+      description: "Brand new collection for Rakhi",
+    },
+    {
       name: "Potli Bags",
       href: "/products?category=potli-bags",
       description: "Handcrafted accessories",
@@ -58,26 +63,6 @@ export default function Sidebar() {
   ];
 
   const quickLinks = [
-    {
-      name: "Home",
-      href: "/",
-      icon: FiHome,
-    },
-    {
-      name: "All Collections",
-      href: "/products",
-      icon: FiShoppingBag,
-    },
-    {
-      name: "Pehchaan Collection",
-      href: "/products?category=pehchaan",
-      icon: FiStar,
-    },
-    {
-      name: "Potli Bags",
-      href: "/products?category=potli-bags",
-      icon: FiGift,
-    },
     {
       name: "About Us",
       href: "#brand-story",

@@ -153,6 +153,13 @@ export default function AdminDashboard() {
             href: "/admin/manage",
             primary: false,
           },
+          {
+            title: "Analytics Dashboard",
+            description: "View detailed website analytics",
+            icon: FiBarChart,
+            href: "/admin/analytics",
+            primary: false,
+          },
         ]
       : []),
   ];
@@ -204,7 +211,13 @@ export default function AdminDashboard() {
         {/* Header Section */}
         <div className="py-16 text-center border-b border-stone-200 dark:border-stone-700">
           <div className="mb-8 flex flex-col items-center justify-center">
-            <Image src='/images/newlogo.png' alt="JK" height={90} width={90} className="text-center"/>
+            <Image
+              src="/images/newlogo.png"
+              alt="JK"
+              height={90}
+              width={90}
+              className="text-center"
+            />
             <h1 className="font-fira-sans text-4xl md:text-5xl font-light text-stone-900 dark:text-stone-100 mb-4 tracking-wide">
               ADMIN DASHBOARD
             </h1>
@@ -233,43 +246,43 @@ export default function AdminDashboard() {
         </div>
 
         {/* Navigation Links */}
-          <div className="py-8 border-b border-stone-200 dark:border-stone-700">
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link
-                href="/"
-                className="flex items-center space-x-2 px-6 py-3 border border-stone-300 dark:border-stone-600 text-stone-700 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-stone-800 transition-all duration-300 font-fira-sans text-sm tracking-wide"
-              >
-                <FiHome className="w-4 h-4" />
-                <span>HOME</span>
-              </Link>
-              <Link
-                href="/products"
-                className="flex items-center space-x-2 px-6 py-3 border border-stone-300 dark:border-stone-600 text-stone-700 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-stone-800 transition-all duration-300 font-fira-sans text-sm tracking-wide"
-              >
-                <FiEye className="w-4 h-4" />
-                <span>COLLECTIONS</span>
-              </Link>
-              <button
-                onClick={() => {
-            if (window.confirm("Are you sure you want to log out?")) {
-              // Show alert that logout is in progress
-              alert("Logging out...");
-              // Trigger the logout action
-              document.getElementById("logout-button").click();
-            }
-                }}
-                className="flex items-center space-x-2 px-6 py-3 border border-stone-300 dark:border-stone-600 text-stone-700 dark:text-stone-300 hover:bg-red-50 dark:hover:bg-red-900 hover:text-red-700 dark:hover:text-red-300 hover:border-red-300 dark:hover:border-red-700 transition-all duration-300 font-fira-sans text-sm tracking-wide"
-              >
-                <FiLogOut className="w-4 h-4" />
-                <span>LOGOUT</span>
-              </button>
-              <div className="hidden">
-                <LogoutButton id="logout-button" />
-              </div>
+        <div className="py-8 border-b border-stone-200 dark:border-stone-700">
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link
+              href="/"
+              className="flex items-center space-x-2 px-6 py-3 border border-stone-300 dark:border-stone-600 text-stone-700 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-stone-800 transition-all duration-300 font-fira-sans text-sm tracking-wide"
+            >
+              <FiHome className="w-4 h-4" />
+              <span>HOME</span>
+            </Link>
+            <Link
+              href="/products"
+              className="flex items-center space-x-2 px-6 py-3 border border-stone-300 dark:border-stone-600 text-stone-700 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-stone-800 transition-all duration-300 font-fira-sans text-sm tracking-wide"
+            >
+              <FiEye className="w-4 h-4" />
+              <span>COLLECTIONS</span>
+            </Link>
+            <button
+              onClick={() => {
+                if (window.confirm("Are you sure you want to log out?")) {
+                  // Show alert that logout is in progress
+                  alert("Logging out...");
+                  // Trigger the logout action
+                  document.getElementById("logout-button").click();
+                }
+              }}
+              className="flex items-center space-x-2 px-6 py-3 border border-stone-300 dark:border-stone-600 text-stone-700 dark:text-stone-300 hover:bg-red-50 dark:hover:bg-red-900 hover:text-red-700 dark:hover:text-red-300 hover:border-red-300 dark:hover:border-red-700 transition-all duration-300 font-fira-sans text-sm tracking-wide"
+            >
+              <FiLogOut className="w-4 h-4" />
+              <span>LOGOUT</span>
+            </button>
+            <div className="hidden">
+              <LogoutButton id="logout-button" />
             </div>
           </div>
+        </div>
 
-          {/* Stats Cards */}
+        {/* Stats Cards */}
         <div className="py-16">
           <div className="text-center mb-12">
             <h2 className="font-fira-sans text-3xl font-light text-stone-900 dark:text-stone-100 mb-4 tracking-wide">
@@ -323,33 +336,41 @@ export default function AdminDashboard() {
                     : "bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-stone-100"
                 }`}
               >
-                <div className={`w-12 h-12 flex items-center justify-center mx-auto mb-6 ${
-                  action.primary
-                    ? "bg-stone-700 dark:bg-stone-300"
-                    : "bg-stone-800 dark:bg-stone-200"
-                }`}>
-                  <action.icon className={`w-6 h-6 ${
+                <div
+                  className={`w-12 h-12 flex items-center justify-center mx-auto mb-6 ${
                     action.primary
-                      ? "text-white dark:text-stone-900"
-                      : "text-white dark:text-stone-900"
-                  }`} />
+                      ? "bg-stone-700 dark:bg-stone-300"
+                      : "bg-stone-800 dark:bg-stone-200"
+                  }`}
+                >
+                  <action.icon
+                    className={`w-6 h-6 ${
+                      action.primary
+                        ? "text-white dark:text-stone-900"
+                        : "text-white dark:text-stone-900"
+                    }`}
+                  />
                 </div>
                 <h3 className="font-fira-sans text-xl font-medium mb-3 tracking-wide">
                   {action.title}
                 </h3>
-                <p className={`font-fira-sans text-sm tracking-wide ${
-                  action.primary
-                    ? "text-stone-200 dark:text-stone-700"
-                    : "text-stone-600 dark:text-stone-400"
-                }`}>
-                  {action.description}
-                </p>
-                <div className="mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <FiArrowRight className={`w-5 h-5 mx-auto ${
+                <p
+                  className={`font-fira-sans text-sm tracking-wide ${
                     action.primary
                       ? "text-stone-200 dark:text-stone-700"
                       : "text-stone-600 dark:text-stone-400"
-                  }`} />
+                  }`}
+                >
+                  {action.description}
+                </p>
+                <div className="mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <FiArrowRight
+                    className={`w-5 h-5 mx-auto ${
+                      action.primary
+                        ? "text-stone-200 dark:text-stone-700"
+                        : "text-stone-600 dark:text-stone-400"
+                    }`}
+                  />
                 </div>
               </Link>
             ))}
@@ -369,7 +390,7 @@ export default function AdminDashboard() {
                   Latest additions to your collection
                 </p>
               </div>
-              
+
               <div className="bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 p-6">
                 <div className="space-y-4">
                   {stats.recentProducts.length > 0 ? (
@@ -394,7 +415,8 @@ export default function AdminDashboard() {
                             {product.name}
                           </h4>
                           <p className="font-fira-sans text-xs text-stone-600 dark:text-stone-400 tracking-wide">
-                            {product.category?.replace('-', ' ').toUpperCase()} • ₹{product.price}
+                            {product.category?.replace("-", " ").toUpperCase()}{" "}
+                            • ₹{product.price}
                           </p>
                         </div>
                       </div>
@@ -430,7 +452,7 @@ export default function AdminDashboard() {
                   Current system health and connectivity
                 </p>
               </div>
-              
+
               <div className="bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 p-6">
                 <div className="space-y-4">
                   <div className="flex items-center justify-between p-4 bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700">

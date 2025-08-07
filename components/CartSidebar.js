@@ -36,7 +36,7 @@ export default function CartSidebar() {
       itemCount > 1 ? "items" : "item"
     } from my cart:\n\n`;
 
-    // Add cart items
+    // Add cart items with complete details
     items.forEach((item, index) => {
       message += `📱 *Product ${index + 1}:* ${item.name}\n`;
       if (item.price) message += `💰 *Price:* ₹${item.price}\n`;
@@ -44,6 +44,7 @@ export default function CartSidebar() {
       if (item.work) message += `✨ *Work:* ${item.work}\n`;
       if (item.origin) message += `📍 *Origin:* ${item.origin}\n`;
       if (item.occasion) message += `🎉 *Occasion:* ${item.occasion}\n`;
+      if (item.category) message += `🏷️ *Category:* ${item.category}\n`;
       message += `📦 *Quantity:* ${item.quantity}\n`;
       message += `\n`;
     });
@@ -81,7 +82,7 @@ export default function CartSidebar() {
     return encodeURIComponent(message);
   };
 
-  const phone = process.env.NEXT_PUBLIC_WHATSAPP_PHONE; // Replace with actual business number if needed
+  const phone = process.env.NEXT_PUBLIC_WHATSAPP_PHONE || '919876543210'; // Add fallback
   const link = `https://wa.me/${phone}?text=${createMessage()}`;
 
   return (
@@ -167,21 +168,22 @@ export default function CartSidebar() {
                     </div>
 
                     {/* Product Info */}
-                    <div className="flex-1 space-y-2">
+                     <div className="flex-1 space-y-2">
                       <h3 className="font-fira-sans font-medium text-stone-900 dark:text-stone-100 text-sm leading-tight">
                         {item.name}
                       </h3>
 
-                      <div className="flex items-center gap-2 text-xs text-stone-600 dark:text-stone-400">
-                        {item.fabric && <span>{item.fabric}</span>}
-                        {item.fabric && item.origin && <span>•</span>}
-                        {item.origin && <span>{item.origin}</span>}
-                      </div>
-
                       <div className="flex items-center justify-between">
-                        <span className="font-semibold text-stone-900 dark:text-stone-100">
-                          {formatPrice(item.price)}
-                        </span>
+                        <div className="flex flex-col">
+                          <span className="font-semibold text-stone-900 dark:text-stone-100">
+                            {formatPrice(item.price)}
+                          </span>
+                          {item.originalPrice && item.originalPrice !== item.price && (
+                            <span className="text-xs text-stone-500 dark:text-stone-400 line-through">
+                              {formatPrice(item.originalPrice)}
+                            </span>
+                          )}
+                        </div>
 
                         {/* Quantity Controls */}
                         <div className="flex items-center gap-2">
@@ -254,16 +256,16 @@ export default function CartSidebar() {
 
               {/* Action Buttons */}
               <div className="space-y-3">
-                <Link
+                <a
                   href={link}
                   target="_blank"
                   rel="noopener noreferrer"
                   title="Proceed to WhatsApp for inquiries"
                   onClick={toggleCart}
-                  className="w-full bg-stone-800 dark:bg-stone-200 text-white dark:text-stone-900 py-4 text-center font-fira-sans font-medium tracking-wide hover:bg-stone-900 dark:hover:bg-stone-100 transition-colors duration-300 block"
+                  className="w-full bg-stone-700 hover:bg-stone-800 text-white dark:bg-stone-200 dark:hover:bg-stone-300 dark:text-stone-900 py-4 text-center font-fira-sans font-medium tracking-wide transition-colors duration-300 block"
                 >
-                  PROCEED TO CHECKOUT
-                </Link>
+                  PROCEED TO WHATSAPP
+                </a>
 
                 <Link
                   href="/products"

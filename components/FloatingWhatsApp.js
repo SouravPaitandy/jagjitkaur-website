@@ -18,17 +18,20 @@ export default function FloatingWhatsApp() {
 
   const handleWhatsAppClick = () => {
     trackWhatsAppClick('floating_button');
-    // Open WhatsApp link
-    const phone = process.env.NEXT_PUBLIC_WHATSAPP_PHONE;
+    
+    // Get phone number with fallback
+    const phone = process.env.NEXT_PUBLIC_WHATSAPP_PHONE || '919876543210'; // Add your actual number here
     const link = `https://wa.me/${phone}?text=${createMessage()}`;
+    
+    console.log('WhatsApp Link:', link); // Debug log
     window.open(link, '_blank');
   };
 
   return (
-    <div className="fixed bottom-1/5 right-6 z-40 group">
+    <div className="fixed bottom-20 right-6 z-40 group">
       <button 
         onClick={handleWhatsAppClick}
-        className="flex items-center justify-center w-14 h-14 bg-stone-700 dark:bg-stone-200 hover:bg-stone-900 dark:hover:bg-stone-100 text-white dark:text-stone-900 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110"
+        className="flex items-center justify-center w-14 h-14 bg-stone-700 hover:bg-stone-800 text-white dark:bg-stone-200 dark:hover:bg-stone-300 dark:text-stone-900 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110"
         title="Chat with us on WhatsApp"
         aria-label="Contact us on WhatsApp"
       >
