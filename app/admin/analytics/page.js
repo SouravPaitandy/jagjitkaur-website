@@ -48,35 +48,56 @@ export default function AnalyticsPage() {
     }
   }, [user, mounted]);
 
-  const fetchAnalyticsData = async () => {
-    if (!mounted) return;
-    
+const fetchAnalyticsData = async () => {
     setIsLoading(true);
     setError(null);
 
     try {
-      const response = await fetch("/api/analytics/mock"); // Use mock API only for now
+      // Added timeout to prevent hanging
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 15000);
+
+      const response = await fetch("/api/analytics", {
+        signal: controller.signal,
+      });
+
+      clearTimeout(timeoutId);
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
+
+      const contentType = response.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        throw new Error("Response is not JSON");
+      }
+
       const data = await response.json();
-      setAnalyticsData(data);
+
+      if (data.error && !data.users) {
+        throw new Error(data.error);
+      }
+
+      setAnalyticsData({
+        ...data,
+        isLive: data.isLive !== false && !data.error,
+      });
       setLastUpdated(new Date());
     } catch (error) {
       console.error("Failed to fetch analytics:", error);
       setError(error.message);
-      // Fallback data
-      setAnalyticsData({
-        users: "0",
-        sessions: "0", 
-        pageviews: "0",
-        bounceRate: 0,
-        topPages: [],
-        deviceStats: [],
-        trafficSources: [],
-        recentEvents: [],
-        isLive: false,
-      });
+
+      try {
+        const mockResponse = await fetch("/api/analytics/mock");
+        const mockData = await mockResponse.json();
+        setAnalyticsData({ ...mockData, isLive: false });
+        setLastUpdated(new Date());
+        setError(null);
+      } catch (mockError) {
+        console.error("Failed to fetch mock data:", mockError);
+        setError(`Both real and mock APIs failed: ${mockError.message}`);
+        setAnalyticsData(null);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -176,7 +197,12 @@ export default function AnalyticsPage() {
                       ? "bg-green-100 text-green-800"
                       : "bg-yellow-100 text-yellow-800"
                   }`}>
-                    {analyticsData.isLive ? "🟢 Live Data" : "🟡 Demo Data"}
+                    {analyticsData.isLive 
+                      ? "🟢 Live Data" 
+                      : analyticsData.error 
+                        ? "🔴 Error - Demo Data"
+                        : "🟡 Demo Data"
+                    }
                   </span>
                 )}
               </div>
