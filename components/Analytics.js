@@ -82,19 +82,29 @@ export function GoogleTagManager({ GTM_ID }) {
 
 // Hotjar Analytics
 export function Hotjar({ HOTJAR_ID }) {
+  if (!HOTJAR_ID) {
+    console.warn('Hotjar ID is missing');
+    return null;
+  }
+
   return (
     <Script
-      id="hotjar"
+      id="hotjar-analytics"
       strategy="afterInteractive"
       dangerouslySetInnerHTML={{
         __html: `
           (function(h,o,t,j,a,r){
-              h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-              h._hjSettings={hjid:${HOTJAR_ID},hjsv:6};
-              a=o.getElementsByTagName('head')[0];
-              r=o.createElement(s);r.async=1;
-              r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
-              a.appendChild(r);
+              try {
+                  h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+                  h._hjSettings={hjid:${HOTJAR_ID},hjsv:6};
+                  a=o.getElementsByTagName('head')[0];
+                  r=o.createElement('script');
+                  r.async=1;
+                  r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+                  a.appendChild(r);
+              } catch (e) {
+                  console.error('Hotjar loading error:', e);
+              }
           })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
         `,
       }}

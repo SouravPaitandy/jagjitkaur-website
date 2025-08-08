@@ -89,8 +89,9 @@ export default function RootLayout({ children }) {
         )}
       </head>
       <body
-        className={`${inter.variable} ${firaSans.variable} ${dmSerif.variable} ${cormorant.variable} font-sans antialiased bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300`}
+        className={`${inter.variable} ${firaSans.variable} ${dmSerif.variable} ${cormorant.variable} font-sans antialiased m-0 p-0`}
         suppressContentEditableWarning
+        suppressHydrationWarning
       > 
         <CartProvider>
           <WishlistProvider>

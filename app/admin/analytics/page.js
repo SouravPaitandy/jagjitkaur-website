@@ -5,7 +5,48 @@ import { auth } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import CountUp from "react-countup";
+import dynamic from "next/dynamic";
+
+// Dynamically import heavy components to prevent SSR issues
+const CountUp = dynamic(() => import("react-countup"), {
+  ssr: false,
+  loading: () => <span>0</span>
+});
+
+const ResponsiveContainer = dynamic(
+  () => import("recharts").then((mod) => mod.ResponsiveContainer),
+  { ssr: false }
+);
+
+const ComposedChart = dynamic(
+  () => import("recharts").then((mod) => mod.ComposedChart),
+  { ssr: false }
+);
+
+const PieChart = dynamic(
+  () => import("recharts").then((mod) => mod.PieChart),
+  { ssr: false }
+);
+
+const BarChart = dynamic(
+  () => import("recharts").then((mod) => mod.BarChart),
+  { ssr: false }
+);
+
+// Import other recharts components similarly
+const LineChart = dynamic(() => import("recharts").then((mod) => mod.LineChart), { ssr: false });
+const Line = dynamic(() => import("recharts").then((mod) => mod.Line), { ssr: false });
+const XAxis = dynamic(() => import("recharts").then((mod) => mod.XAxis), { ssr: false });
+const YAxis = dynamic(() => import("recharts").then((mod) => mod.YAxis), { ssr: false });
+const CartesianGrid = dynamic(() => import("recharts").then((mod) => mod.CartesianGrid), { ssr: false });
+const Tooltip = dynamic(() => import("recharts").then((mod) => mod.Tooltip), { ssr: false });
+const Pie = dynamic(() => import("recharts").then((mod) => mod.Pie), { ssr: false });
+const Cell = dynamic(() => import("recharts").then((mod) => mod.Cell), { ssr: false });
+const Bar = dynamic(() => import("recharts").then((mod) => mod.Bar), { ssr: false });
+const AreaChart = dynamic(() => import("recharts").then((mod) => mod.AreaChart), { ssr: false });
+const Area = dynamic(() => import("recharts").then((mod) => mod.Area), { ssr: false });
+const Legend = dynamic(() => import("recharts").then((mod) => mod.Legend), { ssr: false });
+
 import {
   FiBarChart,
   FiUsers,
@@ -33,27 +74,6 @@ import {
   FiMaximize2,
   FiAlertCircle,
 } from "react-icons/fi";
-import { MouseIcon } from "lucide-react";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  PieChart,
-  Pie,
-  Cell,
-  BarChart,
-  Bar,
-  ResponsiveContainer,
-  AreaChart,
-  Area,
-  ComposedChart,
-  Legend,
-  RadialBarChart,
-  RadialBar,
-} from "recharts";
 
 const COLORS = [
   "#3B82F6",
@@ -69,10 +89,17 @@ export default function AnalyticsPage() {
   const router = useRouter();
   const [analyticsData, setAnalyticsData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [lastUpdated, setLastUpdated] = useState(new Date());
+  const [lastUpdated, setLastUpdated] = useState(null);
   const [error, setError] = useState(null);
   const [selectedPeriod, setSelectedPeriod] = useState("30d");
   const [autoRefresh, setAutoRefresh] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  // Fix hydration issues
+  useEffect(() => {
+    setMounted(true);
+    setLastUpdated(new Date());
+  }, []);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -81,23 +108,25 @@ export default function AnalyticsPage() {
   }, [user, loading, router]);
 
   useEffect(() => {
-    if (user) {
+    if (user && mounted) {
       fetchAnalyticsData();
     }
-  }, [user, selectedPeriod]);
+  }, [user, selectedPeriod, mounted]);
 
   // Auto-refresh functionality
   useEffect(() => {
     let interval;
-    if (autoRefresh) {
+    if (autoRefresh && mounted) {
       interval = setInterval(() => {
         fetchAnalyticsData();
       }, 30000); // Refresh every 30 seconds
     }
     return () => clearInterval(interval);
-  }, [autoRefresh]);
+  }, [autoRefresh, mounted]);
 
   const fetchAnalyticsData = async () => {
+    if (!mounted) return;
+    
     setIsLoading(true);
     setError(null);
 
@@ -158,17 +187,14 @@ export default function AnalyticsPage() {
     ];
   };
 
-  useEffect(() => {
-    if (analyticsData) {
-      console.log("Analytics Data Received:", analyticsData);
-      console.log("Traffic Sources:", analyticsData.trafficSources);
-      console.log("Traffic Sources Type:", typeof analyticsData.trafficSources);
-      console.log(
-        "Traffic Sources Array?",
-        Array.isArray(analyticsData.trafficSources)
-      );
-    }
-  }, [analyticsData]);
+  // Don't render until mounted (prevents hydration mismatch)
+  if (!mounted) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-gradient-to-br from-stone-50 to-stone-100 dark:from-stone-900 dark:to-stone-800">
+        <div className="animate-spin rounded-full h-16 w-16 border-4 border-stone-200 border-t-blue-600"></div>
+      </div>
+    );
+  }
 
   if (loading) {
     return (
@@ -233,11 +259,15 @@ export default function AnalyticsPage() {
           {title}
         </p>
         <p className="text-3xl font-bold text-stone-900 dark:text-stone-100">
-          <CountUp
-            end={parseInt(value.toString().replace(/[^\d]/g, "") || 0)}
-            duration={2}
-            separator=","
-          />
+          {mounted && CountUp ? (
+            <CountUp
+              end={parseInt(value.toString().replace(/[^\d]/g, "") || 0)}
+              duration={2}
+              separator=","
+            />
+          ) : (
+            parseInt(value.toString().replace(/[^\d]/g, "") || 0).toLocaleString()
+          )}
         </p>
         {previousValue && (
           <p className="text-xs text-stone-500 dark:text-stone-400 mt-1">
@@ -288,6 +318,92 @@ export default function AnalyticsPage() {
       ))}
     </div>
   );
+
+  // Client-side only chart component
+  const TrafficChart = ({ data }) => {
+    if (!mounted || !ResponsiveContainer || !ComposedChart) {
+      return (
+        <div className="flex items-center justify-center h-[300px] bg-stone-50 dark:bg-stone-800 rounded">
+          <div className="text-stone-400">Loading chart...</div>
+        </div>
+      );
+    }
+
+    return (
+      <ResponsiveContainer width="100%" height={300}>
+        <ComposedChart data={data}>
+          <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+          <XAxis dataKey="date" stroke="#6b7280" fontSize={12} />
+          <YAxis stroke="#6b7280" fontSize={12} />
+          <Tooltip content={<CustomTooltip />} />
+          <Legend />
+          <Area
+            type="monotone"
+            dataKey="users"
+            fill="url(#userGradient)"
+            stroke="#3b82f6"
+            strokeWidth={2}
+            name="Users"
+          />
+          <Line
+            type="monotone"
+            dataKey="sessions"
+            stroke="#10b981"
+            strokeWidth={3}
+            name="Sessions"
+            dot={{ fill: "#10b981", strokeWidth: 2, r: 4 }}
+          />
+          <defs>
+            <linearGradient id="userGradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3} />
+              <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
+            </linearGradient>
+          </defs>
+        </ComposedChart>
+      </ResponsiveContainer>
+    );
+  };
+
+  // Device chart component
+  const DeviceChart = ({ data }) => {
+    if (!mounted || !ResponsiveContainer || !PieChart) {
+      return (
+        <div className="flex items-center justify-center h-[200px] bg-stone-50 dark:bg-stone-800 rounded">
+          <div className="text-stone-400">Loading chart...</div>
+        </div>
+      );
+    }
+
+    const chartData = data?.map(([device, sessions], index) => ({
+      name: device.charAt(0).toUpperCase() + device.slice(1),
+      value: parseInt(sessions),
+      fill: COLORS[index % COLORS.length],
+    })) || [];
+
+    return (
+      <ResponsiveContainer width="100%" height={200}>
+        <PieChart>
+          <Pie
+            data={chartData}
+            cx="50%"
+            cy="50%"
+            innerRadius={40}
+            outerRadius={80}
+            paddingAngle={5}
+            dataKey="value"
+          >
+            {chartData.map((entry, index) => (
+              <Cell
+                key={`cell-${index}`}
+                fill={COLORS[index % COLORS.length]}
+              />
+            ))}
+          </Pie>
+          <Tooltip content={<CustomTooltip />} />
+        </PieChart>
+      </ResponsiveContainer>
+    );
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-stone-50 to-stone-100 dark:from-stone-900 dark:to-stone-800">
@@ -354,7 +470,7 @@ export default function AnalyticsPage() {
                 Last updated
               </p>
               <p className="text-sm font-medium text-stone-700 dark:text-stone-300">
-                {lastUpdated.toLocaleTimeString()}
+                {lastUpdated?.toLocaleTimeString() || 'Loading...'}
               </p>
             </div>
           </div>
@@ -460,51 +576,7 @@ export default function AnalyticsPage() {
                     </span>
                   </div>
                 </div>
-                <ResponsiveContainer width="100%" height={300}>
-                  <ComposedChart data={analyticsData.dailyStats}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                    <XAxis dataKey="date" stroke="#6b7280" fontSize={12} />
-                    <YAxis stroke="#6b7280" fontSize={12} />
-                    <Tooltip content={<CustomTooltip />} />
-                    <Legend />
-                    <Area
-                      type="monotone"
-                      dataKey="users"
-                      fill="url(#userGradient)"
-                      stroke="#3b82f6"
-                      strokeWidth={2}
-                      name="Users"
-                    />
-                    <Line
-                      type="monotone"
-                      dataKey="sessions"
-                      stroke="#10b981"
-                      strokeWidth={3}
-                      name="Sessions"
-                      dot={{ fill: "#10b981", strokeWidth: 2, r: 4 }}
-                    />
-                    <defs>
-                      <linearGradient
-                        id="userGradient"
-                        x1="0"
-                        y1="0"
-                        x2="0"
-                        y2="1"
-                      >
-                        <stop
-                          offset="5%"
-                          stopColor="#3b82f6"
-                          stopOpacity={0.3}
-                        />
-                        <stop
-                          offset="95%"
-                          stopColor="#3b82f6"
-                          stopOpacity={0}
-                        />
-                      </linearGradient>
-                    </defs>
-                  </ComposedChart>
-                </ResponsiveContainer>
+                <TrafficChart data={analyticsData.dailyStats} />
               </motion.div>
 
               {/* Device Analytics */}
@@ -517,34 +589,7 @@ export default function AnalyticsPage() {
                 <h3 className="text-xl font-bold text-stone-900 dark:text-stone-100 mb-6">
                   Device Analytics
                 </h3>
-                <ResponsiveContainer width="100%" height={200}>
-                  <PieChart>
-                    <Pie
-                      data={analyticsData.deviceStats?.map(
-                        ([device, sessions], index) => ({
-                          name:
-                            device.charAt(0).toUpperCase() + device.slice(1),
-                          value: parseInt(sessions),
-                          fill: COLORS[index % COLORS.length],
-                        })
-                      )}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={40}
-                      outerRadius={80}
-                      paddingAngle={5}
-                      dataKey="value"
-                    >
-                      {analyticsData.deviceStats?.map((entry, index) => (
-                        <Cell
-                          key={`cell-${index}`}
-                          fill={COLORS[index % COLORS.length]}
-                        />
-                      ))}
-                    </Pie>
-                    <Tooltip content={<CustomTooltip />} />
-                  </PieChart>
-                </ResponsiveContainer>
+                <DeviceChart data={analyticsData.deviceStats} />
                 <div className="mt-4 space-y-2">
                   {analyticsData.deviceStats?.map(
                     ([device, sessions], index) => (
@@ -650,7 +695,7 @@ export default function AnalyticsPage() {
                 </div>
               </motion.div>
 
-              {/* Traffic Sources */}
+              {/* Traffic Sources with Fallback */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -773,44 +818,6 @@ export default function AnalyticsPage() {
                 </div>
               </motion.div>
 
-              {/* Debug Panel - Remove in production
-              {process.env.NODE_ENV === "development" && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.0 }}
-                  className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-xl p-6 shadow-lg"
-                >
-                  <h3 className="text-lg font-bold text-yellow-800 dark:text-yellow-200 mb-4">
-                    🔍 Debug Information
-                  </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                    <div>
-                      <p className="font-semibold text-yellow-700 dark:text-yellow-300 mb-2">
-                        Real Traffic Sources:
-                      </p>
-                      <pre className="bg-yellow-100 dark:bg-yellow-800/30 p-2 rounded text-xs overflow-auto">
-                        {JSON.stringify(analyticsData.trafficSources, null, 2)}
-                      </pre>
-                    </div>
-                    <div>
-                      <p className="font-semibold text-yellow-700 dark:text-yellow-300 mb-2">
-                        Fallback Traffic Sources:
-                      </p>
-                      <pre className="bg-yellow-100 dark:bg-yellow-800/30 p-2 rounded text-xs overflow-auto">
-                        {JSON.stringify(
-                          generateFallbackTrafficSources(
-                            analyticsData.sessions
-                          ),
-                          null,
-                          2
-                        )}
-                      </pre>
-                    </div>
-                  </div>
-                </motion.div>
-              )} */}
-
               {/* Real-time Activity */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -830,88 +837,32 @@ export default function AnalyticsPage() {
                   </div>
                 </div>
                 <div className="space-y-3">
-                  {analyticsData.recentEvents?.map((event, index) => {
-                    const getEventIcon = (type) => {
-                      switch (type) {
-                        case "add_to_cart":
-                          return {
-                            icon: FiShoppingCart,
-                            color: "text-orange-500",
-                          };
-                        case "add_to_wishlist":
-                          return { icon: FiHeart, color: "text-red-500" };
-                        case "whatsapp_click":
-                          return { icon: MouseIcon, color: "text-green-500" };
-                        case "search":
-                          return { icon: FiSearch, color: "text-blue-500" };
-                        default:
-                          return { icon: FiActivity, color: "text-stone-500" };
-                      }
-                    };
-
-                    const { icon: EventIcon, color } = getEventIcon(event.type);
-
-                    return (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 1 + index * 0.1 }}
-                        className="flex items-center space-x-3 p-3 rounded-lg hover:bg-stone-50 dark:hover:bg-stone-700 transition-colors"
-                      >
-                        <div
-                          className={`p-2 rounded-lg bg-stone-100 dark:bg-stone-700 ${color}`}
-                        >
-                          <EventIcon className="w-4 h-4" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-stone-900 dark:text-stone-100 truncate">
-                            {event.product ||
-                              event.query ||
-                              event.source ||
-                              "User Activity"}
-                          </p>
-                          <p className="text-xs text-stone-500 dark:text-stone-400">
-                            {event.time}
-                          </p>
-                        </div>
-                      </motion.div>
-                    );
-                  })}
+                  {analyticsData.recentEvents?.map((event, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 1.0 + index * 0.1 }}
+                      className="flex items-center space-x-3 p-2 hover:bg-stone-50 dark:hover:bg-stone-700 rounded transition-colors"
+                    >
+                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                      <div className="flex-1">
+                        <p className="text-sm font-medium text-stone-900 dark:text-stone-100">
+                          {event.type.replace('_', ' ').toUpperCase()}
+                        </p>
+                        <p className="text-xs text-stone-600 dark:text-stone-400">
+                          {event.product} - {event.time}
+                        </p>
+                      </div>
+                    </motion.div>
+                  )) || (
+                    <p className="text-stone-500 dark:text-stone-400 text-center py-8">
+                      No recent events
+                    </p>
+                  )}
                 </div>
               </motion.div>
             </div>
-
-            {/* Quick Stats Bar */}
-            {/* <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.1 }}
-              className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl p-6 text-white mb-8"
-            >
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                <div className="text-center">
-                  <FiClock className="w-8 h-8 mx-auto mb-2 opacity-80" />
-                  <p className="text-2xl font-bold">2:34</p>
-                  <p className="text-sm opacity-80">Avg. Session</p>
-                </div>
-                <div className="text-center">
-                  <FiTarget className="w-8 h-8 mx-auto mb-2 opacity-80" />
-                  <p className="text-2xl font-bold">3.2%</p>
-                  <p className="text-sm opacity-80">Conversion Rate</p>
-                </div>
-                <div className="text-center">
-                  <FiTrendingUp className="w-8 h-8 mx-auto mb-2 opacity-80" />
-                  <p className="text-2xl font-bold">+24%</p>
-                  <p className="text-sm opacity-80">Growth Rate</p>
-                </div>
-                <div className="text-center">
-                  <FiActivity className="w-8 h-8 mx-auto mb-2 opacity-80" />
-                  <p className="text-2xl font-bold">87</p>
-                  <p className="text-sm opacity-80">Active Users</p>
-                </div>
-              </div>
-            </motion.div> */}
 
             {/* External Analytics Platforms */}
             <motion.div
